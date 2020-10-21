@@ -73,7 +73,7 @@ cdef void kbd_callback(const char *name, int name_len,
                        int num_prompts,
                        const c_ssh2.LIBSSH2_USERAUTH_KBDINT_PROMPT *prompts,
                        c_ssh2.LIBSSH2_USERAUTH_KBDINT_RESPONSE *responses,
-                       void **abstract):
+                       void **abstract) except *:
     py_sess = (<Session>c_dereference(abstract))
     if py_sess._kbd_callback is None:
         return
