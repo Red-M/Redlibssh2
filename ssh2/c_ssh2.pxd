@@ -491,5 +491,6 @@ cdef extern from "libssh2.h" nogil:
     const char *libssh2_agent_get_identity_path(LIBSSH2_AGENT *agent)
     void libssh2_agent_set_identity_path(LIBSSH2_AGENT *agent,
                                          const char *path)
+    void libssh2_free(LIBSSH2_SESSION *session, void *ptr)
     IF HAVE_AGENT_FWD:
         int libssh2_channel_request_auth_agent(LIBSSH2_CHANNEL *channel)
