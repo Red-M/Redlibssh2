@@ -1,5 +1,5 @@
 # This file is part of ssh2-python.
-# Copyright (C) 2017 Panos Kittenis
+# Copyright (C) 2017-2020 Panos Kittenis
 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -488,5 +488,8 @@ cdef extern from "libssh2.h" nogil:
     int libssh2_trace_sethandler(LIBSSH2_SESSION *session,
                                  void* context,
                                  libssh2_trace_handler_func callback)
+    const char *libssh2_agent_get_identity_path(LIBSSH2_AGENT *agent)
+    void libssh2_agent_set_identity_path(LIBSSH2_AGENT *agent,
+                                         const char *path)
     IF HAVE_AGENT_FWD:
         int libssh2_channel_request_auth_agent(LIBSSH2_CHANNEL *channel)

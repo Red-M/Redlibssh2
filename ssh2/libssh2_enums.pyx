@@ -1,5 +1,5 @@
 # This file is part of ssh2-python.
-# Copyright (C) 2017 Panos Kittenis
+# Copyright (C) 2020 Red_M
 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
