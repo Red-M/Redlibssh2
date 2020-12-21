@@ -90,7 +90,7 @@ Both byte and unicode strings are accepted as arguments and encoded appropriatel
 
 See `Complete Example`_ for an example including socket connect.
 
-Please use either the issue tracker for reporting issues with code or the `mail group`_ for discussion and questions.
+Please use either the issue tracker for reporting issues with code.
 
 Contributions are most welcome!
 
@@ -207,7 +207,7 @@ __________________
 
 A simple usage example looks very similar to ``libssh2`` `usage examples <https://www.libssh2.org/examples/>`_.
 
-See `examples directory <https://github.com/ParallelSSH/redlibssh2/tree/master/examples>`_ for more complete example scripts.
+See `examples directory <https://github.com/Red-M/redlibssh2/tree/master/examples>`_ for more complete example scripts.
 
 As mentioned, ``redlibssh2`` is intentionally a thin wrapper over ``libssh2`` and directly maps most of its API.
 
