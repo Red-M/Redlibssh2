@@ -1,12 +1,5 @@
 
-.global_config: &global_config
-  except:
-    changes:
-      - "README.md"
-      - "README.rst"
-
 .build_process: &build_release_job
-  <<: *global_config
   image: docker:dind
   services:
     - docker:dind
@@ -36,7 +29,6 @@ release_mlinux_wheel:
       - /^release/.*/
 
 test_build:
-  <<: *global_config
   image: debian:stable
   stage: test
   script:
@@ -46,7 +38,9 @@ test_build:
     - wget -O get-pip.py "https://bootstrap.pypa.io/get-pip.py"
     - python3 ./get-pip.py
     - git submodule update --init --recursive
-    - python3 setup.py sdist
+    - pip3 install -U readme-renderer
+    - python3 -m readme_renderer ./README.rst -o /tmp/README.html
+    - python3 ./setup.py sdist
 
 #~ tests_py3.5:
   #~ <<: *global_config
