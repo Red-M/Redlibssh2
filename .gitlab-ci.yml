@@ -33,7 +33,7 @@ release_mlinux_wheel:
     refs:
       - master
       - schedules
-      - /^release/.*$/
+      - /^release/.*/
 
 test_build:
   <<: *global_config
