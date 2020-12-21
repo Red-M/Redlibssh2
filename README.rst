@@ -2,6 +2,7 @@ Redlibssh2
 ============
 
 Super fast SSH2 protocol library. ``redlibssh2`` provides Python bindings for `libssh2`_.
+Forked from ssh2-python.
 
 .. image:: https://img.shields.io/badge/License-LGPL%20v2-blue.svg
    :target: https://pypi.python.org/pypi/redlibssh2
@@ -23,7 +24,7 @@ Super fast SSH2 protocol library. ``redlibssh2`` provides Python bindings for `l
 Installation
 ______________
 
-Binary wheel packages are provided for Linux on all Python versions. Wheel packages have **no dependencies**.
+Binary wheel packages are provided for Linux, OSX and Windows, all Python versions. Wheel packages have **no dependencies**.
 
 ``pip`` may need to be updated to be able to install binary wheel packages - ``pip install -U pip``.
 
@@ -34,6 +35,26 @@ Binary wheel packages are provided for Linux on all Python versions. Wheel packa
 For from source installation instructions, including building against system provided libssh2, `see documentation <https://redlibssh2.readthedocs.io/en/latest/installation.html#installation-from-source>`_.
 
 For creating native system packages for Centos/RedHat, Ubuntu, Debian and Fedora, see `instructions in the documentation <http://redlibssh2.readthedocs.io/en/latest/installation.html#system-binary-packages>`_.
+
+
+Who Should Use This
+___________________
+
+Developers of bespoke SSH clients.
+
+
+Who Should Not Use This
+_______________________
+
+Developers looking for ready made SSH clients.
+
+This library is not an SSH client.
+
+Developers looking for high level easy to use clients based on this library should use `RedSSH <https://github.com/Red-M/RedSSH>`_.
+
+This library provides bindings to libssh2 and its API closely matches libssh2.
+
+If the examples seem long, this is not the right library. Use `RedSSH <https://github.com/Red-M/RedSSH>`_.
 
 
 API Feature Set
@@ -53,7 +74,7 @@ The library uses `Cython`_ based native code extensions as wrappers to ``libssh2
 
 Extension features:
 
-* Thread safe - GIL is released as much as possible
+* Thread safe - GIL is released as much as possible. Note that libssh2 does not support sharing sessions across threads
 * Very low overhead
 * Super fast as a consequence of the excellent C library it uses and prodigious use of native code
 * Object oriented - memory freed automatically and safely as objects are garbage collected by Python
@@ -186,7 +207,7 @@ __________________
 
 A simple usage example looks very similar to ``libssh2`` `usage examples <https://www.libssh2.org/examples/>`_.
 
-See `examples directory <https://github.com/Red-M/redlibssh2/tree/master/examples>`_ for more complete example scripts.
+See `examples directory <https://github.com/ParallelSSH/redlibssh2/tree/master/examples>`_ for more complete example scripts.
 
 As mentioned, ``redlibssh2`` is intentionally a thin wrapper over ``libssh2`` and directly maps most of its API.
 
@@ -287,4 +308,3 @@ If someone would like these wheels to be built you can open an issue and it'll b
 .. _libssh2: https://www.libssh2.org
 .. _Cython: https://www.cython.org
 .. _`examples directory`: https://github.com/Red-M/redlibssh2/tree/master/examples
-.. _`mail group`: https://groups.google.com/forum/#!forum/redlibssh2

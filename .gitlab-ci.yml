@@ -3,6 +3,7 @@
   except:
     changes:
       - "README.md"
+      - "README.rst"
 
 .build_process: &build_release_job
   <<: *global_config
