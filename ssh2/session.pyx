@@ -68,24 +68,6 @@ LIBSSH2_FLAG_SIGPIPE = c_ssh2.LIBSSH2_FLAG_SIGPIPE
 LIBSSH2_FLAG_COMPRESS = c_ssh2.LIBSSH2_FLAG_COMPRESS
 
 
-cdef class MethodType:
-    def __cinit__(self, value):
-        self.value = value
-
-
-IF EMBEDDED_LIB:
-    LIBSSH2_METHOD_KEX = MethodType(c_ssh2.LIBSSH2_METHOD_KEX)
-    LIBSSH2_METHOD_HOSTKEY = MethodType(c_ssh2.LIBSSH2_METHOD_HOSTKEY)
-    LIBSSH2_METHOD_CRYPT_CS = MethodType(c_ssh2.LIBSSH2_METHOD_CRYPT_CS)
-    LIBSSH2_METHOD_CRYPT_SC = MethodType(c_ssh2.LIBSSH2_METHOD_CRYPT_SC)
-    LIBSSH2_METHOD_MAC_CS = MethodType(c_ssh2.LIBSSH2_METHOD_MAC_CS)
-    LIBSSH2_METHOD_MAC_SC = MethodType(c_ssh2.LIBSSH2_METHOD_MAC_SC)
-    LIBSSH2_METHOD_COMP_CS = MethodType(c_ssh2.LIBSSH2_METHOD_COMP_CS)
-    LIBSSH2_METHOD_COMP_SC = MethodType(c_ssh2.LIBSSH2_METHOD_COMP_SC)
-    LIBSSH2_METHOD_LANG_CS = MethodType(c_ssh2.LIBSSH2_METHOD_LANG_CS)
-    LIBSSH2_METHOD_LANG_SC = MethodType(c_ssh2.LIBSSH2_METHOD_LANG_SC)
-
-
 cdef void kbd_callback(const char *name, int name_len,
                        const char *instruction, int instruction_len,
                        int num_prompts,
