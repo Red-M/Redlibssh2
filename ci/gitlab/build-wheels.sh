@@ -3,7 +3,7 @@
 OLD_PWD="$(pwd)"
 LATEST_PY="$(ls -1d /opt/python/*/bin | grep -v cpython | tail -n1)/python"
 cd /io
-"${LATEST_PY}" /io/setup.py sdist -d /io/wheelhouse --formats=gztar,zip
+"${LATEST_PY}" /io/setup.py sdist -d /io/wheelhouse --formats=gztar
 cd "${OLD_PWD}"
 
 # Compile wheels
