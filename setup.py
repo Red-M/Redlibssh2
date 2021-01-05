@@ -119,8 +119,7 @@ setup(
     platforms='any',
     install_requires=install_requires,
     classifiers=[
-        'Development Status :: 1 - Planning',
-        # 'Development Status :: 5 - Production/Stable',
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',

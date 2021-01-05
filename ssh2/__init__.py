@@ -16,7 +16,3 @@ from . import fileinfo
 from . import statinfo
 from . import utils
 from . import libssh2_enums as enums
-
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
