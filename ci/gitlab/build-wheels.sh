@@ -14,6 +14,7 @@ cd "${OLD_PWD}"
 # Bundle external shared libraries into the wheels
 for whl in /io/wheelhouse/*.whl; do
     auditwheel repair "${whl}" -w /io/wheelhouse/
+    \rm "${whl}"
 done
 
 # Install packages and test
