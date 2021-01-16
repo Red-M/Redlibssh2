@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# ssh2-python documentation build configuration file, created by
+# redlibssh2 documentation build configuration file, created by
 # sphinx-quickstart on Mon Aug  7 11:22:12 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -30,9 +30,16 @@ import ssh2
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc',
-              'sphinx.ext.intersphinx',
-              'sphinx.ext.todo',
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinx.ext.coverage',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.githubpages',
 ]
 
 autodoc_default_flags = ['members']
@@ -50,9 +57,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'ssh2-python'
-copyright = u'2017, P Kittenis'
-author = u'P Kittenis'
+project = u'redlibssh2'
+copyright = u'2017, P Kittenis. 2020-2021 Red_M'
+author = u'P Kittenis, Red_M'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -87,13 +94,18 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'classic'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    'stickysidebar':'True',
+    'externalrefs':'True',
+    'body_text_align':'left',
+    'relbarbgcolor': 'black'
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -119,7 +131,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'ssh2-pythondoc'
+htmlhelp_basename = 'redlibssh2doc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -146,8 +158,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'ssh2-python.tex', u'ssh2-python Documentation',
-     u'P Kittenis', 'manual'),
+    (master_doc, 'redlibssh2.tex', u'redlibssh2 Documentation',
+     u'P Kittenis, Red\\_M', 'manual'),
 ]
 
 
@@ -156,7 +168,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'ssh2-python', u'ssh2-python Documentation',
+    (master_doc, 'redlibssh2', u'redlibssh2 Documentation',
      [author], 1)
 ]
 
@@ -167,8 +179,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'ssh2-python', u'ssh2-python Documentation',
-     author, 'ssh2-python', 'Python SSH library based on libssh2.',
+    (master_doc, 'redlibssh2', u'redlibssh2 Documentation',
+     author, 'redlibssh2', 'Python SSH library based on libssh2.',
      'Miscellaneous'),
 ]
 
