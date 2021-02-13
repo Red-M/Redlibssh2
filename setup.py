@@ -24,6 +24,7 @@ else:
 
 ON_RTD = os.environ.get('READTHEDOCS') == 'True'
 
+SYSTEM_BUILD_MINGW = bool(os.environ.get('SYSTEM_BUILD_MINGW', 0))
 SYSTEM_LIBSSH2 = bool(os.environ.get('SYSTEM_LIBSSH2', 0)) or ON_RTD
 
 # Only build libssh if running a build
