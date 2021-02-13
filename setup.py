@@ -24,6 +24,7 @@ else:
 
 ON_RTD = os.environ.get('READTHEDOCS') == 'True'
 
+SYSTEM_BUILD_MINGW = bool(os.environ.get('SYSTEM_BUILD_MINGW', 0))
 SYSTEM_LIBSSH2 = bool(os.environ.get('SYSTEM_LIBSSH2', 0)) or ON_RTD
 
 # Only build libssh if running a build
@@ -35,7 +36,7 @@ if not SYSTEM_LIBSSH2 and (len(sys.argv) >= 2 and not (
         __name__ == '__main__'):
     build_ssh2()
 
-ON_WINDOWS = platform.system() == 'Windows'
+ON_WINDOWS = platform.system() == 'Windows' or SYSTEM_BUILD_MINGW==True
 
 ext = 'pyx' if USING_CYTHON else 'c'
 sources = glob('ssh2/*.%s' % (ext,))
@@ -89,7 +90,7 @@ package_data = {'ssh2': ['*.pxd', 'libssh2.so*']}
 
 if ON_WINDOWS:
     package_data['ssh2'].extend([
-        'libcrypto*.dll', 'libssl*.dll',
+        'libcrypto*.dll', 'libssl*.dll', 'libssh2.dll'
     ])
 
 cmdclass = versioneer.get_cmdclass()
