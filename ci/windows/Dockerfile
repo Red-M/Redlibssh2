@@ -17,4 +17,6 @@ RUN mkdir -p build_libssh2 && cd build_libssh2 && \
     -DENABLE_CRYPT_NONE=ON -DENABLE_MAC_NONE=ON -DCMAKE_INSTALL_PREFIX=/usr && \
     cmake --build . --config Release --target install
 
+RUN sleep 10000
+
 RUN rm -rf build_libssh2
