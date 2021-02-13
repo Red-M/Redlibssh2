@@ -4,6 +4,7 @@ dist
 build
 *~
 *.so
+*.dll
 .idea/
 ssh2/libssh2.so*
 redlibssh2/libssh2.so*

@@ -32,8 +32,7 @@ from publickey cimport PyPublicKeySystem
 from utils cimport to_bytes, to_str, handle_error_codes
 from statinfo cimport StatInfo
 from knownhost cimport PyKnownHost
-IF EMBEDDED_LIB:
-    from fileinfo cimport FileInfo
+from fileinfo cimport FileInfo
 
 
 cimport c_ssh2
@@ -762,15 +761,14 @@ cdef class Session:
                 self._session)
         return rc
 
-    IF EMBEDDED_LIB:
-        def set_last_error(self, int errcode, errmsg not None):
-            cdef bytes b_errmsg = to_bytes(errmsg)
-            cdef char *_errmsg = b_errmsg
-            cdef int rc
-            with nogil:
-                rc = c_ssh2.libssh2_session_set_last_error(
-                    self._session, errcode, _errmsg)
-            return rc
+    def set_last_error(self, int errcode, errmsg not None):
+        cdef bytes b_errmsg = to_bytes(errmsg)
+        cdef char *_errmsg = b_errmsg
+        cdef int rc
+        with nogil:
+            rc = c_ssh2.libssh2_session_set_last_error(
+                self._session, errcode, _errmsg)
+        return rc
 
     def scp_recv(self, path not None):
         """Receive file via SCP.
@@ -794,28 +792,27 @@ cdef class Session:
                 self._session))
         return PyChannel(channel, self), statinfo
 
-    IF EMBEDDED_LIB:
-        def scp_recv2(self, path not None):
-            """Receive file via SCP.
+    def scp_recv2(self, path not None):
+        """Receive file via SCP.
 
-            Available only on libssh2 >= 1.7.
+        Available only on libssh2 >= 1.7.
 
-            :param path: File path to receive.
-            :type path: str
+        :param path: File path to receive.
+        :type path: str
 
-            :rtype: tuple(:py:class:`ssh2.channel.Channel`,
-              :py:class:`ssh2.fileinfo.FileInfo`) or ``None``"""
-            cdef FileInfo fileinfo = FileInfo()
-            cdef bytes b_path = to_bytes(path)
-            cdef char *_path = b_path
-            cdef c_ssh2.LIBSSH2_CHANNEL *channel
-            with nogil:
-                channel = c_ssh2.libssh2_scp_recv2(
-                    self._session, _path, fileinfo._stat)
-            if channel is NULL:
-                return handle_error_codes(c_ssh2.libssh2_session_last_errno(
-                    self._session))
-            return PyChannel(channel, self), fileinfo
+        :rtype: tuple(:py:class:`ssh2.channel.Channel`,
+          :py:class:`ssh2.fileinfo.FileInfo`) or ``None``"""
+        cdef FileInfo fileinfo = FileInfo()
+        cdef bytes b_path = to_bytes(path)
+        cdef char *_path = b_path
+        cdef c_ssh2.LIBSSH2_CHANNEL *channel
+        with nogil:
+            channel = c_ssh2.libssh2_scp_recv2(
+                self._session, _path, fileinfo._stat)
+        if channel is NULL:
+            return handle_error_codes(c_ssh2.libssh2_session_last_errno(
+                self._session))
+        return PyChannel(channel, self), fileinfo
 
     def scp_send(self, path not None, int mode, size_t size):
         """Deprecated in favour of scp_send64. Send file via SCP.
