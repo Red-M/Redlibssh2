@@ -6,8 +6,8 @@ ENV SYSTEM_BUILD_MINGW 1
 
 COPY ./libssh2 /libssh2
 
-COPY ./ci/windows/mingw_install.sh /tmp/mingw_install.sh
-COPY ./ci/windows/windows_toolchain.cmake /tmp/windows_toolchain.cmake
+COPY ./ci/gitlab/windows/mingw_install.sh /tmp/mingw_install.sh
+COPY ./ci/gitlab/windows/windows_toolchain.cmake /tmp/windows_toolchain.cmake
 RUN bash /tmp/mingw_install.sh
 RUN yum -y --disablerepo="epel" install zlib-devel openssl-devel cmake gcc
 

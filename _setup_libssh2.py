@@ -19,7 +19,7 @@ def build_ssh2():
 
     os.chdir('src')
     if SYSTEM_BUILD_MINGW==1:
-        check_call('cmake -DCMAKE_TOOLCHAIN_FILE=../ci/windows/windows_toolchain.cmake \
+        check_call('cmake -DCMAKE_TOOLCHAIN_FILE=../ci/gitlab/windows/windows_toolchain.cmake \
         ../libssh2 -DBUILD_SHARED_LIBS=ON \
         -DENABLE_ZLIB_COMPRESSION=ON -DENABLE_CRYPT_NONE=ON \
         -DENABLE_MAC_NONE=ON -DCRYPTO_BACKEND=OpenSSL',shell=True, env=os.environ)

@@ -9,8 +9,8 @@
   script: &build_release_script
     - apk add --no-cache bash git
     - git submodule update --init --recursive
-    - chmod +x ./ci/gitlab/build_manylinux.sh
-    - ./ci/gitlab/build_manylinux.sh
+    - chmod +x ./ci/gitlab/linux/build_manylinux.sh
+    - ./ci/gitlab/linux/build_manylinux.sh
   artifacts:
     paths:
       - wheelhouse
@@ -34,8 +34,8 @@ release_windows_wheel:
   script:
     - apk add --no-cache bash git
     - git submodule update --init --recursive
-    - chmod +x ./ci/windows/build_windows.sh
-    - ./ci/windows/build_windows.sh
+    - chmod +x ./ci/gitlab/windows/build_windows.sh
+    - ./ci/gitlab/windows/build_windows.sh
   stage: build
   only:
     refs:
