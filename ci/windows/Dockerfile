@@ -2,10 +2,12 @@
 FROM quay.io/pypa/manylinux2010_x86_64
 
 ENV SYSTEM_LIBSSH2 1
+ENV SYSTEM_BUILD_MINGW 1
 
 COPY ./libssh2 /libssh2
 
-RUN bash /io/ci/windows/mingw_install.sh
+COPY ./ci/windows/mingw_install.sh /tmp/mingw_install.sh
+RUN bash /tmp/mingw_install.sh
 RUN yum -y --disablerepo="epel" install zlib-devel openssl-devel cmake gcc
 
 # Libssh2
