@@ -1,6 +1,5 @@
 #!/bin/bash -xe
 
-
 export SYSTEM_BUILD_MINGW=1
 
 OLD_PWD="$(pwd)"

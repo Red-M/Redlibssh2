@@ -8,7 +8,7 @@ set(CMAKE_Fortran_COMPILER ${TOOLCHAIN_PREFIX}-gfortran)
 set(CMAKE_RC_COMPILER ${TOOLCHAIN_PREFIX}-windres)
 
 # target environment on the build host system
-set(CMAKE_FIND_ROOT_PATH /usr/${TOOLCHAIN_PREFIX} ./mingw64)
+set(CMAKE_FIND_ROOT_PATH /usr/${TOOLCHAIN_PREFIX} /usr/${TOOLCHAIN_PREFIX}/sys-root/mingw/ ~/mingw/mingw64)
 
 # modify default behavior of FIND_XXX() commands
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
