@@ -8,6 +8,7 @@ from multiprocessing import cpu_count
 
 
 def build_ssh2():
+    SYSTEM_BUILD_MINGW = bool(os.environ.get('SYSTEM_BUILD_MINGW', 0))
     if bool(os.environ.get('SYSTEM_LIBSSH', False)):
         stderr.write("Using system libssh2..%s" % (os.sep))
         return
@@ -30,5 +31,9 @@ def build_ssh2():
     check_call('cmake --build . --config Release', shell=True, env=os.environ)
     os.chdir('..')
 
-    for src in glob('src/src/libssh2.so*'):
-        copy2(src, 'ssh2/')
+    if SYSTEM_BUILD_MINGW==1:
+        for src in glob('src/src/libssh2.dll'):
+            copy2(src, 'ssh2/')
+    else:
+        for src in glob('src/src/libssh2.so*'):
+            copy2(src, 'ssh2/')

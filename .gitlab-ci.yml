@@ -29,20 +29,20 @@ release_mlinux_wheel:
       - /^release\/.*/
       - build_ci_testing
 
-release_windows_wheel:
-  <<: *build_release_job
-  script:
-    - apk add --no-cache bash git
-    - git submodule update --init --recursive
-    - chmod +x ./ci/gitlab/windows/build.sh
-    - ./ci/gitlab/windows/build.sh
-  stage: build
-  only:
-    refs:
-      - master
-      - schedules
-      - /^release\/.*/
-      - build_ci_testing
+#~ release_windows_wheel:
+  #~ <<: *build_release_job
+  #~ script:
+    #~ - apk add --no-cache bash git
+    #~ - git submodule update --init --recursive
+    #~ - chmod +x ./ci/gitlab/windows/build.sh
+    #~ - ./ci/gitlab/windows/build.sh
+  #~ stage: build
+  #~ only:
+    #~ refs:
+      #~ - master
+      #~ - schedules
+      #~ - /^release\/.*/
+      #~ - build_ci_testing
 
 test_build:
   image: debian:stable

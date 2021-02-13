@@ -36,7 +36,7 @@ if not SYSTEM_LIBSSH2 and (len(sys.argv) >= 2 and not (
         __name__ == '__main__'):
     build_ssh2()
 
-ON_WINDOWS = platform.system() == 'Windows'
+ON_WINDOWS = platform.system() == 'Windows' or SYSTEM_BUILD_MINGW==True
 
 ext = 'pyx' if USING_CYTHON else 'c'
 sources = glob('ssh2/*.%s' % (ext,))
@@ -90,7 +90,7 @@ package_data = {'ssh2': ['*.pxd', 'libssh2.so*']}
 
 if ON_WINDOWS:
     package_data['ssh2'].extend([
-        'libcrypto*.dll', 'libssl*.dll',
+        'libcrypto*.dll', 'libssl*.dll', 'libssh2.dll'
     ])
 
 cmdclass = versioneer.get_cmdclass()
