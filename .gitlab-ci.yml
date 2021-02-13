@@ -34,8 +34,8 @@ release_windows_wheel:
   script:
     - apk add --no-cache bash git
     - git submodule update --init --recursive
-    - chmod +x ./ci/gitlab/windows/build_windows.sh
-    - ./ci/gitlab/windows/build_windows.sh
+    - chmod +x ./ci/gitlab/windows/build.sh
+    - ./ci/gitlab/windows/build.sh
   stage: build
   only:
     refs:
