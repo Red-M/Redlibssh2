@@ -1,7 +1,7 @@
 #!/bin/bash
 
-yum groupinstall -y "MinGW cross-compiler"
-yum install -y zstd wget
+# yum groupinstall -y "MinGW cross-compiler"
+yum install -y zstd wget mingw*
 mkdir -p ~/mingw
 OLD_PATH=$(pwd)
 cd ~/mingw
