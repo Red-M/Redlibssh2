@@ -70,3 +70,13 @@ test_build:
     #~ - htmlcov
   #~ only:
   #~ - master
+
+test_osx:
+  stage: test
+  script:
+    - brew cleanup
+    - brew update
+    - brew install ccache
+    - brew outdated openssl || brew upgrade openssl || echo "y"
+  tags:
+    - osx
