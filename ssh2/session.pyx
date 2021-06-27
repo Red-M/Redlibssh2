@@ -18,6 +18,7 @@ import error_codes
 from cpython cimport PyObject_AsFileDescriptor
 from libc.stdlib cimport malloc, free
 from libc.time cimport time_t
+
 from cython.operator cimport dereference as c_dereference
 from libc.string cimport strlen, strdup
 
@@ -48,6 +49,9 @@ LIBSSH2_HOSTKEY_TYPE_UNKNOWN = c_ssh2.LIBSSH2_HOSTKEY_TYPE_UNKNOWN
 LIBSSH2_HOSTKEY_TYPE_RSA = c_ssh2.LIBSSH2_HOSTKEY_TYPE_RSA
 LIBSSH2_HOSTKEY_TYPE_DSS = c_ssh2.LIBSSH2_HOSTKEY_TYPE_DSS
 
+LIBSSH2_CALLBACK_DEBUG = c_ssh2.LIBSSH2_CALLBACK_DEBUG
+LIBSSH2_CALLBACK_DISCONNECT = c_ssh2.LIBSSH2_CALLBACK_DISCONNECT
+LIBSSH2_CALLBACK_RECV = c_ssh2.LIBSSH2_CALLBACK_RECV
 LIBSSH2_CALLBACK_RECV = c_ssh2.LIBSSH2_CALLBACK_RECV
 LIBSSH2_CALLBACK_SEND = c_ssh2.LIBSSH2_CALLBACK_SEND
 LIBSSH2_CALLBACK_X11 = c_ssh2.LIBSSH2_CALLBACK_X11
@@ -82,6 +86,16 @@ cdef void kbd_callback(const char *name, int name_len,
         responses[0].text = strdup(_password)
         responses[0].length = strlen(_password)
 
+cdef Py_ssize_t _send_callback(int fd, const void *buffer, size_t length, int flags, void** abstract) except -1:
+        res = (<Session>c_dereference(abstract))._send_callback(fd, buf, flags)
+        return length
+
+cdef Py_ssize_t _recv_callback(int fd, const void *buffer, size_t length, int flags, void** abstract) except -1:
+    buf = (<Session>c_dereference(abstract))._recv_callback(fd, length, flags)
+    return len(buf)
+
+cdef int _disconnect_callback(c_ssh2.LIBSSH2_SESSION *session, int reason, const char *description, const char *lang):
+    print(description)
 
 cdef class Session:
 
@@ -100,6 +114,40 @@ cdef class Session:
         if self._session is not NULL:
             c_ssh2.libssh2_session_free(self._session)
         self._session = NULL
+
+    def set_recv_callback(self, callback):
+        """
+        Override the function used to recieve data from a particular host.
+        Callback signature is (fd : int, buf : memoryview, flags : int) -> int
+        """
+        self._recv_callback = callback
+        c_ssh2.libssh2_session_callback_set(
+            self._session,
+            c_ssh2.LIBSSH2_CALLBACK_RECV,
+            <void*>_recv_callback
+        )
+
+    def set_send_callback(self, callback):
+        """
+        Override the function used to send data to a particular host.
+        Callback signature is (fd : int, buf : memoryview, flags : int) -> int
+        """
+        self._send_callback = callback
+        c_ssh2.libssh2_session_callback_set(
+            self._session,
+            c_ssh2.LIBSSH2_CALLBACK_SEND,
+            <void*>_send_callback
+        )
+
+    def set_disconnect_callback(self, callback):
+        """
+        """
+        self._disconnect_callback = callback
+        c_ssh2.libssh2_session_callback_set(
+            self._session,
+            c_ssh2.LIBSSH2_CALLBACK_DISCONNECT,
+            <void*>_disconnect_callback
+        )
 
     def disconnect(self):
         cdef int rc

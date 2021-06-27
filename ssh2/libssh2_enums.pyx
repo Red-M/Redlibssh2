@@ -39,9 +39,13 @@ class Hostkey(enum.Enum):
 
 
 class Callback(enum.Enum):
+    IGNORE = c_ssh2.LIBSSH2_CALLBACK_IGNORE
+    DEBUG = c_ssh2.LIBSSH2_CALLBACK_DEBUG
+    DISCONNECT = c_ssh2.LIBSSH2_CALLBACK_DISCONNECT
+    MACERROR = c_ssh2.LIBSSH2_CALLBACK_MACERROR
+    X11 = c_ssh2.LIBSSH2_CALLBACK_X11
     RECV = c_ssh2.LIBSSH2_CALLBACK_RECV
     SEND = c_ssh2.LIBSSH2_CALLBACK_SEND
-    X11 = c_ssh2.LIBSSH2_CALLBACK_X11
 
 
 class Method(enum.Enum):

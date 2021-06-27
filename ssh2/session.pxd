@@ -22,3 +22,6 @@ cdef class Session:
     cdef readonly object sock
 
     cdef readonly object _kbd_callback
+    cdef readonly object _send_callback
+    cdef readonly object _recv_callback
+    cdef readonly object _disconnect_callback
