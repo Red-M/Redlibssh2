@@ -17,7 +17,6 @@
   script: &build_linux_release_script
     - apk add --no-cache bash git
     - git submodule update --init --recursive
-    - chmod +x ./ci/gitlab/linux/build_manylinux.sh
     - ./ci/gitlab/linux/build_manylinux.sh
   artifacts:
     paths:
