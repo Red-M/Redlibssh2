@@ -24,6 +24,8 @@
       - wheelhouse
 
 .build_osx_process: &build_osx_release_job
+  tags:
+    - osx
   variables: &build_osx_release_variables
     SYSTEM_LIBSSH2: 1
   script: &build_osx_release_script
