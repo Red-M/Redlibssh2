@@ -2,7 +2,14 @@
 
 brew install pyenv || brew outdated pyenv || brew upgrade pyenv
 
-export PYENV_VERSION=${PYENV:-3.6.4}
+export PYENV_VERSION=("${PYENV:-ALL}")
+ALL_PYENV_VERSION_DEFAULT=("ALL")
+ALL_PYENV_VERSIONS=("3.9.6" "3.8.11" "3.7.11" "3.6.14" "3.5.10")
+
+if [ ${PYENV_VERSION[@]} = ${ALL_PYENV_VERSION_DEFAULT[@]} ]; then
+    PYENV_VERSION=(${ALL_PYENV_VERSIONS[@]})
+fi
+
 if [[ ! -d "$HOME/.pyenv/versions/$PYENV_VERSION" ]]; then
     pyenv install $PYENV_VERSION
 fi
