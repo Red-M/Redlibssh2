@@ -10,17 +10,18 @@ if [ ${BUILD_PYENV_VERSIONS[@]} = ${ALL_PYENV_VERSION_DEFAULT[@]} ]; then
     BUILD_PYENV_VERSIONS=(${ALL_BUILD_PYENV_VERSIONS[@]})
 fi
 
-for PYENV_VERSION in ${BUILD_PYENV_VERSIONS[@]}; do
-    if [[ ! -d "$HOME/.pyenv/versions/$PYENV_VERSION" ]]; then
-        pyenv install $PYENV_VERSION
+for PYENV in ${BUILD_PYENV_VERSIONS[@]}; do
+    export PYENV_VERSION=$PYENV
+    if [[ ! -d "$HOME/.pyenv/versions/$PYENV" ]]; then
+        pyenv install $PYENV
     fi
+    pyenv shell $PYENV
     pyenv versions
 
     set +x
     eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
     set -x
-    pyenv shell $PYENV_VERSION
 
     which python
     python -m pip install -U virtualenv
