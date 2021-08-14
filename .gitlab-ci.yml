@@ -27,7 +27,6 @@
   variables: &build_osx_release_variables
     SYSTEM_LIBSSH2: 1
   script: &build_osx_release_script
-    - export SYSTEM_LIBSSH2=1
     - git submodule update --init --recursive
     - brew cleanup
     - brew update
@@ -36,25 +35,12 @@
     - brew link --overwrite python@3.9 || brew install python@3.9 || brew link --overwrite python@3.9
     - which python3
     - python3 -c "from __future__ import print_function; import ssl; from platform import python_version; print(ssl.OPENSSL_VERSION); print(python_version())"
-    - sudo -H pip3 install twine
     - sudo ./ci/install-ssh2.sh
     - sudo chown -R $(whoami) ./src
     - rm ./src/CMakeCache.txt
     - cp /usr/local/lib/libssh2* .
     - mkdir -p wheelhouse
-    - sudo -H pip3 install -U delocate wheel pip setuptools
-    - pip3 wheel .
-    - delocate-listdeps --all *.whl
-    - delocate-wheel -v *.whl
-    - delocate-listdeps --all *.whl
-    - ls -l *.whl
-    - rm -f *.dylib
-    - pip3 install --user -v *.whl
-    - mkdir temp; cd temp
-    - python3 -c "from ssh2.session import Session; Session()"
-    - cd ..
-    - mv -f *.whl wheelhouse/
-    - ln -s ./wheels ./wheelhouse
+    - ln -s ./wheelhouse ./wheels
     - ./ci/travis/pyenv-wheel.sh
   artifacts:
     paths:
@@ -138,7 +124,7 @@ test_osx:
   stage: test
   variables:
     <<: *build_osx_release_variables
-    PYENV: 3.7.0
+    PYENV: 3.7.11
   script: [*build_osx_release_script]
   tags:
     - osx
