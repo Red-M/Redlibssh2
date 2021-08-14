@@ -55,10 +55,10 @@ release_mlinux_wheel:
   <<: *build_refs
   stage: build
 
-#~ release_osx_wheel:
-  #~ <<: *build_osx_release_job
-  #~ <<: *build_refs
-  #~ stage: build
+release_osx_wheel:
+  <<: *build_osx_release_job
+  <<: *build_refs
+  stage: build
 
 #~ release_windows_wheel:
   #~ <<: *build_release_job
