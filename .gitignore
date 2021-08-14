@@ -13,3 +13,4 @@ ci/docker/manylinux*/libssh2
 __pycache__
 conda-recipe
 wheelhouse/
+venv/

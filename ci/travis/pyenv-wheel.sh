@@ -2,43 +2,53 @@
 
 brew install pyenv || brew outdated pyenv || brew upgrade pyenv
 
-export PYENV_VERSION=${PYENV:-3.6.4}
-if [[ ! -d "$HOME/.pyenv/versions/$PYENV_VERSION" ]]; then
-    pyenv install $PYENV_VERSION
+export BUILD_PYENV_VERSIONS=("${PYENV:-ALL}")
+ALL_PYENV_VERSION_DEFAULT=("ALL")
+ALL_BUILD_PYENV_VERSIONS=("3.9.6" "3.8.11" "3.7.11" "3.6.14" "3.5.10")
+
+if [ ${BUILD_PYENV_VERSIONS[@]} = ${ALL_PYENV_VERSION_DEFAULT[@]} ]; then
+    BUILD_PYENV_VERSIONS=(${ALL_BUILD_PYENV_VERSIONS[@]})
 fi
-pyenv global $PYENV_VERSION
-pyenv versions
 
-set +x
-eval "$(pyenv init -)"
-set -x
+for PYENV_VERSION in ${BUILD_PYENV_VERSIONS[@]}; do
+    if [[ ! -d "$HOME/.pyenv/versions/$PYENV_VERSION" ]]; then
+        pyenv install $PYENV_VERSION
+    fi
+    pyenv versions
 
-which python
-python -m pip install -U virtualenv
-python -m virtualenv -p "$(which python)" venv
+    set +x
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+    set -x
+    pyenv shell $PYENV_VERSION
 
-set +x
-source venv/bin/activate
-set -x
+    which python
+    python -m pip install -U virtualenv
+    python -m virtualenv -p "$(\which python)" venv
 
-python -V
-python -m pip install -U setuptools pip
-pip install -U delocate wheel
-pip wheel .
-cp /usr/local/lib/libssh2* .
-delocate-listdeps --all *.whl
-delocate-wheel -v *.whl
-delocate-listdeps --all *.whl
+    set +x
+    source venv/bin/activate
+    set -x
 
-ls -l *.whl
-rm -f *.dylib
-pip install -v *.whl
-pwd; mkdir -p temp; cd temp; pwd
-python -c "from ssh2.session import Session; Session()" && echo "Import successfull"
-cd ..; pwd
-set +x
-deactivate
-set -x
+    python -V
+    python -m pip install -U setuptools pip
+    pip install -U delocate wheel
+    pip wheel .
+    \cp /usr/local/lib/libssh2* .
+    delocate-listdeps --all ./*.whl
+    delocate-wheel -v ./*.whl
+    delocate-listdeps --all ./*.whl
 
-mv -f *.whl wheels/
-ls -lh wheels
+    ls -l *.whl
+    rm -f *.dylib
+    pip install -v ./*.whl
+    mkdir -p temp; cd temp
+    python -c "from ssh2.session import Session; Session()" && echo "Import successfull"
+    cd ..
+    set +x
+    deactivate
+    set -x
+
+    mv -f *.whl wheelhouse/
+    ls -lh wheelhouse
+done
