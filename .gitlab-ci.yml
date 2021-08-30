@@ -12,6 +12,7 @@
     - python3 -m readme_renderer ./README.rst -o /tmp/README.html
     - \rm ./ssh2/*.c
     - python3 setup.py build_ext --inplace
+    - pip install -e .[tests]
   variables:
     REDLIBSSH2_BUILD_TRACING: 1
 

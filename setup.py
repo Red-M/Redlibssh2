@@ -108,6 +108,14 @@ install_requires = []
 if sys.version_info==(2,7):
     install_requires.append('enum')
 
+test_deps = [
+    'coveralls',
+    'pytest-cov',
+    'pylint',
+    'bandit',
+    'safety'
+]
+
 setup(
     name='redlibssh2',
     version=versioneer.get_version(),
@@ -126,6 +134,9 @@ setup(
     include_package_data=True,
     platforms='any',
     install_requires=install_requires,
+    extras_require={
+        'tests':list(set(install_requires+test_deps))
+    },
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)',
@@ -146,7 +157,7 @@ setup(
         'Operating System :: POSIX',
         'Operating System :: POSIX :: Linux',
         'Operating System :: POSIX :: BSD',
-        'Operating System :: Microsoft :: Windows',
+        # 'Operating System :: Microsoft :: Windows',
         'Operating System :: MacOS :: MacOS X',
     ],
     ext_modules=extensions,
