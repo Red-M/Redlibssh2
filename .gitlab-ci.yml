@@ -4,13 +4,16 @@
   script:
     - ./ci/gitlab/linux/install_deb_mirror.sh
     - apt update && apt install -y make curl wget openssh-client openssh-server git cmake libssl-dev zlib1g-dev
-    - apt install -y python3 python3-dev python3-distutils
+    - apt install -y python3 python3-dev python3-distutils python3-setuptools cython3
     - wget -O get-pip.py "https://bootstrap.pypa.io/get-pip.py"
     - python3 ./get-pip.py
     - git submodule update --init --recursive
     - pip3 install -U readme-renderer
     - python3 -m readme_renderer ./README.rst -o /tmp/README.html
-    - python3 ./setup.py sdist
+    - \rm ./ssh2/*.c
+    - python3 setup.py build_ext --inplace
+  variables:
+    REDLIBSSH2_BUILD_TRACING: 1
 
 .build_refs: &build_refs
   only:
@@ -55,6 +58,7 @@
     - cp /usr/local/lib/libssh2* .
     - mkdir -p wheelhouse
     - ln -s ./wheelhouse ./wheels
+    - brew install pyenv || brew outdated pyenv || brew upgrade pyenv
     - ./ci/travis/pyenv-wheel.sh
   artifacts:
     paths:
@@ -75,19 +79,19 @@ release_osx_wheel:
   stage: build
 
 
-test_build_debstable:
+tests_debstable:
   <<: *cicd_testing_defaults
   image: debian:stable
 
-test_build_deboldstable:
+tests_deboldstable:
   <<: *cicd_testing_defaults
   image: debian:oldstable
 
-test_build_debtesting:
+tests_debtesting:
   <<: *cicd_testing_defaults
   image: debian:testing
 
-test_build_latest_libssh2:
+tests_latest_libssh2:
   image: debian:stable
   stage: test
   script:
@@ -101,23 +105,23 @@ test_build_latest_libssh2:
     - git submodule update --init --recursive
     - cd ./libssh2
     - git checkout master
-    - git pull
+    - git pull origin master
     - cd ../
-    - python3 ./setup.py sdist
+    - python3 setup.py build_ext --inplace
 
-#~ test_py3.9:
+#~ tests_py3.9:
   #~ <<: *cicd_testing_defaults
   #~ image: debian:11
 
-#~ test_py3.7:
+#~ tests_py3.7:
   #~ <<: *cicd_testing_defaults
   #~ image: debian:10
 
-#~ test_py3.5:
+#~ tests_py3.5:
   #~ <<: *cicd_testing_defaults
   #~ image: debian:9
 
-test_osx:
+tests_osx:
   stage: test
   variables:
     <<: *build_osx_release_variables
