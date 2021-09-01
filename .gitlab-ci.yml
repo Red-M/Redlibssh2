@@ -24,17 +24,47 @@
       - /^release\/.*/
       - build_ci_testing
 
-.build_linux_process: &build_linux_release_job
+.build_mlinux_2000_process: &build_mlinux_2000_release_job
   image: docker:dind
   services:
     - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
-  script: &build_linux_release_script
+  script: &build_mlinux_2000_release_script
     - apk add --no-cache bash git
     - git submodule update --init --recursive
     - ./ci/gitlab/linux/build_manylinux.sh
+  artifacts:
+    paths:
+      - wheelhouse
+
+.build_mlinux_2_process: &build_mlinux_2_release_job
+  image: docker:dind
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  script: &build_mlinux_2_release_script
+    - apk add --no-cache bash git
+    - git submodule update --init --recursive
+    - ./ci/gitlab/linux/build_manylinux_2.sh
+  artifacts:
+    paths:
+      - wheelhouse
+
+.build_mlinux_pypy_process: &build_mlinux_pypy_release_job
+  image: docker:dind
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  script: &build_mlinux_pypy_release_script
+    - apk add --no-cache bash git
+    - git submodule update --init --recursive
+    - ./ci/gitlab/linux/build_manylinux_pypy.sh
   artifacts:
     paths:
       - wheelhouse
@@ -69,8 +99,18 @@ stages:
   - test
   - build
 
-release_mlinux_wheel:
-  <<: *build_linux_release_job
+release_mlinux_2000_wheel:
+  <<: *build_mlinux_2000_release_job
+  <<: *build_refs
+  stage: build
+
+release_mlinux_2_wheel:
+  <<: *build_mlinux_2_release_job
+  <<: *build_refs
+  stage: build
+
+release_mlinux_pypy_wheel:
+  <<: *build_mlinux_pypy_release_job
   <<: *build_refs
   stage: build
 
