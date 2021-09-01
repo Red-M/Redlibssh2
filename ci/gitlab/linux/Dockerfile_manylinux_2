@@ -2,9 +2,10 @@ FROM MANYLINUX_DOCKER_CONTAINER
 
 ENV SYSTEM_LIBSSH2 1
 
+COPY ./ci/gitlab/linux /scripts
 COPY ./libssh2 /libssh2
 
-RUN apt install -y cmake make libssl-dev zlib1g-dev
+RUN /scripts/install_deb_mirror.sh; apt update && apt install -y cmake make libssl-dev zlib1g-dev
 
 # Libssh2
 RUN mkdir -p build_libssh2 && cd build_libssh2 && \
