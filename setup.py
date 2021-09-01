@@ -24,6 +24,7 @@ else:
 
 ON_RTD = os.environ.get('READTHEDOCS') == 'True'
 
+REDLIBSSH2_BUILD_TRACING = bool(os.environ.get('REDLIBSSH2_BUILD_TRACING', False))
 SYSTEM_BUILD_MINGW = bool(os.environ.get('SYSTEM_BUILD_MINGW', 0))
 SYSTEM_LIBSSH2 = bool(os.environ.get('SYSTEM_LIBSSH2', 0)) or ON_RTD
 
@@ -53,20 +54,26 @@ _comp_args = ["-O3"] if not ON_WINDOWS else None
 _embedded_lib = bool(int(os.environ.get('EMBEDDED_LIB', 1)))
 _have_agent_fwd = bool(int(os.environ.get('HAVE_AGENT_FWD', _fwd_default)))
 
-cython_directives = {'embedsignature': True,
-                     'boundscheck': False,
-                     'optimize.use_switch': True,
-                     'wraparound': False,
+cython_directives = {
+    'language_level': '2',
+    'embedsignature': True,
+    'boundscheck': False,
+    'optimize.use_switch': True,
+    'wraparound': False
 }
-cython_args = {
-    'cython_directives': cython_directives,
-    'cython_compile_time_env': {
-        'EMBEDDED_LIB': _embedded_lib,
-        'HAVE_AGENT_FWD': _have_agent_fwd,
-    }} \
-    if USING_CYTHON else {}
+cython_args = {}
 
 if USING_CYTHON:
+    cython_args = {
+        'cython_directives': cython_directives,
+        'cython_compile_time_env': {
+            'EMBEDDED_LIB': _embedded_lib,
+            'HAVE_AGENT_FWD': _have_agent_fwd,
+        }
+    }
+    if REDLIBSSH2_BUILD_TRACING==True:
+        cython_args.update({'define_macros':[("CYTHON_TRACE", 1),("CYTHON_TRACE_NOGIL", 1)]})
+        cython_args['cython_directives'].update({'linetrace':True})
     sys.stdout.write("Cython arguments: %s%s" % (cython_args, os.linesep))
 
 
@@ -101,6 +108,14 @@ install_requires = []
 if sys.version_info==(2,7):
     install_requires.append('enum')
 
+test_deps = [
+    'coveralls',
+    'pytest-cov',
+    'pylint',
+    'bandit',
+    'safety'
+]
+
 setup(
     name='redlibssh2',
     version=versioneer.get_version(),
@@ -119,6 +134,9 @@ setup(
     include_package_data=True,
     platforms='any',
     install_requires=install_requires,
+    extras_require={
+        'tests':list(set(install_requires+test_deps))
+    },
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)',
@@ -126,8 +144,6 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: C',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -141,7 +157,7 @@ setup(
         'Operating System :: POSIX',
         'Operating System :: POSIX :: Linux',
         'Operating System :: POSIX :: BSD',
-        'Operating System :: Microsoft :: Windows',
+        # 'Operating System :: Microsoft :: Windows',
         'Operating System :: MacOS :: MacOS X',
     ],
     ext_modules=extensions,

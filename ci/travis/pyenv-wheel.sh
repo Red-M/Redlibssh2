@@ -1,7 +1,5 @@
 #!/bin/bash -xe
 
-brew install pyenv || brew outdated pyenv || brew upgrade pyenv
-
 export BUILD_PYENV_VERSIONS=("${PYENV:-ALL}")
 ALL_PYENV_VERSION_DEFAULT=("ALL")
 # ALL_BUILD_PYENV_VERSIONS=("3.9.6" "3.8.11" "3.7.11" "3.6.14" "3.5.10")
