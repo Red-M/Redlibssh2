@@ -24,17 +24,32 @@
       - /^release\/.*/
       - build_ci_testing
 
-.build_mlinux_2000_process: &build_mlinux_2000_release_job
+.build_mlinux_2010_process: &build_mlinux_2010_release_job
   image: docker:dind
   services:
     - docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
-  script: &build_mlinux_2000_release_script
+  script: &build_mlinux_2010_release_script
     - apk add --no-cache bash git
     - git submodule update --init --recursive
     - ./ci/gitlab/linux/build_manylinux.sh
+  artifacts:
+    paths:
+      - wheelhouse
+
+.build_mlinux_2014_process: &build_mlinux_2014_release_job
+  image: docker:dind
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  script: &build_mlinux_2014_release_script
+    - apk add --no-cache bash git
+    - git submodule update --init --recursive
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2014_x86_64
   artifacts:
     paths:
       - wheelhouse
@@ -99,8 +114,13 @@ stages:
   - test
   - build
 
-release_mlinux_2000_wheel:
-  <<: *build_mlinux_2000_release_job
+release_mlinux_2010_wheel:
+  <<: *build_mlinux_2010_release_job
+  <<: *build_refs
+  stage: build
+
+release_mlinux_2014_wheel:
+  <<: *build_mlinux_2014_release_job
   <<: *build_refs
   stage: build
 
