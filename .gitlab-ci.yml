@@ -32,10 +32,10 @@
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
-  cache:
-    key: "docker_cache"
-    paths:
-      - /var/lib/docker/
+  #~ cache:
+    #~ key: "docker_cache"
+    #~ paths:
+      #~ - /var/lib/docker/
   script: &build_mlinux_defaults_script
     - apk add --no-cache bash git
     - git submodule update --init --recursive
