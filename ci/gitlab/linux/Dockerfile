@@ -2,9 +2,10 @@ FROM MANYLINUX_DOCKER_CONTAINER
 
 ENV SYSTEM_LIBSSH2 1
 
+COPY ./ci/gitlab/linux /scripts
 COPY ./libssh2 /libssh2
 
-RUN yum -y --disablerepo="epel" install zlib-devel openssl-devel cmake gcc
+RUN /scripts/setup_manylinux.sh
 
 # Libssh2
 RUN mkdir -p build_libssh2 && cd build_libssh2 && \

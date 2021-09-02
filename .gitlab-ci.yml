@@ -28,14 +28,10 @@
   image: docker:dind
   services:
     - docker:dind
-  variables:
+  variables: &build_mlinux_defaults_variables
     DOCKER_DRIVER: overlay2
     DOCKER_HOST: tcp://docker:2375
     DOCKER_TLS_CERTDIR: ""
-  #~ cache:
-    #~ key: "docker_cache"
-    #~ paths:
-      #~ - /var/lib/docker/
   script: &build_mlinux_defaults_script
     - apk add --no-cache bash git
     - git submodule update --init --recursive
@@ -46,34 +42,26 @@
 .build_mlinux_2010_process: &build_mlinux_2010_release_job
   <<: *build_mlinux_defaults
   script: &build_mlinux_2010_release_script
-    [
-      *build_mlinux_defaults_script,
-      "./ci/gitlab/linux/build_manylinux.sh"
-    ]
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2010_x86_64
 
 .build_mlinux_2014_process: &build_mlinux_2014_release_job
   <<: *build_mlinux_defaults
   script: &build_mlinux_2014_release_script
-    [
-      *build_mlinux_defaults_script,
-      "./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2014_x86_64"
-    ]
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2014_x86_64
 
 .build_mlinux_2_process: &build_mlinux_2_release_job
   <<: *build_mlinux_defaults
   script: &build_mlinux_2_release_script
-    [
-      *build_mlinux_defaults_script,
-      "./ci/gitlab/linux/build_manylinux_2.sh"
-    ]
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux_2_24_x86_64
 
 .build_mlinux_pypy_process: &build_mlinux_pypy_release_job
   <<: *build_mlinux_defaults
   script: &build_mlinux_pypy_release_script
-    [
-      *build_mlinux_defaults_script,
-      "./ci/gitlab/linux/build_manylinux_pypy.sh"
-    ]
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh pypywheels/manylinux2010-pypy_x86_64 pypy pypy
 
 .build_osx_process: &build_osx_release_job
   tags:
@@ -161,6 +149,17 @@ tests_latest_libssh2:
     - cd ../
     - python3 setup.py build_ext --inplace
 
+tests_osx:
+  stage: test
+  variables:
+    <<: *build_osx_release_variables
+    PYENV: 3.7.11
+  script:
+    - *build_osx_release_script
+  tags:
+    - osx
+
+
 #~ tests_py3.9:
   #~ <<: *cicd_testing_defaults
   #~ image: debian:11
@@ -173,14 +172,6 @@ tests_latest_libssh2:
   #~ <<: *cicd_testing_defaults
   #~ image: debian:9
 
-tests_osx:
-  stage: test
-  variables:
-    <<: *build_osx_release_variables
-    PYENV: 3.7.11
-  script: [*build_osx_release_script]
-  tags:
-    - osx
 
 #~ release_windows_wheel:
   #~ <<: *build_release_job

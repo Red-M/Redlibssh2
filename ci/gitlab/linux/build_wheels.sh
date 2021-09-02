@@ -10,12 +10,12 @@ cd /io
 
 # Compile wheels
 for PYBIN in `ls -1d /opt/${PYTHON_DIR}/*/bin | grep -v cpython`; do
-    "${PYBIN}/pip" wheel /io/wheelhouse/*.gz -w /io/wheelhouse/
+    "${PYBIN}/pip" wheel /io/wheelhouse/*.gz -w /tmp/wheelhouse/
 done
 cd "${OLD_PWD}"
 
 # Bundle external shared libraries into the wheels
-for whl in /io/wheelhouse/*.whl; do
+for whl in /tmp/wheelhouse/*.whl; do
     auditwheel repair "${whl}" -w /io/wheelhouse/
     \rm "${whl}"
 done
