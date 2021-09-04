@@ -1,20 +1,7 @@
 
-.cicd_testing_defaults: &cicd_testing_defaults
-  stage: test
-  script:
-    - ./ci/gitlab/linux/install_deb_mirror.sh
-    - apt update && apt install -y make curl wget openssh-client openssh-server git cmake libssl-dev zlib1g-dev
-    - apt install -y python3 python3-dev python3-distutils python3-setuptools cython3
-    - wget -O get-pip.py "https://bootstrap.pypa.io/get-pip.py"
-    - python3 ./get-pip.py
-    - git submodule update --init --recursive
-    - pip3 install -U readme-renderer
-    - python3 -m readme_renderer ./README.rst -o /tmp/README.html
-    - \rm ./ssh2/*.c
-    - python3 setup.py build_ext --inplace
-    - pip install -e .[tests]
-  variables:
-    REDLIBSSH2_BUILD_TRACING: 1
+stages:
+  - test
+  - build
 
 .build_refs: &build_refs
   only:
@@ -38,30 +25,6 @@
   artifacts:
     paths:
       - wheelhouse
-
-.build_mlinux_2010_process: &build_mlinux_2010_release_job
-  <<: *build_mlinux_defaults
-  script: &build_mlinux_2010_release_script
-    - *build_mlinux_defaults_script
-    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2010_x86_64
-
-.build_mlinux_2014_process: &build_mlinux_2014_release_job
-  <<: *build_mlinux_defaults
-  script: &build_mlinux_2014_release_script
-    - *build_mlinux_defaults_script
-    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2014_x86_64
-
-.build_mlinux_2_process: &build_mlinux_2_release_job
-  <<: *build_mlinux_defaults
-  script: &build_mlinux_2_release_script
-    - *build_mlinux_defaults_script
-    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux_2_24_x86_64
-
-.build_mlinux_pypy_process: &build_mlinux_pypy_release_job
-  <<: *build_mlinux_defaults
-  script: &build_mlinux_pypy_release_script
-    - *build_mlinux_defaults_script
-    - ./ci/gitlab/linux/build_manylinux.sh pypywheels/manylinux2010-pypy_x86_64 pypy pypy
 
 .build_osx_process: &build_osx_release_job
   tags:
@@ -89,35 +52,61 @@
     paths:
       - wheelhouse
 
-stages:
-  - test
-  - build
 
 release_mlinux_2010_wheel:
-  <<: *build_mlinux_2010_release_job
   <<: *build_refs
+  <<: *build_mlinux_defaults
   stage: build
+  script:
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2010_x86_64
 
 release_mlinux_2014_wheel:
-  <<: *build_mlinux_2014_release_job
   <<: *build_refs
+  <<: *build_mlinux_defaults
   stage: build
+  script:
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2014_x86_64
 
 release_mlinux_2_wheel:
-  <<: *build_mlinux_2_release_job
   <<: *build_refs
+  <<: *build_mlinux_defaults
   stage: build
+  script:
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux_2_24_x86_64
 
 release_mlinux_pypy_wheel:
-  <<: *build_mlinux_pypy_release_job
   <<: *build_refs
+  <<: *build_mlinux_defaults
   stage: build
+  script:
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh pypywheels/manylinux2010-pypy_x86_64 pypy pypy
 
 release_osx_wheel:
-  <<: *build_osx_release_job
   <<: *build_refs
+  <<: *build_osx_release_job
   stage: build
 
+
+.cicd_testing_defaults: &cicd_testing_defaults
+  stage: test
+  script:
+    - ./ci/gitlab/linux/install_deb_mirror.sh
+    - apt update && apt install -y make curl wget openssh-client openssh-server git cmake libssl-dev zlib1g-dev
+    - apt install -y python3 python3-dev python3-distutils python3-setuptools cython3
+    - wget -O get-pip.py "https://bootstrap.pypa.io/get-pip.py"
+    - python3 ./get-pip.py
+    - git submodule update --init --recursive
+    - pip3 install -U readme-renderer
+    - python3 -m readme_renderer ./README.rst -o /tmp/README.html
+    - \rm ./ssh2/*.c
+    - python3 setup.py build_ext --inplace
+    - pip install -e .[tests]
+  variables:
+    REDLIBSSH2_BUILD_TRACING: 1
 
 tests_debstable:
   <<: *cicd_testing_defaults
