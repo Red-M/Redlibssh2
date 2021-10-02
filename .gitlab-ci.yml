@@ -3,6 +3,25 @@ stages:
   - test
   - build
 
+.linux_x86_64_needs: &linux_x86_64_needs
+  needs:
+    - tests_debstable_x86_64
+    - tests_deboldstable_x86_64
+    - tests_debtesting_x86_64
+    - tests_latest_libssh2_x86_64
+
+.linux_aarch64_needs: &linux_aarch64_needs
+  timeout: 3h 30m
+  needs:
+    - tests_debstable_aarch64
+    - tests_deboldstable_aarch64
+    - tests_debtesting_aarch64
+    - tests_latest_libssh2_aarch64
+
+.osx_needs: &osx_needs
+  needs:
+    - tests_osx
+
 .build_refs: &build_refs
   only:
     refs:
@@ -12,6 +31,10 @@ stages:
       - build_ci_testing
 
 .build_mlinux_defaults: &build_mlinux_defaults
+  <<: *linux_x86_64_needs
+  tags:
+    - linux
+    - x86_64
   image: docker:dind
   services:
     - docker:dind
@@ -27,8 +50,10 @@ stages:
       - wheelhouse
 
 .build_osx_process: &build_osx_release_job
+  <<: *osx_needs
   tags:
     - osx
+    - x86_64
   variables: &build_osx_release_variables
     SYSTEM_LIBSSH2: 1
   script: &build_osx_release_script
@@ -53,7 +78,7 @@ stages:
       - wheelhouse
 
 
-release_mlinux_2010_wheel:
+release_mlinux_2010_x86_64_wheel:
   <<: *build_refs
   <<: *build_mlinux_defaults
   stage: build
@@ -61,7 +86,7 @@ release_mlinux_2010_wheel:
     - *build_mlinux_defaults_script
     - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2010_x86_64
 
-release_mlinux_2014_wheel:
+release_mlinux_2014_x86_64_wheel:
   <<: *build_refs
   <<: *build_mlinux_defaults
   stage: build
@@ -69,7 +94,7 @@ release_mlinux_2014_wheel:
     - *build_mlinux_defaults_script
     - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2014_x86_64
 
-release_mlinux_2_wheel:
+release_mlinux_2_24_x86_64_wheel:
   <<: *build_refs
   <<: *build_mlinux_defaults
   stage: build
@@ -77,13 +102,37 @@ release_mlinux_2_wheel:
     - *build_mlinux_defaults_script
     - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux_2_24_x86_64
 
-release_mlinux_pypy_wheel:
+release_mlinux_pypy_x86_64_wheel:
   <<: *build_refs
   <<: *build_mlinux_defaults
   stage: build
   script:
     - *build_mlinux_defaults_script
     - ./ci/gitlab/linux/build_manylinux.sh pypywheels/manylinux2010-pypy_x86_64 pypy pypy
+
+release_mlinux_2014_aarch64_wheel:
+  <<: *build_refs
+  <<: *build_mlinux_defaults
+  <<: *linux_aarch64_needs
+  tags:
+    - linux
+    - aarch64
+  stage: build
+  script:
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2014_aarch64
+
+release_mlinux_2_24_aarch64_wheel:
+  <<: *build_refs
+  <<: *build_mlinux_defaults
+  <<: *linux_aarch64_needs
+  tags:
+    - linux
+    - aarch64
+  stage: build
+  script:
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux_2_24_aarch64
 
 release_osx_wheel:
   <<: *build_refs
@@ -93,6 +142,9 @@ release_osx_wheel:
 
 .cicd_testing_defaults: &cicd_testing_defaults
   stage: test
+  tags:
+    - linux
+    - x86_64
   script:
     - ./ci/gitlab/linux/install_deb_mirror.sh
     - apt update && apt install -y make curl wget openssh-client openssh-server git cmake libssl-dev zlib1g-dev
@@ -108,19 +160,72 @@ release_osx_wheel:
   variables:
     REDLIBSSH2_BUILD_TRACING: 1
 
-tests_debstable:
+tests_debstable_x86_64:
   <<: *cicd_testing_defaults
   image: debian:stable
 
-tests_deboldstable:
+tests_deboldstable_x86_64:
   <<: *cicd_testing_defaults
   image: debian:oldstable
 
-tests_debtesting:
+tests_debtesting_x86_64:
   <<: *cicd_testing_defaults
   image: debian:testing
 
-tests_latest_libssh2:
+tests_latest_libssh2_x86_64:
+  tags:
+    - linux
+    - x86_64
+  image: debian:stable
+  stage: test
+  script:
+    - ./ci/gitlab/linux/install_deb_mirror.sh
+    - apt update && apt install -y make curl wget openssh-client openssh-server git cmake libssl-dev zlib1g-dev
+    - apt install -y python3 python3-dev python3-distutils
+    - wget -O get-pip.py "https://bootstrap.pypa.io/get-pip.py"
+    - python3 ./get-pip.py
+    - pip3 install -U readme-renderer
+    - python3 -m readme_renderer ./README.rst -o /tmp/README.html
+    - git submodule update --init --recursive
+    - cd ./libssh2
+    - git checkout master
+    - git pull origin master
+    - cd ../
+    - python3 setup.py build_ext --inplace
+
+tests_debstable_aarch64:
+  <<: *cicd_testing_defaults
+  <<: *linux_x86_64_needs
+  tags:
+    - linux
+    - aarch64
+  timeout: 3h 30m
+  image: debian:stable
+
+tests_deboldstable_aarch64:
+  <<: *cicd_testing_defaults
+  <<: *linux_x86_64_needs
+  tags:
+    - linux
+    - aarch64
+  timeout: 3h 30m
+  image: debian:oldstable
+
+tests_debtesting_aarch64:
+  <<: *cicd_testing_defaults
+  <<: *linux_x86_64_needs
+  tags:
+    - linux
+    - aarch64
+  timeout: 3h 30m
+  image: debian:testing
+
+tests_latest_libssh2_aarch64:
+  <<: *linux_x86_64_needs
+  tags:
+    - linux
+    - aarch64
+  timeout: 3h 30m
   image: debian:stable
   stage: test
   script:
@@ -140,13 +245,14 @@ tests_latest_libssh2:
 
 tests_osx:
   stage: test
+  tags:
+    - osx
+    - x86_64
   variables:
     <<: *build_osx_release_variables
     PYENV: 3.7.11
   script:
     - *build_osx_release_script
-  tags:
-    - osx
 
 
 #~ tests_py3.9:
