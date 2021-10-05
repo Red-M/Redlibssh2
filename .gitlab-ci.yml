@@ -20,7 +20,8 @@ stages:
 
 .osx_needs: &osx_needs
   needs:
-    - tests_osx
+    - tests_osx_current
+    - tests_osx_10_15
 
 .build_refs: &build_refs
   only:
@@ -56,6 +57,8 @@ stages:
     - x86_64
   variables: &build_osx_release_variables
     SYSTEM_LIBSSH2: 1
+    DYLD_FALLBACK_LIBRARY_PATH: "./lib"
+    #PYTHON_CONFIGURE_OPTS: "--enable-universalsdk=/ --with-universal-archs=intel"
   script: &build_osx_release_script
     - git submodule update --init --recursive
     - brew cleanup
@@ -65,10 +68,9 @@ stages:
     - brew link --overwrite python@3.9 || brew install python@3.9 || brew link --overwrite python@3.9
     - which python3
     - python3 -c "from __future__ import print_function; import ssl; from platform import python_version; print(ssl.OPENSSL_VERSION); print(python_version())"
-    - sudo ./ci/install-ssh2.sh
+    - ./ci/install-ssh2.sh
     - sudo chown -R $(whoami) ./src
     - rm ./src/CMakeCache.txt
-    - cp /usr/local/lib/libssh2* .
     - mkdir -p wheelhouse
     - ln -s ./wheelhouse ./wheels
     - brew install pyenv || brew outdated pyenv || brew upgrade pyenv
@@ -85,6 +87,7 @@ release_mlinux_2010_x86_64_wheel:
   script:
     - *build_mlinux_defaults_script
     - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2010_x86_64
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2010_i686
 
 release_mlinux_2014_x86_64_wheel:
   <<: *build_refs
@@ -93,6 +96,7 @@ release_mlinux_2014_x86_64_wheel:
   script:
     - *build_mlinux_defaults_script
     - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2014_x86_64
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux2014_i686
 
 release_mlinux_2_24_x86_64_wheel:
   <<: *build_refs
@@ -101,6 +105,7 @@ release_mlinux_2_24_x86_64_wheel:
   script:
     - *build_mlinux_defaults_script
     - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux_2_24_x86_64
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux_2_24_i686
 
 release_mlinux_pypy_x86_64_wheel:
   <<: *build_refs
@@ -134,9 +139,17 @@ release_mlinux_2_24_aarch64_wheel:
     - *build_mlinux_defaults_script
     - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux_2_24_aarch64
 
-release_osx_wheel:
+release_osx_current_wheel:
   <<: *build_refs
   <<: *build_osx_release_job
+  stage: build
+
+release_osx_10_15_wheel:
+  <<: *build_refs
+  <<: *build_osx_release_job
+  variables:
+    <<: *build_osx_release_variables
+    MACOSX_DEPLOYMENT_TARGET: "10.15"
   stage: build
 
 
@@ -243,14 +256,27 @@ tests_latest_libssh2_aarch64:
     - cd ../
     - python3 setup.py build_ext --inplace
 
-tests_osx:
+
+tests_osx_current:
   stage: test
   tags:
     - osx
     - x86_64
   variables:
     <<: *build_osx_release_variables
-    PYENV: 3.7.11
+    PYENV: 3.7.12
+  script:
+    - *build_osx_release_script
+
+tests_osx_10_15:
+  stage: test
+  tags:
+    - osx
+    - x86_64
+  variables:
+    <<: *build_osx_release_variables
+    PYENV: 3.7.12
+    MACOSX_DEPLOYMENT_TARGET: "10.15"
   script:
     - *build_osx_release_script
 
