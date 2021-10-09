@@ -1,2 +1,5 @@
 [run]
 plugins = Cython.Coverage
+source = redlibssh2
+parallel = True
+omit = ssh2/_version.py

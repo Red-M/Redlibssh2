@@ -147,9 +147,13 @@ release_osx_10_15_wheel:
     - x86_64
   script:
     - ./ci/gitlab/linux/install_deb_mirror.sh
-    - ./ci/gitlab/linux/test.sh
+    - ./ci/gitlab/linux/test.sh GITLAB 3
   variables:
     REDLIBSSH2_BUILD_TRACING: 1
+  artifacts:
+      paths:
+      - htmlcov
+
 
 tests_debstable_x86_64:
   <<: *cicd_testing_defaults
@@ -172,6 +176,9 @@ tests_latest_libssh2_x86_64:
   script:
     - ./ci/gitlab/linux/install_deb_mirror.sh
     - ./ci/gitlab/linux/test_latest_libssh2.sh
+  artifacts:
+      paths:
+      - htmlcov
 
 tests_debstable_aarch64:
   <<: *cicd_testing_defaults
@@ -211,6 +218,9 @@ tests_latest_libssh2_aarch64:
   script:
     - ./ci/gitlab/linux/install_deb_mirror.sh
     - ./ci/gitlab/linux/test_latest_libssh2.sh
+  artifacts:
+      paths:
+      - htmlcov
 
 
 tests_osx_current:

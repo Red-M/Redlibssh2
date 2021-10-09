@@ -14,6 +14,8 @@ Forked from ssh2-python.
    :target: https://travis-ci.org/Red-M/redlibssh2
 .. image:: https://img.shields.io/pypi/wheel/redlibssh2.svg
    :target: https://pypi.python.org/pypi/redlibssh2
+.. image:: https://coveralls.io/repos/github/Red-M/Redlibssh2/badge.svg?branch=master
+   :target: https://coveralls.io/github/Red-M/Redlibssh2?branch=master
 .. image:: https://img.shields.io/pypi/pyversions/redlibssh2.svg
    :target: https://pypi.python.org/pypi/redlibssh2
 .. image:: https://readthedocs.org/projects/redlibssh2/badge/?version=latest
