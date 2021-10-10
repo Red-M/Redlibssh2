@@ -126,6 +126,27 @@ release_mlinux_2_24_aarch64_wheel:
     - *build_mlinux_defaults_script
     - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/manylinux_2_24_aarch64
 
+release_musllinux_1_1_x86_64_wheel:
+  <<: *build_refs
+  <<: *build_mlinux_defaults
+  stage: build
+  script:
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/musllinux_1_1_x86_64
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/musllinux_1_1_i686
+
+release_musllinux_1_1_aarch64_wheel:
+  <<: *build_refs
+  <<: *build_mlinux_defaults
+  <<: *linux_aarch64_needs
+  tags:
+    - linux
+    - aarch64
+  stage: build
+  script:
+    - *build_mlinux_defaults_script
+    - ./ci/gitlab/linux/build_manylinux.sh quay.io/pypa/musllinux_1_1_aarch64
+
 release_osx_current_wheel:
   <<: *build_refs
   <<: *build_osx_release_job
