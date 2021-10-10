@@ -300,11 +300,6 @@ ___________________________________
 Because frankly the manylinux1 docker containers won't run on my build hosts because I run up to date software and kernels.
 The manylinux1 docker images are also full of extremely old package versions that will not receive updates or security fixes. The way that ParallelSSH handled this was to bundle their own versions of libssh2, OpenSSL and zlib in the repository.
 
-Why did you drop Windows and OSX wheels?
-________________________________________
-I don't have build infrastructure for them and I don't use these platforms anywhere.
-If someone would like these wheels to be built you can open an issue and it'll be reviewed based on what can be provided to get such builds running.
-
 
 
 .. _libssh2: https://www.libssh2.org

@@ -60,7 +60,7 @@ if [ ! -z $CI_SYSTEM ]; then
     coveralls || true
 fi
 
-CODE_VALIDATION_PY_FILES="$(find ./ -type f | grep '\.py$' | grep -v 'tests/')" # Ignore tests for now.
+CODE_VALIDATION_PY_FILES="$(find ./ssh2 -type f | grep -E '\.py(x|)$' | grep -v 'tests/' | grep -v '\_version\.py')" # Ignore tests for now.
 BANDIT_REPORT=$(tempfile)
 PYLINT_REPORT=$(tempfile)
 SAFETY_REPORT=$(tempfile)
