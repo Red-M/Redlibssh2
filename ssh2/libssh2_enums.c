@@ -1098,8 +1098,11 @@ int __pyx_module_is_main_ssh2__libssh2_enums = 0;
 
 /* Implementation of 'ssh2.libssh2_enums' */
 static const char __pyx_k_KEX[] = "KEX";
+static const char __pyx_k_SCP[] = "SCP";
 static const char __pyx_k_X11[] = "X11";
 static const char __pyx_k_doc[] = "__doc__";
+static const char __pyx_k_AUTH[] = "AUTH";
+static const char __pyx_k_CONN[] = "CONN";
 static const char __pyx_k_Enum[] = "Enum";
 static const char __pyx_k_FILE[] = "FILE";
 static const char __pyx_k_Flag[] = "Flag";
@@ -1112,12 +1115,16 @@ static const char __pyx_k_enum[] = "enum";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_ERROR[] = "ERROR";
 static const char __pyx_k_INVAL[] = "INVAL";
 static const char __pyx_k_PROTO[] = "PROTO";
+static const char __pyx_k_TRANS[] = "TRANS";
+static const char __pyx_k_Trace[] = "Trace";
 static const char __pyx_k_EAGAIN[] = "EAGAIN";
 static const char __pyx_k_MAC_CS[] = "MAC_CS";
 static const char __pyx_k_MAC_SC[] = "MAC_SC";
 static const char __pyx_k_Method[] = "Method";
+static const char __pyx_k_SOCKET[] = "SOCKET";
 static const char __pyx_k_S_IFMT[] = "S_IFMT";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_module[] = "__module__";
@@ -1171,6 +1178,7 @@ static const char __pyx_k_FXF_WRITE[] = "FXF_WRITE";
 static const char __pyx_k_HASH_SHA1[] = "HASH_SHA1";
 static const char __pyx_k_KEY_SHIFT[] = "KEY_SHIFT";
 static const char __pyx_k_KnownHost[] = "KnownHost";
+static const char __pyx_k_PUBLICKEY[] = "PUBLICKEY";
 static const char __pyx_k_ST_NOSUID[] = "ST_NOSUID";
 static const char __pyx_k_ST_RDONLY[] = "ST_RDONLY";
 static const char __pyx_k_TYPE_MASK[] = "TYPE_MASK";
@@ -1233,6 +1241,7 @@ static const char __pyx_k_PUBLICKEY_UNRECOGNIZED[] = "PUBLICKEY_UNRECOGNIZED";
 static const char __pyx_k_CHANNEL_PACKET_EXCEEDED[] = "CHANNEL_PACKET_EXCEEDED";
 static const char __pyx_k_CHANNEL_WINDOW_EXCEEDED[] = "CHANNEL_WINDOW_EXCEEDED";
 static PyObject *__pyx_n_s_AGENT_PROTOCOL;
+static PyObject *__pyx_n_s_AUTH;
 static PyObject *__pyx_n_s_AUTHENTICATION_FAILED;
 static PyObject *__pyx_n_s_BAD_SOCKET;
 static PyObject *__pyx_n_s_BAD_USE;
@@ -1252,12 +1261,14 @@ static PyObject *__pyx_n_s_CHANNEL_WINDOW_EXCEEDED;
 static PyObject *__pyx_n_s_COMPRESS;
 static PyObject *__pyx_n_s_COMP_CS;
 static PyObject *__pyx_n_s_COMP_SC;
+static PyObject *__pyx_n_s_CONN;
 static PyObject *__pyx_n_s_CRYPT_CS;
 static PyObject *__pyx_n_s_CRYPT_SC;
 static PyObject *__pyx_n_s_Callback;
 static PyObject *__pyx_n_s_DECRYPT;
 static PyObject *__pyx_n_s_EAGAIN;
 static PyObject *__pyx_n_s_ENCRYPT;
+static PyObject *__pyx_n_s_ERROR;
 static PyObject *__pyx_n_s_Enum;
 static PyObject *__pyx_n_s_ErrorCodes;
 static PyObject *__pyx_n_s_FILE;
@@ -1303,16 +1314,19 @@ static PyObject *__pyx_n_s_NONE;
 static PyObject *__pyx_n_s_OUT_OF_BOUNDARY;
 static PyObject *__pyx_n_s_PASSWORD_EXPIRED;
 static PyObject *__pyx_n_s_PROTO;
+static PyObject *__pyx_n_s_PUBLICKEY;
 static PyObject *__pyx_n_s_PUBLICKEY_PROTOCOL;
 static PyObject *__pyx_n_s_PUBLICKEY_UNRECOGNIZED;
 static PyObject *__pyx_n_s_PUBLICKEY_UNVERIFIED;
 static PyObject *__pyx_n_s_RECV;
 static PyObject *__pyx_n_s_REQUEST_DENIED;
+static PyObject *__pyx_n_s_SCP;
 static PyObject *__pyx_n_s_SCP_PROTOCOL;
 static PyObject *__pyx_n_s_SEND;
 static PyObject *__pyx_n_s_SFTP;
 static PyObject *__pyx_n_s_SFTP_PROTOCOL;
 static PyObject *__pyx_n_s_SIGPIPE;
+static PyObject *__pyx_n_s_SOCKET;
 static PyObject *__pyx_n_s_SOCKET_DISCONNECT;
 static PyObject *__pyx_n_s_SOCKET_NONE;
 static PyObject *__pyx_n_s_SOCKET_RECV;
@@ -1342,6 +1356,7 @@ static PyObject *__pyx_n_s_S_IXOTH;
 static PyObject *__pyx_n_s_S_IXUSR;
 static PyObject *__pyx_n_s_Session;
 static PyObject *__pyx_n_s_TIMEOUT;
+static PyObject *__pyx_n_s_TRANS;
 static PyObject *__pyx_n_s_TYPE_CUSTOM;
 static PyObject *__pyx_n_s_TYPE_DSS;
 static PyObject *__pyx_n_s_TYPE_ECDSA_256;
@@ -1353,6 +1368,7 @@ static PyObject *__pyx_n_s_TYPE_PLAIN;
 static PyObject *__pyx_n_s_TYPE_RSA;
 static PyObject *__pyx_n_s_TYPE_SHA1;
 static PyObject *__pyx_n_s_TYPE_UNKNOWN;
+static PyObject *__pyx_n_s_Trace;
 static PyObject *__pyx_n_s_X11;
 static PyObject *__pyx_n_s_ZLIB;
 static PyObject *__pyx_n_s_cline_in_traceback;
@@ -1416,6 +1432,7 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_AGENT_PROTOCOL, __pyx_k_AGENT_PROTOCOL, sizeof(__pyx_k_AGENT_PROTOCOL), 0, 0, 1, 1},
+  {&__pyx_n_s_AUTH, __pyx_k_AUTH, sizeof(__pyx_k_AUTH), 0, 0, 1, 1},
   {&__pyx_n_s_AUTHENTICATION_FAILED, __pyx_k_AUTHENTICATION_FAILED, sizeof(__pyx_k_AUTHENTICATION_FAILED), 0, 0, 1, 1},
   {&__pyx_n_s_BAD_SOCKET, __pyx_k_BAD_SOCKET, sizeof(__pyx_k_BAD_SOCKET), 0, 0, 1, 1},
   {&__pyx_n_s_BAD_USE, __pyx_k_BAD_USE, sizeof(__pyx_k_BAD_USE), 0, 0, 1, 1},
@@ -1435,12 +1452,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_COMPRESS, __pyx_k_COMPRESS, sizeof(__pyx_k_COMPRESS), 0, 0, 1, 1},
   {&__pyx_n_s_COMP_CS, __pyx_k_COMP_CS, sizeof(__pyx_k_COMP_CS), 0, 0, 1, 1},
   {&__pyx_n_s_COMP_SC, __pyx_k_COMP_SC, sizeof(__pyx_k_COMP_SC), 0, 0, 1, 1},
+  {&__pyx_n_s_CONN, __pyx_k_CONN, sizeof(__pyx_k_CONN), 0, 0, 1, 1},
   {&__pyx_n_s_CRYPT_CS, __pyx_k_CRYPT_CS, sizeof(__pyx_k_CRYPT_CS), 0, 0, 1, 1},
   {&__pyx_n_s_CRYPT_SC, __pyx_k_CRYPT_SC, sizeof(__pyx_k_CRYPT_SC), 0, 0, 1, 1},
   {&__pyx_n_s_Callback, __pyx_k_Callback, sizeof(__pyx_k_Callback), 0, 0, 1, 1},
   {&__pyx_n_s_DECRYPT, __pyx_k_DECRYPT, sizeof(__pyx_k_DECRYPT), 0, 0, 1, 1},
   {&__pyx_n_s_EAGAIN, __pyx_k_EAGAIN, sizeof(__pyx_k_EAGAIN), 0, 0, 1, 1},
   {&__pyx_n_s_ENCRYPT, __pyx_k_ENCRYPT, sizeof(__pyx_k_ENCRYPT), 0, 0, 1, 1},
+  {&__pyx_n_s_ERROR, __pyx_k_ERROR, sizeof(__pyx_k_ERROR), 0, 0, 1, 1},
   {&__pyx_n_s_Enum, __pyx_k_Enum, sizeof(__pyx_k_Enum), 0, 0, 1, 1},
   {&__pyx_n_s_ErrorCodes, __pyx_k_ErrorCodes, sizeof(__pyx_k_ErrorCodes), 0, 0, 1, 1},
   {&__pyx_n_s_FILE, __pyx_k_FILE, sizeof(__pyx_k_FILE), 0, 0, 1, 1},
@@ -1486,16 +1505,19 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_OUT_OF_BOUNDARY, __pyx_k_OUT_OF_BOUNDARY, sizeof(__pyx_k_OUT_OF_BOUNDARY), 0, 0, 1, 1},
   {&__pyx_n_s_PASSWORD_EXPIRED, __pyx_k_PASSWORD_EXPIRED, sizeof(__pyx_k_PASSWORD_EXPIRED), 0, 0, 1, 1},
   {&__pyx_n_s_PROTO, __pyx_k_PROTO, sizeof(__pyx_k_PROTO), 0, 0, 1, 1},
+  {&__pyx_n_s_PUBLICKEY, __pyx_k_PUBLICKEY, sizeof(__pyx_k_PUBLICKEY), 0, 0, 1, 1},
   {&__pyx_n_s_PUBLICKEY_PROTOCOL, __pyx_k_PUBLICKEY_PROTOCOL, sizeof(__pyx_k_PUBLICKEY_PROTOCOL), 0, 0, 1, 1},
   {&__pyx_n_s_PUBLICKEY_UNRECOGNIZED, __pyx_k_PUBLICKEY_UNRECOGNIZED, sizeof(__pyx_k_PUBLICKEY_UNRECOGNIZED), 0, 0, 1, 1},
   {&__pyx_n_s_PUBLICKEY_UNVERIFIED, __pyx_k_PUBLICKEY_UNVERIFIED, sizeof(__pyx_k_PUBLICKEY_UNVERIFIED), 0, 0, 1, 1},
   {&__pyx_n_s_RECV, __pyx_k_RECV, sizeof(__pyx_k_RECV), 0, 0, 1, 1},
   {&__pyx_n_s_REQUEST_DENIED, __pyx_k_REQUEST_DENIED, sizeof(__pyx_k_REQUEST_DENIED), 0, 0, 1, 1},
+  {&__pyx_n_s_SCP, __pyx_k_SCP, sizeof(__pyx_k_SCP), 0, 0, 1, 1},
   {&__pyx_n_s_SCP_PROTOCOL, __pyx_k_SCP_PROTOCOL, sizeof(__pyx_k_SCP_PROTOCOL), 0, 0, 1, 1},
   {&__pyx_n_s_SEND, __pyx_k_SEND, sizeof(__pyx_k_SEND), 0, 0, 1, 1},
   {&__pyx_n_s_SFTP, __pyx_k_SFTP, sizeof(__pyx_k_SFTP), 0, 0, 1, 1},
   {&__pyx_n_s_SFTP_PROTOCOL, __pyx_k_SFTP_PROTOCOL, sizeof(__pyx_k_SFTP_PROTOCOL), 0, 0, 1, 1},
   {&__pyx_n_s_SIGPIPE, __pyx_k_SIGPIPE, sizeof(__pyx_k_SIGPIPE), 0, 0, 1, 1},
+  {&__pyx_n_s_SOCKET, __pyx_k_SOCKET, sizeof(__pyx_k_SOCKET), 0, 0, 1, 1},
   {&__pyx_n_s_SOCKET_DISCONNECT, __pyx_k_SOCKET_DISCONNECT, sizeof(__pyx_k_SOCKET_DISCONNECT), 0, 0, 1, 1},
   {&__pyx_n_s_SOCKET_NONE, __pyx_k_SOCKET_NONE, sizeof(__pyx_k_SOCKET_NONE), 0, 0, 1, 1},
   {&__pyx_n_s_SOCKET_RECV, __pyx_k_SOCKET_RECV, sizeof(__pyx_k_SOCKET_RECV), 0, 0, 1, 1},
@@ -1525,6 +1547,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_S_IXUSR, __pyx_k_S_IXUSR, sizeof(__pyx_k_S_IXUSR), 0, 0, 1, 1},
   {&__pyx_n_s_Session, __pyx_k_Session, sizeof(__pyx_k_Session), 0, 0, 1, 1},
   {&__pyx_n_s_TIMEOUT, __pyx_k_TIMEOUT, sizeof(__pyx_k_TIMEOUT), 0, 0, 1, 1},
+  {&__pyx_n_s_TRANS, __pyx_k_TRANS, sizeof(__pyx_k_TRANS), 0, 0, 1, 1},
   {&__pyx_n_s_TYPE_CUSTOM, __pyx_k_TYPE_CUSTOM, sizeof(__pyx_k_TYPE_CUSTOM), 0, 0, 1, 1},
   {&__pyx_n_s_TYPE_DSS, __pyx_k_TYPE_DSS, sizeof(__pyx_k_TYPE_DSS), 0, 0, 1, 1},
   {&__pyx_n_s_TYPE_ECDSA_256, __pyx_k_TYPE_ECDSA_256, sizeof(__pyx_k_TYPE_ECDSA_256), 0, 0, 1, 1},
@@ -1536,6 +1559,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_TYPE_RSA, __pyx_k_TYPE_RSA, sizeof(__pyx_k_TYPE_RSA), 0, 0, 1, 1},
   {&__pyx_n_s_TYPE_SHA1, __pyx_k_TYPE_SHA1, sizeof(__pyx_k_TYPE_SHA1), 0, 0, 1, 1},
   {&__pyx_n_s_TYPE_UNKNOWN, __pyx_k_TYPE_UNKNOWN, sizeof(__pyx_k_TYPE_UNKNOWN), 0, 0, 1, 1},
+  {&__pyx_n_s_Trace, __pyx_k_Trace, sizeof(__pyx_k_Trace), 0, 0, 1, 1},
   {&__pyx_n_s_X11, __pyx_k_X11, sizeof(__pyx_k_X11), 0, 0, 1, 1},
   {&__pyx_n_s_ZLIB, __pyx_k_ZLIB, sizeof(__pyx_k_ZLIB), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
@@ -3502,6 +3526,8 @@ if (!__Pyx_RefNanny) {
  *     INVALID_MAC = error_codes._LIBSSH2_ERROR_INVALID_MAC
  *     IF EMBEDDED_LIB:
  *         KNOWN_HOSTS = error_codes._LIBSSH2_ERROR_KNOWN_HOSTS             # <<<<<<<<<<<<<<
+ * 
+ * class Trace(enum.Enum):
  */
   __pyx_t_4 = __Pyx_PyInt_From_int(LIBSSH2_ERROR_KNOWN_HOSTS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -3523,8 +3549,150 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
+  /* "ssh2/libssh2_enums.pyx":196
+ *         KNOWN_HOSTS = error_codes._LIBSSH2_ERROR_KNOWN_HOSTS
+ * 
+ * class Trace(enum.Enum):             # <<<<<<<<<<<<<<
+ *         TRANS = c_ssh2.LIBSSH2_TRACE_TRANS
+ *         KEX = c_ssh2.LIBSSH2_TRACE_KEX
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_enum); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_Enum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
+  __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_1, __pyx_n_s_Trace, __pyx_n_s_Trace, (PyObject *) NULL, __pyx_n_s_ssh2_libssh2_enums, (PyObject *) NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+
+  /* "ssh2/libssh2_enums.pyx":197
+ * 
+ * class Trace(enum.Enum):
+ *         TRANS = c_ssh2.LIBSSH2_TRACE_TRANS             # <<<<<<<<<<<<<<
+ *         KEX = c_ssh2.LIBSSH2_TRACE_KEX
+ *         AUTH = c_ssh2.LIBSSH2_TRACE_AUTH
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_int(LIBSSH2_TRACE_TRANS); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (__Pyx_SetNameInClass(__pyx_t_3, __pyx_n_s_TRANS, __pyx_t_4) < 0) __PYX_ERR(0, 197, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "ssh2/libssh2_enums.pyx":198
+ * class Trace(enum.Enum):
+ *         TRANS = c_ssh2.LIBSSH2_TRACE_TRANS
+ *         KEX = c_ssh2.LIBSSH2_TRACE_KEX             # <<<<<<<<<<<<<<
+ *         AUTH = c_ssh2.LIBSSH2_TRACE_AUTH
+ *         CONN = c_ssh2.LIBSSH2_TRACE_CONN
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_int(LIBSSH2_TRACE_KEX); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (__Pyx_SetNameInClass(__pyx_t_3, __pyx_n_s_KEX, __pyx_t_4) < 0) __PYX_ERR(0, 198, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "ssh2/libssh2_enums.pyx":199
+ *         TRANS = c_ssh2.LIBSSH2_TRACE_TRANS
+ *         KEX = c_ssh2.LIBSSH2_TRACE_KEX
+ *         AUTH = c_ssh2.LIBSSH2_TRACE_AUTH             # <<<<<<<<<<<<<<
+ *         CONN = c_ssh2.LIBSSH2_TRACE_CONN
+ *         SCP = c_ssh2.LIBSSH2_TRACE_SCP
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_int(LIBSSH2_TRACE_AUTH); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (__Pyx_SetNameInClass(__pyx_t_3, __pyx_n_s_AUTH, __pyx_t_4) < 0) __PYX_ERR(0, 199, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "ssh2/libssh2_enums.pyx":200
+ *         KEX = c_ssh2.LIBSSH2_TRACE_KEX
+ *         AUTH = c_ssh2.LIBSSH2_TRACE_AUTH
+ *         CONN = c_ssh2.LIBSSH2_TRACE_CONN             # <<<<<<<<<<<<<<
+ *         SCP = c_ssh2.LIBSSH2_TRACE_SCP
+ *         SFTP = c_ssh2.LIBSSH2_TRACE_SFTP
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_int(LIBSSH2_TRACE_CONN); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (__Pyx_SetNameInClass(__pyx_t_3, __pyx_n_s_CONN, __pyx_t_4) < 0) __PYX_ERR(0, 200, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "ssh2/libssh2_enums.pyx":201
+ *         AUTH = c_ssh2.LIBSSH2_TRACE_AUTH
+ *         CONN = c_ssh2.LIBSSH2_TRACE_CONN
+ *         SCP = c_ssh2.LIBSSH2_TRACE_SCP             # <<<<<<<<<<<<<<
+ *         SFTP = c_ssh2.LIBSSH2_TRACE_SFTP
+ *         ERROR = c_ssh2.LIBSSH2_TRACE_ERROR
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_int(LIBSSH2_TRACE_SCP); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (__Pyx_SetNameInClass(__pyx_t_3, __pyx_n_s_SCP, __pyx_t_4) < 0) __PYX_ERR(0, 201, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "ssh2/libssh2_enums.pyx":202
+ *         CONN = c_ssh2.LIBSSH2_TRACE_CONN
+ *         SCP = c_ssh2.LIBSSH2_TRACE_SCP
+ *         SFTP = c_ssh2.LIBSSH2_TRACE_SFTP             # <<<<<<<<<<<<<<
+ *         ERROR = c_ssh2.LIBSSH2_TRACE_ERROR
+ *         PUBLICKEY = c_ssh2.LIBSSH2_TRACE_PUBLICKEY
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_int(LIBSSH2_TRACE_SFTP); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 202, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (__Pyx_SetNameInClass(__pyx_t_3, __pyx_n_s_SFTP, __pyx_t_4) < 0) __PYX_ERR(0, 202, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "ssh2/libssh2_enums.pyx":203
+ *         SCP = c_ssh2.LIBSSH2_TRACE_SCP
+ *         SFTP = c_ssh2.LIBSSH2_TRACE_SFTP
+ *         ERROR = c_ssh2.LIBSSH2_TRACE_ERROR             # <<<<<<<<<<<<<<
+ *         PUBLICKEY = c_ssh2.LIBSSH2_TRACE_PUBLICKEY
+ *         SOCKET = c_ssh2.LIBSSH2_TRACE_SOCKET
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_int(LIBSSH2_TRACE_ERROR); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (__Pyx_SetNameInClass(__pyx_t_3, __pyx_n_s_ERROR, __pyx_t_4) < 0) __PYX_ERR(0, 203, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "ssh2/libssh2_enums.pyx":204
+ *         SFTP = c_ssh2.LIBSSH2_TRACE_SFTP
+ *         ERROR = c_ssh2.LIBSSH2_TRACE_ERROR
+ *         PUBLICKEY = c_ssh2.LIBSSH2_TRACE_PUBLICKEY             # <<<<<<<<<<<<<<
+ *         SOCKET = c_ssh2.LIBSSH2_TRACE_SOCKET
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_int(LIBSSH2_TRACE_PUBLICKEY); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 204, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (__Pyx_SetNameInClass(__pyx_t_3, __pyx_n_s_PUBLICKEY, __pyx_t_4) < 0) __PYX_ERR(0, 204, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "ssh2/libssh2_enums.pyx":205
+ *         ERROR = c_ssh2.LIBSSH2_TRACE_ERROR
+ *         PUBLICKEY = c_ssh2.LIBSSH2_TRACE_PUBLICKEY
+ *         SOCKET = c_ssh2.LIBSSH2_TRACE_SOCKET             # <<<<<<<<<<<<<<
+ */
+  __pyx_t_4 = __Pyx_PyInt_From_int(LIBSSH2_TRACE_SOCKET); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 205, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (__Pyx_SetNameInClass(__pyx_t_3, __pyx_n_s_SOCKET, __pyx_t_4) < 0) __PYX_ERR(0, 205, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+  /* "ssh2/libssh2_enums.pyx":196
+ *         KNOWN_HOSTS = error_codes._LIBSSH2_ERROR_KNOWN_HOSTS
+ * 
+ * class Trace(enum.Enum):             # <<<<<<<<<<<<<<
+ *         TRANS = c_ssh2.LIBSSH2_TRACE_TRANS
+ *         KEX = c_ssh2.LIBSSH2_TRACE_KEX
+ */
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_Trace, __pyx_t_1, __pyx_t_3, NULL, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Trace, __pyx_t_4) < 0) __PYX_ERR(0, 196, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
   /* "ssh2/libssh2_enums.pyx":1
- * # This file is part of ssh2-python.             # <<<<<<<<<<<<<<
+ * # This file is part of redlibssh2.             # <<<<<<<<<<<<<<
  * # Copyright (C) 2020 Red_M
  * 
  */

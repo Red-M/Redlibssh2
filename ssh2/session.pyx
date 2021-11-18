@@ -105,6 +105,12 @@ cdef class Session:
             c_ssh2.libssh2_session_free(self._session)
         self._session = NULL
 
+    def trace(self, int bitmask):
+        """Enable trace logging for this session.
+        Bitmask is one or more of `ssh2.enum.Trace.*`.
+        """
+        c_ssh2.libssh2_trace(self._session, bitmask)
+
     def disconnect(self):
         cdef int rc
         with nogil:

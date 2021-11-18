@@ -1,4 +1,4 @@
-# This file is part of ssh2-python.
+# This file is part of redlibssh2.
 # Copyright (C) 2020 Red_M
 
 # This library is free software; you can redistribute it and/or
@@ -192,3 +192,14 @@ class ErrorCodes(enum.Enum):
     INVALID_MAC = error_codes._LIBSSH2_ERROR_INVALID_MAC
     IF EMBEDDED_LIB:
         KNOWN_HOSTS = error_codes._LIBSSH2_ERROR_KNOWN_HOSTS
+
+class Trace(enum.Enum):
+        TRANS = c_ssh2.LIBSSH2_TRACE_TRANS
+        KEX = c_ssh2.LIBSSH2_TRACE_KEX
+        AUTH = c_ssh2.LIBSSH2_TRACE_AUTH
+        CONN = c_ssh2.LIBSSH2_TRACE_CONN
+        SCP = c_ssh2.LIBSSH2_TRACE_SCP
+        SFTP = c_ssh2.LIBSSH2_TRACE_SFTP
+        ERROR = c_ssh2.LIBSSH2_TRACE_ERROR
+        PUBLICKEY = c_ssh2.LIBSSH2_TRACE_PUBLICKEY
+        SOCKET = c_ssh2.LIBSSH2_TRACE_SOCKET
