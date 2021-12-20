@@ -1517,7 +1517,7 @@ static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_tuple__9;
 /* Late includes */
 
-/* "ssh2/knownhost.pyx":52
+/* "ssh2/knownhost.pyx":51
  * 
  * 
  * cdef KnownHost PyKnownHost(Session session, c_ssh2.LIBSSH2_KNOWNHOSTS *_ptr):             # <<<<<<<<<<<<<<
@@ -1536,25 +1536,25 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHost *__pyx_f_4ssh2_9knownhost_PyK
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyKnownHost", 0);
 
-  /* "ssh2/knownhost.pyx":53
+  /* "ssh2/knownhost.pyx":52
  * 
  * cdef KnownHost PyKnownHost(Session session, c_ssh2.LIBSSH2_KNOWNHOSTS *_ptr):
  *     cdef KnownHost known_host = KnownHost.__new__(KnownHost, session)             # <<<<<<<<<<<<<<
  *     known_host._ptr = _ptr
  *     return known_host
  */
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(((PyObject *)__pyx_v_session));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_session));
   PyTuple_SET_ITEM(__pyx_t_1, 0, ((PyObject *)__pyx_v_session));
-  __pyx_t_2 = ((PyObject *)__pyx_tp_new_4ssh2_9knownhost_KnownHost(((PyTypeObject *)__pyx_ptype_4ssh2_9knownhost_KnownHost), __pyx_t_1, NULL)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_2 = ((PyObject *)__pyx_tp_new_4ssh2_9knownhost_KnownHost(((PyTypeObject *)__pyx_ptype_4ssh2_9knownhost_KnownHost), __pyx_t_1, NULL)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(((PyObject *)__pyx_t_2));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_known_host = ((struct __pyx_obj_4ssh2_9knownhost_KnownHost *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "ssh2/knownhost.pyx":54
+  /* "ssh2/knownhost.pyx":53
  * cdef KnownHost PyKnownHost(Session session, c_ssh2.LIBSSH2_KNOWNHOSTS *_ptr):
  *     cdef KnownHost known_host = KnownHost.__new__(KnownHost, session)
  *     known_host._ptr = _ptr             # <<<<<<<<<<<<<<
@@ -1563,7 +1563,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHost *__pyx_f_4ssh2_9knownhost_PyK
  */
   __pyx_v_known_host->_ptr = __pyx_v__ptr;
 
-  /* "ssh2/knownhost.pyx":55
+  /* "ssh2/knownhost.pyx":54
  *     cdef KnownHost known_host = KnownHost.__new__(KnownHost, session)
  *     known_host._ptr = _ptr
  *     return known_host             # <<<<<<<<<<<<<<
@@ -1575,7 +1575,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHost *__pyx_f_4ssh2_9knownhost_PyK
   __pyx_r = __pyx_v_known_host;
   goto __pyx_L0;
 
-  /* "ssh2/knownhost.pyx":52
+  /* "ssh2/knownhost.pyx":51
  * 
  * 
  * cdef KnownHost PyKnownHost(Session session, c_ssh2.LIBSSH2_KNOWNHOSTS *_ptr):             # <<<<<<<<<<<<<<
@@ -1596,7 +1596,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHost *__pyx_f_4ssh2_9knownhost_PyK
   return __pyx_r;
 }
 
-/* "ssh2/knownhost.pyx":58
+/* "ssh2/knownhost.pyx":57
  * 
  * 
  * cdef KnownHostEntry PyKnownHostEntry(c_ssh2.libssh2_knownhost *_entry):             # <<<<<<<<<<<<<<
@@ -1614,19 +1614,19 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyKnownHostEntry", 0);
 
-  /* "ssh2/knownhost.pyx":59
+  /* "ssh2/knownhost.pyx":58
  * 
  * cdef KnownHostEntry PyKnownHostEntry(c_ssh2.libssh2_knownhost *_entry):
  *     cdef KnownHostEntry entry = KnownHostEntry.__new__(KnownHostEntry)             # <<<<<<<<<<<<<<
  *     entry._store = _entry
  *     return entry
  */
-  __pyx_t_1 = ((PyObject *)__pyx_tp_new_4ssh2_9knownhost_KnownHostEntry(((PyTypeObject *)__pyx_ptype_4ssh2_9knownhost_KnownHostEntry), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_4ssh2_9knownhost_KnownHostEntry(((PyTypeObject *)__pyx_ptype_4ssh2_9knownhost_KnownHostEntry), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(((PyObject *)__pyx_t_1));
   __pyx_v_entry = ((struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "ssh2/knownhost.pyx":60
+  /* "ssh2/knownhost.pyx":59
  * cdef KnownHostEntry PyKnownHostEntry(c_ssh2.libssh2_knownhost *_entry):
  *     cdef KnownHostEntry entry = KnownHostEntry.__new__(KnownHostEntry)
  *     entry._store = _entry             # <<<<<<<<<<<<<<
@@ -1635,7 +1635,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
  */
   __pyx_v_entry->_store = __pyx_v__entry;
 
-  /* "ssh2/knownhost.pyx":61
+  /* "ssh2/knownhost.pyx":60
  *     cdef KnownHostEntry entry = KnownHostEntry.__new__(KnownHostEntry)
  *     entry._store = _entry
  *     return entry             # <<<<<<<<<<<<<<
@@ -1647,7 +1647,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
   __pyx_r = __pyx_v_entry;
   goto __pyx_L0;
 
-  /* "ssh2/knownhost.pyx":58
+  /* "ssh2/knownhost.pyx":57
  * 
  * 
  * cdef KnownHostEntry PyKnownHostEntry(c_ssh2.libssh2_knownhost *_entry):             # <<<<<<<<<<<<<<
@@ -1667,7 +1667,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
   return __pyx_r;
 }
 
-/* "ssh2/knownhost.pyx":64
+/* "ssh2/knownhost.pyx":63
  * 
  * 
  * cdef KnownHostEntry PyNewKnownHostEntry():             # <<<<<<<<<<<<<<
@@ -1687,19 +1687,19 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyNewKnownHostEntry", 0);
 
-  /* "ssh2/knownhost.pyx":65
+  /* "ssh2/knownhost.pyx":64
  * 
  * cdef KnownHostEntry PyNewKnownHostEntry():
  *     cdef KnownHostEntry entry = KnownHostEntry.__new__(KnownHostEntry)             # <<<<<<<<<<<<<<
  *     cdef c_ssh2.libssh2_knownhost *_entry
  *     with nogil:
  */
-  __pyx_t_1 = ((PyObject *)__pyx_tp_new_4ssh2_9knownhost_KnownHostEntry(((PyTypeObject *)__pyx_ptype_4ssh2_9knownhost_KnownHostEntry), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_4ssh2_9knownhost_KnownHostEntry(((PyTypeObject *)__pyx_ptype_4ssh2_9knownhost_KnownHostEntry), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(((PyObject *)__pyx_t_1));
   __pyx_v_entry = ((struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "ssh2/knownhost.pyx":67
+  /* "ssh2/knownhost.pyx":66
  *     cdef KnownHostEntry entry = KnownHostEntry.__new__(KnownHostEntry)
  *     cdef c_ssh2.libssh2_knownhost *_entry
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -1714,7 +1714,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
       #endif
       /*try:*/ {
 
-        /* "ssh2/knownhost.pyx":68
+        /* "ssh2/knownhost.pyx":67
  *     cdef c_ssh2.libssh2_knownhost *_entry
  *     with nogil:
  *         _entry = <c_ssh2.libssh2_knownhost *>malloc(             # <<<<<<<<<<<<<<
@@ -1723,7 +1723,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
  */
         __pyx_v__entry = ((struct libssh2_knownhost *)malloc((sizeof(struct libssh2_knownhost))));
 
-        /* "ssh2/knownhost.pyx":70
+        /* "ssh2/knownhost.pyx":69
  *         _entry = <c_ssh2.libssh2_knownhost *>malloc(
  *             sizeof(c_ssh2.libssh2_knownhost))
  *         if _entry is NULL:             # <<<<<<<<<<<<<<
@@ -1733,7 +1733,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
         __pyx_t_2 = ((__pyx_v__entry == NULL) != 0);
         if (__pyx_t_2) {
 
-          /* "ssh2/knownhost.pyx":71
+          /* "ssh2/knownhost.pyx":70
  *             sizeof(c_ssh2.libssh2_knownhost))
  *         if _entry is NULL:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -1746,17 +1746,17 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
               #endif
               /*try:*/ {
 
-                /* "ssh2/knownhost.pyx":72
+                /* "ssh2/knownhost.pyx":71
  *         if _entry is NULL:
  *             with gil:
  *                 raise MemoryError             # <<<<<<<<<<<<<<
  *         _entry.magic = 0
  *         _entry.node = NULL
  */
-                PyErr_NoMemory(); __PYX_ERR(0, 72, __pyx_L8_error)
+                PyErr_NoMemory(); __PYX_ERR(0, 71, __pyx_L8_error)
               }
 
-              /* "ssh2/knownhost.pyx":71
+              /* "ssh2/knownhost.pyx":70
  *             sizeof(c_ssh2.libssh2_knownhost))
  *         if _entry is NULL:
  *             with gil:             # <<<<<<<<<<<<<<
@@ -1773,7 +1773,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
               }
           }
 
-          /* "ssh2/knownhost.pyx":70
+          /* "ssh2/knownhost.pyx":69
  *         _entry = <c_ssh2.libssh2_knownhost *>malloc(
  *             sizeof(c_ssh2.libssh2_knownhost))
  *         if _entry is NULL:             # <<<<<<<<<<<<<<
@@ -1782,7 +1782,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
  */
         }
 
-        /* "ssh2/knownhost.pyx":73
+        /* "ssh2/knownhost.pyx":72
  *             with gil:
  *                 raise MemoryError
  *         _entry.magic = 0             # <<<<<<<<<<<<<<
@@ -1791,7 +1791,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
  */
         __pyx_v__entry->magic = 0;
 
-        /* "ssh2/knownhost.pyx":74
+        /* "ssh2/knownhost.pyx":73
  *                 raise MemoryError
  *         _entry.magic = 0
  *         _entry.node = NULL             # <<<<<<<<<<<<<<
@@ -1800,7 +1800,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
  */
         __pyx_v__entry->node = NULL;
 
-        /* "ssh2/knownhost.pyx":75
+        /* "ssh2/knownhost.pyx":74
  *         _entry.magic = 0
  *         _entry.node = NULL
  *         _entry.name = NULL             # <<<<<<<<<<<<<<
@@ -1809,7 +1809,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
  */
         __pyx_v__entry->name = NULL;
 
-        /* "ssh2/knownhost.pyx":76
+        /* "ssh2/knownhost.pyx":75
  *         _entry.node = NULL
  *         _entry.name = NULL
  *         _entry.key = NULL             # <<<<<<<<<<<<<<
@@ -1818,7 +1818,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
  */
         __pyx_v__entry->key = NULL;
 
-        /* "ssh2/knownhost.pyx":77
+        /* "ssh2/knownhost.pyx":76
  *         _entry.name = NULL
  *         _entry.key = NULL
  *         _entry.typemask = -1             # <<<<<<<<<<<<<<
@@ -1827,7 +1827,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
  */
         __pyx_v__entry->typemask = -1;
 
-        /* "ssh2/knownhost.pyx":78
+        /* "ssh2/knownhost.pyx":77
  *         _entry.key = NULL
  *         _entry.typemask = -1
  *         entry._store = _entry             # <<<<<<<<<<<<<<
@@ -1837,7 +1837,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
         __pyx_v_entry->_store = __pyx_v__entry;
       }
 
-      /* "ssh2/knownhost.pyx":67
+      /* "ssh2/knownhost.pyx":66
  *     cdef KnownHostEntry entry = KnownHostEntry.__new__(KnownHostEntry)
  *     cdef c_ssh2.libssh2_knownhost *_entry
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -1863,7 +1863,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
       }
   }
 
-  /* "ssh2/knownhost.pyx":79
+  /* "ssh2/knownhost.pyx":78
  *         _entry.typemask = -1
  *         entry._store = _entry
  *     return entry             # <<<<<<<<<<<<<<
@@ -1875,7 +1875,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
   __pyx_r = __pyx_v_entry;
   goto __pyx_L0;
 
-  /* "ssh2/knownhost.pyx":64
+  /* "ssh2/knownhost.pyx":63
  * 
  * 
  * cdef KnownHostEntry PyNewKnownHostEntry():             # <<<<<<<<<<<<<<
@@ -1895,7 +1895,7 @@ static struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_f_4ssh2_9knownhos
   return __pyx_r;
 }
 
-/* "ssh2/knownhost.pyx":85
+/* "ssh2/knownhost.pyx":84
  *     """Class representing a single known host entry."""
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -1926,7 +1926,7 @@ static PyObject *__pyx_pf_4ssh2_9knownhost_14KnownHostEntry___repr__(struct __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 0);
 
-  /* "ssh2/knownhost.pyx":86
+  /* "ssh2/knownhost.pyx":85
  * 
  *     def __repr__(self):
  *         return "Known host entry for host: %s" % (self.name)             # <<<<<<<<<<<<<<
@@ -1934,16 +1934,16 @@ static PyObject *__pyx_pf_4ssh2_9knownhost_14KnownHostEntry___repr__(struct __py
  *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyString_FormatSafe(__pyx_kp_s_Known_host_entry_for_host_s, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyString_FormatSafe(__pyx_kp_s_Known_host_entry_for_host_s, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "ssh2/knownhost.pyx":85
+  /* "ssh2/knownhost.pyx":84
  *     """Class representing a single known host entry."""
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -1963,7 +1963,7 @@ static PyObject *__pyx_pf_4ssh2_9knownhost_14KnownHostEntry___repr__(struct __py
   return __pyx_r;
 }
 
-/* "ssh2/knownhost.pyx":88
+/* "ssh2/knownhost.pyx":87
  *         return "Known host entry for host: %s" % (self.name)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -1995,7 +1995,7 @@ static PyObject *__pyx_pf_4ssh2_9knownhost_14KnownHostEntry_2__str__(struct __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "ssh2/knownhost.pyx":89
+  /* "ssh2/knownhost.pyx":88
  * 
  *     def __str__(self):
  *         return self.__repr__()             # <<<<<<<<<<<<<<
@@ -2003,7 +2003,7 @@ static PyObject *__pyx_pf_4ssh2_9knownhost_14KnownHostEntry_2__str__(struct __py
  *     def _dealloc__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_repr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_repr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -2017,14 +2017,14 @@ static PyObject *__pyx_pf_4ssh2_9knownhost_14KnownHostEntry_2__str__(struct __py
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ssh2/knownhost.pyx":88
+  /* "ssh2/knownhost.pyx":87
  *         return "Known host entry for host: %s" % (self.name)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -2045,11 +2045,11 @@ static PyObject *__pyx_pf_4ssh2_9knownhost_14KnownHostEntry_2__str__(struct __py
   return __pyx_r;
 }
 
-/* "ssh2/knownhost.pyx":91
+/* "ssh2/knownhost.pyx":90
  *         return self.__repr__()
  * 
  *     def _dealloc__(self):             # <<<<<<<<<<<<<<
- *         with nogil:
+ *         if self._store is not NULL:
  *             free(self._store)
  */
 
@@ -2070,57 +2070,51 @@ static PyObject *__pyx_pw_4ssh2_9knownhost_14KnownHostEntry_5_dealloc__(PyObject
 static PyObject *__pyx_pf_4ssh2_9knownhost_14KnownHostEntry_4_dealloc__(struct __pyx_obj_4ssh2_9knownhost_KnownHostEntry *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
   __Pyx_RefNannySetupContext("_dealloc__", 0);
 
-  /* "ssh2/knownhost.pyx":92
+  /* "ssh2/knownhost.pyx":91
  * 
  *     def _dealloc__(self):
- *         with nogil:             # <<<<<<<<<<<<<<
+ *         if self._store is not NULL:             # <<<<<<<<<<<<<<
  *             free(self._store)
+ *         self._store = NULL
+ */
+  __pyx_t_1 = ((__pyx_v_self->_store != NULL) != 0);
+  if (__pyx_t_1) {
+
+    /* "ssh2/knownhost.pyx":92
+ *     def _dealloc__(self):
+ *         if self._store is not NULL:
+ *             free(self._store)             # <<<<<<<<<<<<<<
+ *         self._store = NULL
  * 
  */
-  {
-      #ifdef WITH_THREAD
-      PyThreadState *_save;
-      Py_UNBLOCK_THREADS
-      __Pyx_FastGIL_Remember();
-      #endif
-      /*try:*/ {
+    free(__pyx_v_self->_store);
 
-        /* "ssh2/knownhost.pyx":93
+    /* "ssh2/knownhost.pyx":91
+ * 
  *     def _dealloc__(self):
- *         with nogil:
- *             free(self._store)             # <<<<<<<<<<<<<<
+ *         if self._store is not NULL:             # <<<<<<<<<<<<<<
+ *             free(self._store)
+ *         self._store = NULL
+ */
+  }
+
+  /* "ssh2/knownhost.pyx":93
+ *         if self._store is not NULL:
+ *             free(self._store)
+ *         self._store = NULL             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-        free(__pyx_v_self->_store);
-      }
+  __pyx_v_self->_store = NULL;
 
-      /* "ssh2/knownhost.pyx":92
- * 
- *     def _dealloc__(self):
- *         with nogil:             # <<<<<<<<<<<<<<
- *             free(self._store)
- * 
- */
-      /*finally:*/ {
-        /*normal exit:*/{
-          #ifdef WITH_THREAD
-          __Pyx_FastGIL_Forget();
-          Py_BLOCK_THREADS
-          #endif
-          goto __pyx_L5;
-        }
-        __pyx_L5:;
-      }
-  }
-
-  /* "ssh2/knownhost.pyx":91
+  /* "ssh2/knownhost.pyx":90
  *         return self.__repr__()
  * 
  *     def _dealloc__(self):             # <<<<<<<<<<<<<<
- *         with nogil:
+ *         if self._store is not NULL:
  *             free(self._store)
  */
 
@@ -2683,7 +2677,7 @@ static int __pyx_pf_4ssh2_9knownhost_9KnownHost___cinit__(struct __pyx_obj_4ssh2
  *         self._session = session
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         if self._ptr is not NULL:
+ *         if self._session is not None and self._session._session is not NULL and self._ptr is not NULL:
  *             c_ssh2.libssh2_knownhost_free(self._ptr)
  */
 
@@ -2701,50 +2695,67 @@ static void __pyx_pw_4ssh2_9knownhost_9KnownHost_3__dealloc__(PyObject *__pyx_v_
 static void __pyx_pf_4ssh2_9knownhost_9KnownHost_2__dealloc__(struct __pyx_obj_4ssh2_9knownhost_KnownHost *__pyx_v_self) {
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
   /* "ssh2/knownhost.pyx":134
  * 
  *     def __dealloc__(self):
- *         if self._ptr is not NULL:             # <<<<<<<<<<<<<<
+ *         if self._session is not None and self._session._session is not NULL and self._ptr is not NULL:             # <<<<<<<<<<<<<<
  *             c_ssh2.libssh2_knownhost_free(self._ptr)
- *             self._ptr = NULL
+ *         self._ptr = NULL
  */
-  __pyx_t_1 = ((__pyx_v_self->_ptr != NULL) != 0);
+  __pyx_t_2 = (((PyObject *)__pyx_v_self->_session) != Py_None);
+  __pyx_t_3 = (__pyx_t_2 != 0);
+  if (__pyx_t_3) {
+  } else {
+    __pyx_t_1 = __pyx_t_3;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_3 = ((__pyx_v_self->_session->_session != NULL) != 0);
+  if (__pyx_t_3) {
+  } else {
+    __pyx_t_1 = __pyx_t_3;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_3 = ((__pyx_v_self->_ptr != NULL) != 0);
+  __pyx_t_1 = __pyx_t_3;
+  __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
     /* "ssh2/knownhost.pyx":135
  *     def __dealloc__(self):
- *         if self._ptr is not NULL:
+ *         if self._session is not None and self._session._session is not NULL and self._ptr is not NULL:
  *             c_ssh2.libssh2_knownhost_free(self._ptr)             # <<<<<<<<<<<<<<
- *             self._ptr = NULL
+ *         self._ptr = NULL
  * 
  */
     libssh2_knownhost_free(__pyx_v_self->_ptr);
 
-    /* "ssh2/knownhost.pyx":136
- *         if self._ptr is not NULL:
- *             c_ssh2.libssh2_knownhost_free(self._ptr)
- *             self._ptr = NULL             # <<<<<<<<<<<<<<
- * 
- *     def add(self, bytes host, bytes salt, bytes key, int typemask):
- */
-    __pyx_v_self->_ptr = NULL;
-
     /* "ssh2/knownhost.pyx":134
  * 
  *     def __dealloc__(self):
- *         if self._ptr is not NULL:             # <<<<<<<<<<<<<<
+ *         if self._session is not None and self._session._session is not NULL and self._ptr is not NULL:             # <<<<<<<<<<<<<<
  *             c_ssh2.libssh2_knownhost_free(self._ptr)
- *             self._ptr = NULL
+ *         self._ptr = NULL
  */
   }
+
+  /* "ssh2/knownhost.pyx":136
+ *         if self._session is not None and self._session._session is not NULL and self._ptr is not NULL:
+ *             c_ssh2.libssh2_knownhost_free(self._ptr)
+ *         self._ptr = NULL             # <<<<<<<<<<<<<<
+ * 
+ *     def add(self, bytes host, bytes salt, bytes key, int typemask):
+ */
+  __pyx_v_self->_ptr = NULL;
 
   /* "ssh2/knownhost.pyx":133
  *         self._session = session
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         if self._ptr is not NULL:
+ *         if self._session is not None and self._session._session is not NULL and self._ptr is not NULL:
  *             c_ssh2.libssh2_knownhost_free(self._ptr)
  */
 
@@ -2753,7 +2764,7 @@ static void __pyx_pf_4ssh2_9knownhost_9KnownHost_2__dealloc__(struct __pyx_obj_4
 }
 
 /* "ssh2/knownhost.pyx":138
- *             self._ptr = NULL
+ *         self._ptr = NULL
  * 
  *     def add(self, bytes host, bytes salt, bytes key, int typemask):             # <<<<<<<<<<<<<<
  *         """Deprecated - use ``self.addc``"""
@@ -2873,7 +2884,7 @@ static PyObject *__pyx_pf_4ssh2_9knownhost_9KnownHost_4add(CYTHON_UNUSED struct 
   __PYX_ERR(0, 140, __pyx_L1_error)
 
   /* "ssh2/knownhost.pyx":138
- *             self._ptr = NULL
+ *         self._ptr = NULL
  * 
  *     def add(self, bytes host, bytes salt, bytes key, int typemask):             # <<<<<<<<<<<<<<
  *         """Deprecated - use ``self.addc``"""
@@ -6604,7 +6615,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 71, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(0, 140, __pyx_L1_error)
   return 0;
@@ -6713,15 +6724,15 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_4ssh2_9knownhost_KnownHostEntry) < 0) __PYX_ERR(0, 82, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_4ssh2_9knownhost_KnownHostEntry) < 0) __PYX_ERR(0, 81, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_4ssh2_9knownhost_KnownHostEntry.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_4ssh2_9knownhost_KnownHostEntry.tp_dictoffset && __pyx_type_4ssh2_9knownhost_KnownHostEntry.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_4ssh2_9knownhost_KnownHostEntry.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_KnownHostEntry, (PyObject *)&__pyx_type_4ssh2_9knownhost_KnownHostEntry) < 0) __PYX_ERR(0, 82, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_4ssh2_9knownhost_KnownHostEntry) < 0) __PYX_ERR(0, 82, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_KnownHostEntry, (PyObject *)&__pyx_type_4ssh2_9knownhost_KnownHostEntry) < 0) __PYX_ERR(0, 81, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_4ssh2_9knownhost_KnownHostEntry) < 0) __PYX_ERR(0, 81, __pyx_L1_error)
   __pyx_ptype_4ssh2_9knownhost_KnownHostEntry = &__pyx_type_4ssh2_9knownhost_KnownHostEntry;
   if (PyType_Ready(&__pyx_type_4ssh2_9knownhost_KnownHost) < 0) __PYX_ERR(0, 126, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
@@ -7234,7 +7245,7 @@ if (!__Pyx_RefNanny) {
  * LIBSSH2_KNOWNHOST_KEY_RSA1 = c_ssh2.LIBSSH2_KNOWNHOST_KEY_RSA1
  * LIBSSH2_KNOWNHOST_KEY_SSHRSA = c_ssh2.LIBSSH2_KNOWNHOST_KEY_SSHRSA             # <<<<<<<<<<<<<<
  * LIBSSH2_KNOWNHOST_KEY_SSHDSS = c_ssh2.LIBSSH2_KNOWNHOST_KEY_SSHDSS
- * IF EMBEDDED_LIB:
+ * LIBSSH2_KNOWNHOST_KEY_UNKNOWN = c_ssh2.LIBSSH2_KNOWNHOST_KEY_UNKNOWN
  */
   __pyx_t_1 = __Pyx_PyInt_From_int(LIBSSH2_KNOWNHOST_KEY_SSHRSA); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -7245,24 +7256,24 @@ if (!__Pyx_RefNanny) {
  * LIBSSH2_KNOWNHOST_KEY_RSA1 = c_ssh2.LIBSSH2_KNOWNHOST_KEY_RSA1
  * LIBSSH2_KNOWNHOST_KEY_SSHRSA = c_ssh2.LIBSSH2_KNOWNHOST_KEY_SSHRSA
  * LIBSSH2_KNOWNHOST_KEY_SSHDSS = c_ssh2.LIBSSH2_KNOWNHOST_KEY_SSHDSS             # <<<<<<<<<<<<<<
- * IF EMBEDDED_LIB:
- *     LIBSSH2_KNOWNHOST_KEY_UNKNOWN = c_ssh2.LIBSSH2_KNOWNHOST_KEY_UNKNOWN
+ * LIBSSH2_KNOWNHOST_KEY_UNKNOWN = c_ssh2.LIBSSH2_KNOWNHOST_KEY_UNKNOWN
+ * 
  */
   __pyx_t_1 = __Pyx_PyInt_From_int(LIBSSH2_KNOWNHOST_KEY_SSHDSS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_LIBSSH2_KNOWNHOST_KEY_SSHDSS, __pyx_t_1) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "ssh2/knownhost.pyx":49
+  /* "ssh2/knownhost.pyx":48
+ * LIBSSH2_KNOWNHOST_KEY_SSHRSA = c_ssh2.LIBSSH2_KNOWNHOST_KEY_SSHRSA
  * LIBSSH2_KNOWNHOST_KEY_SSHDSS = c_ssh2.LIBSSH2_KNOWNHOST_KEY_SSHDSS
- * IF EMBEDDED_LIB:
- *     LIBSSH2_KNOWNHOST_KEY_UNKNOWN = c_ssh2.LIBSSH2_KNOWNHOST_KEY_UNKNOWN             # <<<<<<<<<<<<<<
+ * LIBSSH2_KNOWNHOST_KEY_UNKNOWN = c_ssh2.LIBSSH2_KNOWNHOST_KEY_UNKNOWN             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(LIBSSH2_KNOWNHOST_KEY_UNKNOWN); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(LIBSSH2_KNOWNHOST_KEY_UNKNOWN); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_LIBSSH2_KNOWNHOST_KEY_UNKNOWN, __pyx_t_1) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_LIBSSH2_KNOWNHOST_KEY_UNKNOWN, __pyx_t_1) < 0) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "ssh2/knownhost.pyx":278

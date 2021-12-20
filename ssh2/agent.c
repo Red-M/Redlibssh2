@@ -2588,7 +2588,7 @@ static int __pyx_pf_4ssh2_5agent_5Agent___cinit__(struct __pyx_obj_4ssh2_5agent_
  *         self._session = session
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         with nogil:
+ *         if self._session is not None and self._session._session is not NULL and self._agent is not NULL:
  *             clear_agent(self._agent)
  */
 
@@ -2605,57 +2605,68 @@ static void __pyx_pw_4ssh2_5agent_5Agent_3__dealloc__(PyObject *__pyx_v_self) {
 
 static void __pyx_pf_4ssh2_5agent_5Agent_2__dealloc__(struct __pyx_obj_4ssh2_5agent_Agent *__pyx_v_self) {
   __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
   /* "ssh2/agent.pyx":106
  * 
  *     def __dealloc__(self):
- *         with nogil:             # <<<<<<<<<<<<<<
+ *         if self._session is not None and self._session._session is not NULL and self._agent is not NULL:             # <<<<<<<<<<<<<<
  *             clear_agent(self._agent)
+ *         self._agent = NULL
+ */
+  __pyx_t_2 = (((PyObject *)__pyx_v_self->_session) != Py_None);
+  __pyx_t_3 = (__pyx_t_2 != 0);
+  if (__pyx_t_3) {
+  } else {
+    __pyx_t_1 = __pyx_t_3;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_3 = ((__pyx_v_self->_session->_session != NULL) != 0);
+  if (__pyx_t_3) {
+  } else {
+    __pyx_t_1 = __pyx_t_3;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_3 = ((__pyx_v_self->_agent != NULL) != 0);
+  __pyx_t_1 = __pyx_t_3;
+  __pyx_L4_bool_binop_done:;
+  if (__pyx_t_1) {
+
+    /* "ssh2/agent.pyx":107
+ *     def __dealloc__(self):
+ *         if self._session is not None and self._session._session is not NULL and self._agent is not NULL:
+ *             clear_agent(self._agent)             # <<<<<<<<<<<<<<
+ *         self._agent = NULL
  * 
  */
-  {
-      #ifdef WITH_THREAD
-      PyThreadState *_save;
-      Py_UNBLOCK_THREADS
-      __Pyx_FastGIL_Remember();
-      #endif
-      /*try:*/ {
+    __pyx_f_4ssh2_5agent_clear_agent(__pyx_v_self->_agent);
 
-        /* "ssh2/agent.pyx":107
+    /* "ssh2/agent.pyx":106
+ * 
  *     def __dealloc__(self):
- *         with nogil:
- *             clear_agent(self._agent)             # <<<<<<<<<<<<<<
+ *         if self._session is not None and self._session._session is not NULL and self._agent is not NULL:             # <<<<<<<<<<<<<<
+ *             clear_agent(self._agent)
+ *         self._agent = NULL
+ */
+  }
+
+  /* "ssh2/agent.pyx":108
+ *         if self._session is not None and self._session._session is not NULL and self._agent is not NULL:
+ *             clear_agent(self._agent)
+ *         self._agent = NULL             # <<<<<<<<<<<<<<
  * 
  *     def list_identities(self):
  */
-        __pyx_f_4ssh2_5agent_clear_agent(__pyx_v_self->_agent);
-      }
-
-      /* "ssh2/agent.pyx":106
- * 
- *     def __dealloc__(self):
- *         with nogil:             # <<<<<<<<<<<<<<
- *             clear_agent(self._agent)
- * 
- */
-      /*finally:*/ {
-        /*normal exit:*/{
-          #ifdef WITH_THREAD
-          __Pyx_FastGIL_Forget();
-          Py_BLOCK_THREADS
-          #endif
-          goto __pyx_L5;
-        }
-        __pyx_L5:;
-      }
-  }
+  __pyx_v_self->_agent = NULL;
 
   /* "ssh2/agent.pyx":105
  *         self._session = session
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         with nogil:
+ *         if self._session is not None and self._session._session is not NULL and self._agent is not NULL:
  *             clear_agent(self._agent)
  */
 
@@ -2663,8 +2674,8 @@ static void __pyx_pf_4ssh2_5agent_5Agent_2__dealloc__(struct __pyx_obj_4ssh2_5ag
   __Pyx_RefNannyFinishContext();
 }
 
-/* "ssh2/agent.pyx":109
- *             clear_agent(self._agent)
+/* "ssh2/agent.pyx":110
+ *         self._agent = NULL
  * 
  *     def list_identities(self):             # <<<<<<<<<<<<<<
  *         """This method is a no-op - use
@@ -2697,7 +2708,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_4list_identities(CYTHON_UNUSED str
   return __pyx_r;
 }
 
-/* "ssh2/agent.pyx":115
+/* "ssh2/agent.pyx":116
  *         pass
  * 
  *     def get_identities(self):             # <<<<<<<<<<<<<<
@@ -2735,19 +2746,19 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_identities", 0);
 
-  /* "ssh2/agent.pyx":120
+  /* "ssh2/agent.pyx":121
  *         :rtype: list(:py:class:`ssh2.pkey.PublicKey`)"""
  *         cdef int rc
  *         cdef list identities = []             # <<<<<<<<<<<<<<
  *         cdef c_ssh2.libssh2_agent_publickey *identity = NULL
  *         cdef c_ssh2.libssh2_agent_publickey *prev = NULL
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 121, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_identities = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "ssh2/agent.pyx":121
+  /* "ssh2/agent.pyx":122
  *         cdef int rc
  *         cdef list identities = []
  *         cdef c_ssh2.libssh2_agent_publickey *identity = NULL             # <<<<<<<<<<<<<<
@@ -2756,7 +2767,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
  */
   __pyx_v_identity = NULL;
 
-  /* "ssh2/agent.pyx":122
+  /* "ssh2/agent.pyx":123
  *         cdef list identities = []
  *         cdef c_ssh2.libssh2_agent_publickey *identity = NULL
  *         cdef c_ssh2.libssh2_agent_publickey *prev = NULL             # <<<<<<<<<<<<<<
@@ -2765,7 +2776,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
  */
   __pyx_v_prev = NULL;
 
-  /* "ssh2/agent.pyx":123
+  /* "ssh2/agent.pyx":124
  *         cdef c_ssh2.libssh2_agent_publickey *identity = NULL
  *         cdef c_ssh2.libssh2_agent_publickey *prev = NULL
  *         if c_ssh2.libssh2_agent_list_identities(self._agent) != 0:             # <<<<<<<<<<<<<<
@@ -2775,14 +2786,14 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
   __pyx_t_2 = ((libssh2_agent_list_identities(__pyx_v_self->_agent) != 0) != 0);
   if (unlikely(__pyx_t_2)) {
 
-    /* "ssh2/agent.pyx":124
+    /* "ssh2/agent.pyx":125
  *         cdef c_ssh2.libssh2_agent_publickey *prev = NULL
  *         if c_ssh2.libssh2_agent_list_identities(self._agent) != 0:
  *             raise AgentListIdentitiesError(             # <<<<<<<<<<<<<<
  *                 "Failure requesting identities from agent."
  *                 "Agent must be connected first")
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_AgentListIdentitiesError); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 124, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_AgentListIdentitiesError); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 125, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_4 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -2796,14 +2807,14 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
     }
     __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_kp_s_Failure_requesting_identities_fr_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_kp_s_Failure_requesting_identities_fr_2);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 124, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 125, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(1, 124, __pyx_L1_error)
+    __PYX_ERR(1, 125, __pyx_L1_error)
 
-    /* "ssh2/agent.pyx":123
+    /* "ssh2/agent.pyx":124
  *         cdef c_ssh2.libssh2_agent_publickey *identity = NULL
  *         cdef c_ssh2.libssh2_agent_publickey *prev = NULL
  *         if c_ssh2.libssh2_agent_list_identities(self._agent) != 0:             # <<<<<<<<<<<<<<
@@ -2812,7 +2823,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
  */
   }
 
-  /* "ssh2/agent.pyx":127
+  /* "ssh2/agent.pyx":128
  *                 "Failure requesting identities from agent."
  *                 "Agent must be connected first")
  *         while c_ssh2.libssh2_agent_get_identity(             # <<<<<<<<<<<<<<
@@ -2821,7 +2832,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
  */
   while (1) {
 
-    /* "ssh2/agent.pyx":128
+    /* "ssh2/agent.pyx":129
  *                 "Agent must be connected first")
  *         while c_ssh2.libssh2_agent_get_identity(
  *                 self._agent, &identity, prev) == 0:             # <<<<<<<<<<<<<<
@@ -2831,19 +2842,19 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
     __pyx_t_2 = ((libssh2_agent_get_identity(__pyx_v_self->_agent, (&__pyx_v_identity), __pyx_v_prev) == 0) != 0);
     if (!__pyx_t_2) break;
 
-    /* "ssh2/agent.pyx":129
+    /* "ssh2/agent.pyx":130
  *         while c_ssh2.libssh2_agent_get_identity(
  *                 self._agent, &identity, prev) == 0:
  *             identities.append(PyPublicKey(identity))             # <<<<<<<<<<<<<<
  *             prev = identity
  *         return identities
  */
-    __pyx_t_1 = __pyx_f_4ssh2_4pkey_PyPublicKey(__pyx_v_identity); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 129, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_4ssh2_4pkey_PyPublicKey(__pyx_v_identity); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 130, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_identities, __pyx_t_1); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(1, 129, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyList_Append(__pyx_v_identities, __pyx_t_1); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(1, 130, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "ssh2/agent.pyx":130
+    /* "ssh2/agent.pyx":131
  *                 self._agent, &identity, prev) == 0:
  *             identities.append(PyPublicKey(identity))
  *             prev = identity             # <<<<<<<<<<<<<<
@@ -2853,7 +2864,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
     __pyx_v_prev = __pyx_v_identity;
   }
 
-  /* "ssh2/agent.pyx":131
+  /* "ssh2/agent.pyx":132
  *             identities.append(PyPublicKey(identity))
  *             prev = identity
  *         return identities             # <<<<<<<<<<<<<<
@@ -2865,7 +2876,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
   __pyx_r = __pyx_v_identities;
   goto __pyx_L0;
 
-  /* "ssh2/agent.pyx":115
+  /* "ssh2/agent.pyx":116
  *         pass
  * 
  *     def get_identities(self):             # <<<<<<<<<<<<<<
@@ -2887,7 +2898,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_6get_identities(struct __pyx_obj_4
   return __pyx_r;
 }
 
-/* "ssh2/agent.pyx":133
+/* "ssh2/agent.pyx":134
  *         return identities
  * 
  *     def userauth(self, username not None,             # <<<<<<<<<<<<<<
@@ -2930,11 +2941,11 @@ static PyObject *__pyx_pw_4ssh2_5agent_5Agent_9userauth(PyObject *__pyx_v_self, 
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_pkey)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("userauth", 1, 2, 2, 1); __PYX_ERR(1, 133, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("userauth", 1, 2, 2, 1); __PYX_ERR(1, 134, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "userauth") < 0)) __PYX_ERR(1, 133, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "userauth") < 0)) __PYX_ERR(1, 134, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -2947,16 +2958,16 @@ static PyObject *__pyx_pw_4ssh2_5agent_5Agent_9userauth(PyObject *__pyx_v_self, 
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("userauth", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 133, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("userauth", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 134, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("ssh2.agent.Agent.userauth", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(((PyObject *)__pyx_v_username) == Py_None)) {
-    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "username"); __PYX_ERR(1, 133, __pyx_L1_error)
+    PyErr_Format(PyExc_TypeError, "Argument '%.200s' must not be None", "username"); __PYX_ERR(1, 134, __pyx_L1_error)
   }
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_pkey), __pyx_ptype_4ssh2_4pkey_PublicKey, 1, "pkey", 0))) __PYX_ERR(1, 134, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_pkey), __pyx_ptype_4ssh2_4pkey_PublicKey, 1, "pkey", 0))) __PYX_ERR(1, 135, __pyx_L1_error)
   __pyx_r = __pyx_pf_4ssh2_5agent_5Agent_8userauth(((struct __pyx_obj_4ssh2_5agent_Agent *)__pyx_v_self), __pyx_v_username, __pyx_v_pkey);
 
   /* function exit code */
@@ -2986,19 +2997,19 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("userauth", 0);
 
-  /* "ssh2/agent.pyx":147
+  /* "ssh2/agent.pyx":148
  *         :rtype: int"""
  *         cdef int rc
  *         cdef bytes b_username = to_bytes(username)             # <<<<<<<<<<<<<<
  *         cdef char *_username = b_username
  *         with nogil:
  */
-  __pyx_t_1 = __pyx_f_4ssh2_5utils_to_bytes(__pyx_v_username); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 147, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4ssh2_5utils_to_bytes(__pyx_v_username); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_b_username = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "ssh2/agent.pyx":148
+  /* "ssh2/agent.pyx":149
  *         cdef int rc
  *         cdef bytes b_username = to_bytes(username)
  *         cdef char *_username = b_username             # <<<<<<<<<<<<<<
@@ -3007,12 +3018,12 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
  */
   if (unlikely(__pyx_v_b_username == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-    __PYX_ERR(1, 148, __pyx_L1_error)
+    __PYX_ERR(1, 149, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyBytes_AsWritableString(__pyx_v_b_username); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(1, 148, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_AsWritableString(__pyx_v_b_username); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(1, 149, __pyx_L1_error)
   __pyx_v__username = __pyx_t_2;
 
-  /* "ssh2/agent.pyx":149
+  /* "ssh2/agent.pyx":150
  *         cdef bytes b_username = to_bytes(username)
  *         cdef char *_username = b_username
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -3027,7 +3038,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
       #endif
       /*try:*/ {
 
-        /* "ssh2/agent.pyx":150
+        /* "ssh2/agent.pyx":151
  *         cdef char *_username = b_username
  *         with nogil:
  *             rc = c_ssh2.libssh2_agent_userauth(             # <<<<<<<<<<<<<<
@@ -3036,7 +3047,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
  */
         __pyx_v_rc = libssh2_agent_userauth(__pyx_v_self->_agent, __pyx_v__username, __pyx_v_pkey->_pkey);
 
-        /* "ssh2/agent.pyx":152
+        /* "ssh2/agent.pyx":153
  *             rc = c_ssh2.libssh2_agent_userauth(
  *                 self._agent, _username, pkey._pkey)
  *             if rc != 0 and rc != c_ssh2.LIBSSH2_ERROR_EAGAIN:             # <<<<<<<<<<<<<<
@@ -3054,7 +3065,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
         }
         if (__pyx_t_3) {
 
-          /* "ssh2/agent.pyx":153
+          /* "ssh2/agent.pyx":154
  *                 self._agent, _username, pkey._pkey)
  *             if rc != 0 and rc != c_ssh2.LIBSSH2_ERROR_EAGAIN:
  *                 with gil:             # <<<<<<<<<<<<<<
@@ -3067,17 +3078,17 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
               #endif
               /*try:*/ {
 
-                /* "ssh2/agent.pyx":154
+                /* "ssh2/agent.pyx":155
  *             if rc != 0 and rc != c_ssh2.LIBSSH2_ERROR_EAGAIN:
  *                 with gil:
  *                     raise AgentAuthenticationError(             # <<<<<<<<<<<<<<
  *                         "Error authenticating user %s with provided public key",
  *                         username)
  */
-                __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_AgentAuthenticationError); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 154, __pyx_L8_error)
+                __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_AgentAuthenticationError); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 155, __pyx_L8_error)
                 __Pyx_GOTREF(__pyx_t_4);
 
-                /* "ssh2/agent.pyx":156
+                /* "ssh2/agent.pyx":157
  *                     raise AgentAuthenticationError(
  *                         "Error authenticating user %s with provided public key",
  *                         username)             # <<<<<<<<<<<<<<
@@ -3099,7 +3110,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
                 #if CYTHON_FAST_PYCALL
                 if (PyFunction_Check(__pyx_t_4)) {
                   PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_kp_s_Error_authenticating_user_s_with, __pyx_v_username};
-                  __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 154, __pyx_L8_error)
+                  __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 155, __pyx_L8_error)
                   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                   __Pyx_GOTREF(__pyx_t_1);
                 } else
@@ -3107,13 +3118,13 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
                 #if CYTHON_FAST_PYCCALL
                 if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
                   PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_kp_s_Error_authenticating_user_s_with, __pyx_v_username};
-                  __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 154, __pyx_L8_error)
+                  __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 155, __pyx_L8_error)
                   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
                   __Pyx_GOTREF(__pyx_t_1);
                 } else
                 #endif
                 {
-                  __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 154, __pyx_L8_error)
+                  __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 155, __pyx_L8_error)
                   __Pyx_GOTREF(__pyx_t_7);
                   if (__pyx_t_5) {
                     __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -3124,17 +3135,17 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
                   __Pyx_INCREF(__pyx_v_username);
                   __Pyx_GIVEREF(__pyx_v_username);
                   PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_v_username);
-                  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 154, __pyx_L8_error)
+                  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 155, __pyx_L8_error)
                   __Pyx_GOTREF(__pyx_t_1);
                   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
                 }
                 __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
                 __Pyx_Raise(__pyx_t_1, 0, 0, 0);
                 __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-                __PYX_ERR(1, 154, __pyx_L8_error)
+                __PYX_ERR(1, 155, __pyx_L8_error)
               }
 
-              /* "ssh2/agent.pyx":153
+              /* "ssh2/agent.pyx":154
  *                 self._agent, _username, pkey._pkey)
  *             if rc != 0 and rc != c_ssh2.LIBSSH2_ERROR_EAGAIN:
  *                 with gil:             # <<<<<<<<<<<<<<
@@ -3151,7 +3162,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
               }
           }
 
-          /* "ssh2/agent.pyx":152
+          /* "ssh2/agent.pyx":153
  *             rc = c_ssh2.libssh2_agent_userauth(
  *                 self._agent, _username, pkey._pkey)
  *             if rc != 0 and rc != c_ssh2.LIBSSH2_ERROR_EAGAIN:             # <<<<<<<<<<<<<<
@@ -3161,7 +3172,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
         }
       }
 
-      /* "ssh2/agent.pyx":149
+      /* "ssh2/agent.pyx":150
  *         cdef bytes b_username = to_bytes(username)
  *         cdef char *_username = b_username
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -3187,7 +3198,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
       }
   }
 
-  /* "ssh2/agent.pyx":157
+  /* "ssh2/agent.pyx":158
  *                         "Error authenticating user %s with provided public key",
  *                         username)
  *         return rc             # <<<<<<<<<<<<<<
@@ -3195,13 +3206,13 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
  *     def disconnect(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_rc); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 157, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_rc); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ssh2/agent.pyx":133
+  /* "ssh2/agent.pyx":134
  *         return identities
  * 
  *     def userauth(self, username not None,             # <<<<<<<<<<<<<<
@@ -3224,7 +3235,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_8userauth(struct __pyx_obj_4ssh2_5
   return __pyx_r;
 }
 
-/* "ssh2/agent.pyx":159
+/* "ssh2/agent.pyx":160
  *         return rc
  * 
  *     def disconnect(self):             # <<<<<<<<<<<<<<
@@ -3256,7 +3267,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_10disconnect(struct __pyx_obj_4ssh
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("disconnect", 0);
 
-  /* "ssh2/agent.pyx":164
+  /* "ssh2/agent.pyx":165
  *         :rtype: int"""
  *         cdef int rc
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -3271,7 +3282,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_10disconnect(struct __pyx_obj_4ssh
       #endif
       /*try:*/ {
 
-        /* "ssh2/agent.pyx":165
+        /* "ssh2/agent.pyx":166
  *         cdef int rc
  *         with nogil:
  *             rc = c_ssh2.libssh2_agent_disconnect(self._agent)             # <<<<<<<<<<<<<<
@@ -3281,7 +3292,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_10disconnect(struct __pyx_obj_4ssh
         __pyx_v_rc = libssh2_agent_disconnect(__pyx_v_self->_agent);
       }
 
-      /* "ssh2/agent.pyx":164
+      /* "ssh2/agent.pyx":165
  *         :rtype: int"""
  *         cdef int rc
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -3300,7 +3311,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_10disconnect(struct __pyx_obj_4ssh
       }
   }
 
-  /* "ssh2/agent.pyx":166
+  /* "ssh2/agent.pyx":167
  *         with nogil:
  *             rc = c_ssh2.libssh2_agent_disconnect(self._agent)
  *         return rc             # <<<<<<<<<<<<<<
@@ -3308,13 +3319,13 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_10disconnect(struct __pyx_obj_4ssh
  *     def connect(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_rc); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 166, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_rc); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 167, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "ssh2/agent.pyx":159
+  /* "ssh2/agent.pyx":160
  *         return rc
  * 
  *     def disconnect(self):             # <<<<<<<<<<<<<<
@@ -3333,7 +3344,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_10disconnect(struct __pyx_obj_4ssh
   return __pyx_r;
 }
 
-/* "ssh2/agent.pyx":168
+/* "ssh2/agent.pyx":169
  *         return rc
  * 
  *     def connect(self):             # <<<<<<<<<<<<<<
@@ -3368,7 +3379,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_12connect(struct __pyx_obj_4ssh2_5
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("connect", 0);
 
-  /* "ssh2/agent.pyx":176
+  /* "ssh2/agent.pyx":177
  *         :rtype: int"""
  *         cdef int rc
  *         rc = c_ssh2.libssh2_agent_connect(self._agent)             # <<<<<<<<<<<<<<
@@ -3377,7 +3388,7 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_12connect(struct __pyx_obj_4ssh2_5
  */
   __pyx_v_rc = libssh2_agent_connect(__pyx_v_self->_agent);
 
-  /* "ssh2/agent.pyx":177
+  /* "ssh2/agent.pyx":178
  *         cdef int rc
  *         rc = c_ssh2.libssh2_agent_connect(self._agent)
  *         if rc != 0:             # <<<<<<<<<<<<<<
@@ -3387,13 +3398,13 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_12connect(struct __pyx_obj_4ssh2_5
   __pyx_t_1 = ((__pyx_v_rc != 0) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "ssh2/agent.pyx":178
+    /* "ssh2/agent.pyx":179
  *         rc = c_ssh2.libssh2_agent_connect(self._agent)
  *         if rc != 0:
  *             raise AgentConnectionError("Unable to connect to agent")             # <<<<<<<<<<<<<<
  *         return rc
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_AgentConnectionError); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 178, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_AgentConnectionError); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 179, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_4 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -3407,14 +3418,14 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_12connect(struct __pyx_obj_4ssh2_5
     }
     __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_kp_s_Unable_to_connect_to_agent) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_kp_s_Unable_to_connect_to_agent);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 178, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 179, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(1, 178, __pyx_L1_error)
+    __PYX_ERR(1, 179, __pyx_L1_error)
 
-    /* "ssh2/agent.pyx":177
+    /* "ssh2/agent.pyx":178
  *         cdef int rc
  *         rc = c_ssh2.libssh2_agent_connect(self._agent)
  *         if rc != 0:             # <<<<<<<<<<<<<<
@@ -3423,19 +3434,19 @@ static PyObject *__pyx_pf_4ssh2_5agent_5Agent_12connect(struct __pyx_obj_4ssh2_5
  */
   }
 
-  /* "ssh2/agent.pyx":179
+  /* "ssh2/agent.pyx":180
  *         if rc != 0:
  *             raise AgentConnectionError("Unable to connect to agent")
  *         return rc             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_rc); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 179, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_rc); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "ssh2/agent.pyx":168
+  /* "ssh2/agent.pyx":169
  *         return rc
  * 
  *     def connect(self):             # <<<<<<<<<<<<<<
