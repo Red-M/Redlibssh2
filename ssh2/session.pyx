@@ -515,30 +515,29 @@ cdef class Session:
                 _privatekey, _passphrase, _hostname)
         return handle_error_codes(rc)
 
-    IF EMBEDDED_LIB:
-        def userauth_publickey_frommemory(
-                self, username, bytes privatekeyfiledata,
-                passphrase='', bytes publickeyfiledata=None):
-            cdef int rc
-            cdef bytes b_username = to_bytes(username)
-            cdef bytes b_passphrase = to_bytes(passphrase)
-            cdef char *_username = b_username
-            cdef char *_passphrase = b_passphrase
-            cdef char *_publickeyfiledata = NULL
-            cdef char *_privatekeyfiledata = privatekeyfiledata
-            cdef size_t username_len, pubkeydata_len, privatekeydata_len
-            username_len, pubkeydata_len, privatekeydata_len = \
-                len(b_username), 0, \
-                len(privatekeyfiledata)
-            if publickeyfiledata is not None:
-                _publickeyfiledata = publickeyfiledata
-                pubkeydata_len = len(publickeyfiledata)
-            with nogil:
-                rc = c_ssh2.libssh2_userauth_publickey_frommemory(
-                    self._session, _username, username_len, _publickeyfiledata,
-                    pubkeydata_len, _privatekeyfiledata,
-                    privatekeydata_len, _passphrase)
-            return handle_error_codes(rc)
+    def userauth_publickey_frommemory(
+            self, username, bytes privatekeyfiledata,
+            passphrase='', bytes publickeyfiledata=None):
+        cdef int rc
+        cdef bytes b_username = to_bytes(username)
+        cdef bytes b_passphrase = to_bytes(passphrase)
+        cdef char *_username = b_username
+        cdef char *_passphrase = b_passphrase
+        cdef char *_publickeyfiledata = NULL
+        cdef char *_privatekeyfiledata = privatekeyfiledata
+        cdef size_t username_len, pubkeydata_len, privatekeydata_len
+        username_len, pubkeydata_len, privatekeydata_len = \
+            len(b_username), 0, \
+            len(privatekeyfiledata)
+        if publickeyfiledata is not None:
+            _publickeyfiledata = publickeyfiledata
+            pubkeydata_len = len(publickeyfiledata)
+        with nogil:
+            rc = c_ssh2.libssh2_userauth_publickey_frommemory(
+                self._session, _username, username_len, _publickeyfiledata,
+                pubkeydata_len, _privatekeyfiledata,
+                privatekeydata_len, _passphrase)
+        return handle_error_codes(rc)
 
     def userauth_password(self, username not None, password not None):
         """Perform password authentication
