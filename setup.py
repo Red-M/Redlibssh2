@@ -124,7 +124,7 @@ setup(
     license='LGPLv2',
     author='Red_M',
     author_email='redlibssh2_pypi@red-m.net',
-    description=('Super fast SSH library - bindings for libssh2'),
+    description=('Alternate bindings for libssh2 C library'),
     long_description=open('README.rst').read(),
     packages=find_packages(
         '.', exclude=('embedded_server', 'embedded_server.*',
