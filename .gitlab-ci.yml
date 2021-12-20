@@ -196,7 +196,7 @@ tests_latest_libssh2_x86_64:
   stage: test
   script:
     - ./ci/gitlab/linux/install_deb_mirror.sh
-    - ./ci/gitlab/linux/test_latest_libssh2.sh
+    - ./ci/gitlab/linux/test_latest_libssh2.sh GITLAB
   artifacts:
       paths:
       - htmlcov
@@ -238,7 +238,7 @@ tests_latest_libssh2_aarch64:
   stage: test
   script:
     - ./ci/gitlab/linux/install_deb_mirror.sh
-    - ./ci/gitlab/linux/test_latest_libssh2.sh
+    - ./ci/gitlab/linux/test_latest_libssh2.sh GITLAB
   artifacts:
       paths:
       - htmlcov

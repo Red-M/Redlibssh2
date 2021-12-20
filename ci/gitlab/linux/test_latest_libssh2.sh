@@ -4,7 +4,7 @@ CI_SYSTEM=${1}
 PYTHON_VERSION=${2}
 
 apt update && apt install -y make curl wget openssh-client openssh-server git cmake libssl-dev zlib1g-dev
-apt install -y python3 python3-dev python3-distutils
+apt install -y python3 python3-dev python3-distutils python3-setuptools cython3
 wget -O get-pip.py "https://bootstrap.pypa.io/get-pip.py"
 python3 ./get-pip.py
 pip3 install -U readme-renderer
