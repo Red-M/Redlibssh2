@@ -22,3 +22,4 @@ cdef class Session:
     cdef readonly object sock
 
     cdef readonly object _kbd_callback
+    cdef public object _block_lock

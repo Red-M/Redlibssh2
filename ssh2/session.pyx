@@ -14,6 +14,9 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
+import time
+import threading
+import select as pyselect
 import error_codes
 from cpython cimport PyObject_AsFileDescriptor
 from libc.stdlib cimport malloc, free
@@ -82,6 +85,49 @@ cdef void kbd_callback(const char *name, int name_len,
         responses[0].text = strdup(_password)
         responses[0].length = strlen(_password)
 
+DEF HAVE_POLL = 1
+IF HAVE_POLL:
+    cdef int waitsocket(int block_dir, int socket_fd) nogil:
+        cdef int rc
+        cdef c_ssh2.pollfd sockets[1]
+        cdef long ms_to_next = 0
+
+        with nogil:
+            sockets[0].fd = socket_fd
+            sockets[0].events = 0
+            sockets[0].revents = 0
+
+            if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND):
+                sockets[0].events |= c_ssh2.POLLIN
+
+            if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND):
+                sockets[0].events |= c_ssh2.POLLOUT
+
+            rc = c_ssh2.poll(sockets, 1, 5)
+        return rc
+ELSE:
+    cdef int waitsocket(int block_dir, int socket_fd) nogil:
+        cdef timeval timeout
+        cdef int rc
+        cdef fd_set fd
+        cdef fd_set *writefd = NULL
+        cdef fd_set *readfd = NULL
+
+        with nogil:
+            timeout.tv_sec = 0
+            timeout.tv_usec = 10000
+
+            FD_ZERO(&fd)
+            FD_SET(socket_fd, &fd)
+
+            if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND):
+                readfd = &fd
+            if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND):
+                writefd = &fd
+
+            rc = select(socket_fd+1, readfd, writefd, NULL, &timeout)
+        return rc
+
 
 cdef class Session:
 
@@ -99,11 +145,38 @@ cdef class Session:
             self._sock = 0
             self.sock = None
         self._kbd_callback = None
+        self._block_lock = threading.RLock()
 
     def __dealloc__(self):
         if self._session is not NULL:
             c_ssh2.libssh2_session_free(self._session)
         self._session = NULL
+
+    def _block_call(self,_select_timeout=None,use_c=True):
+        with self._block_lock:
+            self.keepalive_send()
+            block_direction = self.block_directions()
+        if block_direction==0:
+            time.sleep(0.2)
+            return(None)
+
+        if use_c==True:
+            waitsocket(block_direction,self._sock)
+        else:
+            if _select_timeout==None:
+                _select_timeout = 0.005
+
+            if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND:
+                rfds = [self.sock]
+            else:
+                rfds = []
+
+            if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND:
+                wfds = [self.sock]
+            else:
+                wfds = []
+
+            pyselect.select(rfds,wfds,[],_select_timeout)
 
     def trace(self, int bitmask):
         """Enable trace logging for this session.

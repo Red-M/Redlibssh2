@@ -20,6 +20,34 @@ from posix.types cimport blkcnt_t, blksize_t, dev_t, gid_t, ino_t, \
 
 from c_stat cimport struct_stat
 
+cdef extern from * nogil:
+    """
+    #ifdef HAVE_POLL
+    # include <poll.h>
+    #else
+    # if defined(HAVE_SELECT) && !defined(WIN32)
+    # ifdef HAVE_SYS_SELECT_H
+    # include <sys/select.h>
+    # else
+    # include <sys/time.h>
+    # include <sys/types.h>
+    # endif
+    # endif
+    #endif
+    """
+    ctypedef unsigned int nfds_t
+    enum:
+        POLLIN
+        POLLPRI
+        POLLOUT
+        POLLERR
+        POLLHUP
+        POLLNVAL
+    struct pollfd:
+        int fd
+        short events
+        short revents
+    int poll(pollfd *fds, nfds_t nfds, int timeout)
 
 cdef extern from "libssh2.h" nogil:
     ctypedef long long libssh2_int64_t
