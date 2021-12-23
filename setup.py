@@ -38,6 +38,7 @@ if not SYSTEM_LIBSSH2 and (len(sys.argv) >= 2 and not (
     build_ssh2()
 
 ON_WINDOWS = platform.system() == 'Windows' or SYSTEM_BUILD_MINGW==True
+HAVE_POLL = platform.system() == 'Linux'
 
 ext = 'pyx' if USING_CYTHON else 'c'
 sources = glob('ssh2/*.%s' % (ext,))
@@ -67,6 +68,7 @@ if USING_CYTHON:
         'cython_directives': cython_directives,
         'cython_compile_time_env': {
             'HAVE_AGENT_FWD': _have_agent_fwd,
+            'HAVE_POLL': HAVE_POLL,
         }
     }
     if REDLIBSSH2_BUILD_TRACING==True:

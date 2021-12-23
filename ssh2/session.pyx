@@ -41,6 +41,7 @@ from fileinfo cimport FileInfo
 cimport c_ssh2
 cimport c_sftp
 cimport c_pkey
+cimport utils
 
 
 LIBSSH2_SESSION_BLOCK_INBOUND = c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND
@@ -77,57 +78,14 @@ cdef void kbd_callback(const char *name, int name_len,
                        c_ssh2.LIBSSH2_USERAUTH_KBDINT_RESPONSE *responses,
                        void **abstract) except *:
     py_sess = (<Session>c_dereference(abstract))
-    if py_sess._kbd_callback is None:
+    callback = py_sess._callbacks.get('kbd',None)
+    if callback is None:
         return
-    cdef bytes b_password = to_bytes(py_sess._kbd_callback())
+    cdef bytes b_password = to_bytes(callback())
     cdef char *_password = b_password
     if num_prompts==1:
         responses[0].text = strdup(_password)
         responses[0].length = strlen(_password)
-
-DEF HAVE_POLL = 1
-IF HAVE_POLL:
-    cdef int waitsocket(int block_dir, int socket_fd) nogil:
-        cdef int rc
-        cdef c_ssh2.pollfd sockets[1]
-        cdef long ms_to_next = 0
-
-        with nogil:
-            sockets[0].fd = socket_fd
-            sockets[0].events = 0
-            sockets[0].revents = 0
-
-            if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND):
-                sockets[0].events |= c_ssh2.POLLIN
-
-            if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND):
-                sockets[0].events |= c_ssh2.POLLOUT
-
-            rc = c_ssh2.poll(sockets, 1, 5)
-        return rc
-ELSE:
-    cdef int waitsocket(int block_dir, int socket_fd) nogil:
-        cdef timeval timeout
-        cdef int rc
-        cdef fd_set fd
-        cdef fd_set *writefd = NULL
-        cdef fd_set *readfd = NULL
-
-        with nogil:
-            timeout.tv_sec = 0
-            timeout.tv_usec = 10000
-
-            FD_ZERO(&fd)
-            FD_SET(socket_fd, &fd)
-
-            if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND):
-                readfd = &fd
-            if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND):
-                writefd = &fd
-
-            rc = select(socket_fd+1, readfd, writefd, NULL, &timeout)
-        return rc
-
 
 cdef class Session:
 
@@ -144,37 +102,58 @@ cdef class Session:
         else:
             self._sock = 0
             self.sock = None
-        self._kbd_callback = None
+        self._callbacks = {}
         self._block_lock = threading.RLock()
+        IF HAVE_POLL==1:
+            self.c_poll_enabled = True
+        ELSE:
+            self.c_poll_enabled = False
 
     def __dealloc__(self):
         if self._session is not NULL:
             c_ssh2.libssh2_session_free(self._session)
         self._session = NULL
 
+    IF HAVE_POLL==1:
+        cdef void _build_waitsocket_data(Session self) nogil:
+            self._waitsockets[0].fd = self._sock
+            self._waitsockets[0].events = 0
+            self._waitsockets[0].revents = 0
+
+        cdef int poll_socket(Session self,int block_dir,int timeout) nogil:
+            cdef int rc
+
+            with nogil:
+                if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND):
+                    self._waitsockets[0].events |= utils.POLLIN
+
+                if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND):
+                    self._waitsockets[0].events |= utils.POLLOUT
+
+                rc = utils.poll(self._waitsockets, 1, timeout)
+                self._waitsockets[0].events = 0
+            return rc
+
     def _block_call(self,_select_timeout=None,use_c=True):
+        if _select_timeout==None:
+            _select_timeout = 0.005
         with self._block_lock:
             self.keepalive_send()
             block_direction = self.block_directions()
         if block_direction==0:
-            time.sleep(0.2)
+            time.sleep(0.1)
             return(None)
 
-        if use_c==True:
-            waitsocket(block_direction,self._sock)
+        if self.c_poll_enabled==True and use_c==True:
+            self.poll_socket(block_direction,_select_timeout*1000)
         else:
-            if _select_timeout==None:
-                _select_timeout = 0.005
-
+            rfds = []
+            wfds = []
             if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND:
                 rfds = [self.sock]
-            else:
-                rfds = []
 
             if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND:
                 wfds = [self.sock]
-            else:
-                wfds = []
 
             pyselect.select(rfds,wfds,[],_select_timeout)
 
@@ -444,14 +423,9 @@ cdef class Session:
         with nogil:
             rc = c_ssh2.libssh2_session_handshake(self._session, _sock)
             self._sock = _sock
+            if self.c_poll_enabled==True:
+                self._build_waitsocket_data()
         self.sock = sock
-        return handle_error_codes(rc)
-
-    def startup(self, sock):
-        """Deprecated - use self.handshake"""
-        cdef int _sock = PyObject_AsFileDescriptor(sock)
-        cdef int rc
-        rc = c_ssh2.libssh2_session_startup(self._session, _sock)
         return handle_error_codes(rc)
 
     def set_blocking(self, bint blocking):
@@ -645,10 +619,10 @@ cdef class Session:
         def passwd():
             return(password)
 
-        self._kbd_callback = passwd
+        self._callbacks['kbd'] = passwd
         rc = c_ssh2.libssh2_userauth_keyboard_interactive(
             self._session, _username, &kbd_callback)
-        self._kbd_callback = None
+        self._callbacks['kbd'] = None
         return handle_error_codes(rc)
 
     def agent_init(self):
@@ -852,28 +826,6 @@ cdef class Session:
                 self._session, errcode, _errmsg)
         return rc
 
-    def scp_recv(self, path not None):
-        """Receive file via SCP.
-
-        Deprecated in favour or recv2 (requires libssh2 >= 1.7).
-
-        :param path: File path to receive.
-        :type path: str
-
-        :rtype: tuple(:py:class:`ssh2.channel.Channel`,
-          :py:class:`ssh2.statinfo.StatInfo`) or None"""
-        cdef bytes b_path = to_bytes(path)
-        cdef char *_path = b_path
-        cdef StatInfo statinfo = StatInfo()
-        cdef c_ssh2.LIBSSH2_CHANNEL *channel
-        with nogil:
-            channel = c_ssh2.libssh2_scp_recv(
-                self._session, _path, statinfo._stat)
-        if channel is NULL:
-            return handle_error_codes(c_ssh2.libssh2_session_last_errno(
-                self._session))
-        return PyChannel(channel, self), statinfo
-
     def scp_recv2(self, path not None):
         """Receive file via SCP.
 
@@ -895,28 +847,6 @@ cdef class Session:
             return handle_error_codes(c_ssh2.libssh2_session_last_errno(
                 self._session))
         return PyChannel(channel, self), fileinfo
-
-    def scp_send(self, path not None, int mode, size_t size):
-        """Deprecated in favour of scp_send64. Send file via SCP.
-
-        :param path: Local file path to send.
-        :type path: str
-        :param mode: File mode.
-        :type mode: int
-        :param size: size of file
-        :type size: int
-
-        :rtype: :py:class:`ssh2.channel.Channel`"""
-        cdef bytes b_path = to_bytes(path)
-        cdef char *_path = b_path
-        cdef c_ssh2.LIBSSH2_CHANNEL *channel
-        with nogil:
-            channel = c_ssh2.libssh2_scp_send(
-                self._session, _path, mode, size)
-        if channel is NULL:
-            return handle_error_codes(c_ssh2.libssh2_session_last_errno(
-                self._session))
-        return PyChannel(channel, self)
 
     def scp_send64(self, path not None, int mode, c_ssh2.libssh2_uint64_t size,
                    time_t mtime, time_t atime):
