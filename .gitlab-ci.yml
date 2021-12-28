@@ -11,7 +11,7 @@ stages:
     - tests_latest_libssh2_x86_64
 
 .linux_aarch64_needs: &linux_aarch64_needs
-  timeout: 3h 30m
+  timeout: 6h 30m
   needs:
     - tests_debstable_aarch64
     - tests_deboldstable_aarch64
@@ -207,7 +207,7 @@ tests_debstable_aarch64:
   tags:
     - linux
     - aarch64
-  timeout: 3h 30m
+  timeout: 6h 30m
   image: debian:stable
 
 tests_deboldstable_aarch64:
@@ -216,7 +216,7 @@ tests_deboldstable_aarch64:
   tags:
     - linux
     - aarch64
-  timeout: 3h 30m
+  timeout: 6h 30m
   image: debian:oldstable
 
 tests_debtesting_aarch64:
@@ -225,7 +225,7 @@ tests_debtesting_aarch64:
   tags:
     - linux
     - aarch64
-  timeout: 3h 30m
+  timeout: 6h 30m
   image: debian:testing
 
 tests_latest_libssh2_aarch64:
@@ -233,7 +233,7 @@ tests_latest_libssh2_aarch64:
   tags:
     - linux
     - aarch64
-  timeout: 3h 30m
+  timeout: 6h 30m
   image: debian:stable
   stage: test
   script:
