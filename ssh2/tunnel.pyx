@@ -99,16 +99,16 @@ cdef class Tunnel:
             time.sleep(0.1)
             return([[],[],[]])
 
-        if self._session.c_poll_enabled==True and self._session.c_poll_use==True:
-            self.poll_sockets(block_direction,_select_timeout*1000)
-            return([[self._c_waitsockets[0].revents,self._c_waitsockets[1].revents],[],[]])
-        else:
-            rfds = self._default_waitsockets
-            wfds = self._default_waitsockets
-            if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND:
-                rfds = self._waitsockets
+        # if self._session.c_poll_enabled==True and self._session.c_poll_use==True:
+            # self.poll_sockets(block_direction,_select_timeout*1000)
+            # return([[self._c_waitsockets[0].revents,self._c_waitsockets[1].revents],[],[]])
+        # else:
+        rfds = self._default_waitsockets
+        wfds = self._default_waitsockets
+        if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND:
+            rfds = self._waitsockets
 
-            if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND:
-                wfds = self._waitsockets
+        if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND:
+            wfds = self._waitsockets
 
-            return(pyselect.select(rfds,wfds,self._default_waitsockets,_select_timeout))
+        return(pyselect.select(rfds,wfds,self._default_waitsockets,_select_timeout))
