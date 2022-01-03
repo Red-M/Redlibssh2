@@ -11,7 +11,7 @@
 #else
 #define CYTHON_ABI "0_29_26"
 #define CYTHON_HEX_VERSION 0x001D1AF0
-#define CYTHON_FUTURE_DIVISION 0
+#define CYTHON_FUTURE_DIVISION 1
 #include <stddef.h>
 #ifndef offsetof
   #define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
@@ -922,7 +922,7 @@ struct __pyx_obj_4ssh2_11sftp_handle___pyx_scope_struct__readdir_ex;
 struct __pyx_obj_4ssh2_11sftp_handle___pyx_scope_struct_1_readdir;
 
 /* "session.pxd":21
- *     cimport utils
+ *     from . cimport utils
  * 
  * cdef class Session:             # <<<<<<<<<<<<<<
  *     cdef c_ssh2.LIBSSH2_SESSION *_session
@@ -936,8 +936,11 @@ struct __pyx_obj_4ssh2_7session_Session {
   PyObject *sock;
   PyObject *_callbacks;
   int c_poll_enabled;
+  PyObject *_default_waitsockets;
+  PyObject *_waitsockets;
+  int c_poll_use;
   PyObject *_block_lock;
-  struct pollfd _waitsockets[1];
+  struct pollfd _c_waitsockets[1];
 };
 
 
@@ -1036,7 +1039,7 @@ struct __pyx_obj_4ssh2_11sftp_handle___pyx_scope_struct_1_readdir {
 
 
 /* "session.pxd":21
- *     cimport utils
+ *     from . cimport utils
  * 
  * cdef class Session:             # <<<<<<<<<<<<<<
  *     cdef c_ssh2.LIBSSH2_SESSION *_session
@@ -1044,7 +1047,7 @@ struct __pyx_obj_4ssh2_11sftp_handle___pyx_scope_struct_1_readdir {
  */
 
 struct __pyx_vtabstruct_4ssh2_7session_Session {
-  void (*_build_waitsocket_data)(struct __pyx_obj_4ssh2_7session_Session *);
+  void (*_build_c_waitsocket_data)(struct __pyx_obj_4ssh2_7session_Session *);
   int (*poll_socket)(struct __pyx_obj_4ssh2_7session_Session *, int, int);
 };
 static struct __pyx_vtabstruct_4ssh2_7session_Session *__pyx_vtabptr_4ssh2_7session_Session;
@@ -1526,6 +1529,8 @@ static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
+
+/* Module declarations from 'ssh2' */
 
 /* Module declarations from 'libc.stddef' */
 

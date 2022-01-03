@@ -22,12 +22,12 @@ def build_ssh2():
     if SYSTEM_BUILD_MINGW==1:
         check_call('cmake -DCMAKE_TOOLCHAIN_FILE=../ci/gitlab/windows/windows_toolchain.cmake \
         ../libssh2 -DBUILD_SHARED_LIBS=ON \
-        -DENABLE_ZLIB_COMPRESSION=ON -DENABLE_CRYPT_NONE=ON \
-        -DENABLE_MAC_NONE=ON -DCRYPTO_BACKEND=OpenSSL',shell=True, env=os.environ)
+        -DENABLE_ZLIB_COMPRESSION=ON -DCRYPTO_BACKEND=OpenSSL \
+        -DENABLE_DEBUG_LOGGING=ON',shell=True, env=os.environ)
     else:
         check_call('cmake ../libssh2 -DBUILD_SHARED_LIBS=ON \
-        -DENABLE_ZLIB_COMPRESSION=ON -DENABLE_CRYPT_NONE=ON \
-        -DENABLE_MAC_NONE=ON -DCRYPTO_BACKEND=OpenSSL',shell=True, env=os.environ)
+        -DENABLE_ZLIB_COMPRESSION=ON -DCRYPTO_BACKEND=OpenSSL \
+        -DENABLE_DEBUG_LOGGING=ON',shell=True, env=os.environ)
     check_call('cmake --build . --config Release', shell=True, env=os.environ)
     os.chdir('..')
 

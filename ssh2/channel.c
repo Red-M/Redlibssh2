@@ -11,7 +11,7 @@
 #else
 #define CYTHON_ABI "0_29_26"
 #define CYTHON_HEX_VERSION 0x001D1AF0
-#define CYTHON_FUTURE_DIVISION 0
+#define CYTHON_FUTURE_DIVISION 1
 #include <stddef.h>
 #ifndef offsetof
   #define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
@@ -918,7 +918,7 @@ struct __pyx_obj_4ssh2_4sftp_SFTP;
 struct __pyx_obj_4ssh2_7channel_Channel;
 
 /* "session.pxd":21
- *     cimport utils
+ *     from . cimport utils
  * 
  * cdef class Session:             # <<<<<<<<<<<<<<
  *     cdef c_ssh2.LIBSSH2_SESSION *_session
@@ -932,8 +932,11 @@ struct __pyx_obj_4ssh2_7session_Session {
   PyObject *sock;
   PyObject *_callbacks;
   int c_poll_enabled;
+  PyObject *_default_waitsockets;
+  PyObject *_waitsockets;
+  int c_poll_use;
   PyObject *_block_lock;
-  struct pollfd _waitsockets[1];
+  struct pollfd _c_waitsockets[1];
 };
 
 
@@ -967,7 +970,7 @@ struct __pyx_obj_4ssh2_7channel_Channel {
 
 
 /* "session.pxd":21
- *     cimport utils
+ *     from . cimport utils
  * 
  * cdef class Session:             # <<<<<<<<<<<<<<
  *     cdef c_ssh2.LIBSSH2_SESSION *_session
@@ -975,7 +978,7 @@ struct __pyx_obj_4ssh2_7channel_Channel {
  */
 
 struct __pyx_vtabstruct_4ssh2_7session_Session {
-  void (*_build_waitsocket_data)(struct __pyx_obj_4ssh2_7session_Session *);
+  void (*_build_c_waitsocket_data)(struct __pyx_obj_4ssh2_7session_Session *);
   int (*poll_socket)(struct __pyx_obj_4ssh2_7session_Session *, int, int);
 };
 static struct __pyx_vtabstruct_4ssh2_7session_Session *__pyx_vtabptr_4ssh2_7session_Session;
@@ -1299,6 +1302,8 @@ static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
+/* Module declarations from 'ssh2' */
+
 /* Module declarations from 'libc.stddef' */
 
 /* Module declarations from 'libc.time' */
@@ -1410,7 +1415,7 @@ static PyObject *__pyx_n_s_term;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_value;
 static PyObject *__pyx_n_s_varname;
-static PyObject *__pyx_n_s_vt100;
+static PyObject *__pyx_n_u_vt100;
 static PyObject *__pyx_n_s_window_size_initial;
 static int __pyx_pf_4ssh2_7channel_7Channel___cinit__(struct __pyx_obj_4ssh2_7channel_Channel *__pyx_v_self, struct __pyx_obj_4ssh2_7session_Session *__pyx_v_session); /* proto */
 static void __pyx_pf_4ssh2_7channel_7Channel_2__dealloc__(struct __pyx_obj_4ssh2_7channel_Channel *__pyx_v_self); /* proto */
@@ -1787,7 +1792,7 @@ static PyObject *__pyx_pf_4ssh2_7channel_7Channel_7session___get__(struct __pyx_
 
 /* Python wrapper */
 static PyObject *__pyx_pw_4ssh2_7channel_7Channel_5pty(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_4ssh2_7channel_7Channel_4pty[] = "Channel.pty(self, term='vt100')\nRequest a PTY (physical terminal emulation) on the channel.\n\n        :param term: Terminal type to emulate.\n        :type term: str\n        ";
+static char __pyx_doc_4ssh2_7channel_7Channel_4pty[] = "Channel.pty(self, term=u'vt100')\nRequest a PTY (physical terminal emulation) on the channel.\n\n        :param term: Terminal type to emulate.\n        :type term: str\n        ";
 static PyObject *__pyx_pw_4ssh2_7channel_7Channel_5pty(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_term = 0;
   int __pyx_lineno = 0;
@@ -1799,7 +1804,7 @@ static PyObject *__pyx_pw_4ssh2_7channel_7Channel_5pty(PyObject *__pyx_v_self, P
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_term,0};
     PyObject* values[1] = {0};
-    values[0] = ((PyObject *)__pyx_n_s_vt100);
+    values[0] = ((PyObject *)__pyx_n_u_vt100);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
@@ -8121,7 +8126,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_value, __pyx_k_value, sizeof(__pyx_k_value), 0, 0, 1, 1},
   {&__pyx_n_s_varname, __pyx_k_varname, sizeof(__pyx_k_varname), 0, 0, 1, 1},
-  {&__pyx_n_s_vt100, __pyx_k_vt100, sizeof(__pyx_k_vt100), 0, 0, 1, 1},
+  {&__pyx_n_u_vt100, __pyx_k_vt100, sizeof(__pyx_k_vt100), 0, 1, 0, 1},
   {&__pyx_n_s_window_size_initial, __pyx_k_window_size_initial, sizeof(__pyx_k_window_size_initial), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
@@ -8492,9 +8497,9 @@ if (!__Pyx_RefNanny) {
 
   /* "ssh2/channel.pyx":19
  * from libc.stdlib cimport malloc, free
- * from session cimport Session
- * from exceptions import ChannelError             # <<<<<<<<<<<<<<
- * from utils cimport to_bytes, handle_error_codes
+ * from .session cimport Session
+ * from .exceptions import ChannelError             # <<<<<<<<<<<<<<
+ * from .utils cimport to_bytes, handle_error_codes
  * 
  */
   __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
@@ -8502,7 +8507,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_ChannelError);
   __Pyx_GIVEREF(__pyx_n_s_ChannelError);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_ChannelError);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_exceptions, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_exceptions, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_ChannelError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)

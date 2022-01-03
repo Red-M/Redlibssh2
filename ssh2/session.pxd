@@ -14,9 +14,9 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-cimport c_ssh2
+from . cimport c_ssh2
 IF HAVE_POLL==1:
-    cimport utils
+    from . cimport utils
 
 cdef class Session:
     cdef c_ssh2.LIBSSH2_SESSION *_session
@@ -25,9 +25,12 @@ cdef class Session:
 
     cdef readonly object _callbacks
     cdef readonly bint c_poll_enabled
+    cdef readonly object _default_waitsockets
+    cdef readonly object _waitsockets
+    cdef public bint c_poll_use
     cdef public object _block_lock
 
+    cdef void _build_c_waitsocket_data(Session self) nogil
     IF HAVE_POLL==1:
-        cdef void _build_waitsocket_data(Session self) nogil
         cdef int poll_socket(Session self,int block_dir,int timeout) nogil
-        cdef utils.pollfd _waitsockets[1]
+        cdef readonly utils.pollfd _c_waitsockets[1]

@@ -11,7 +11,7 @@
 #else
 #define CYTHON_ABI "0_29_26"
 #define CYTHON_HEX_VERSION 0x001D1AF0
-#define CYTHON_FUTURE_DIVISION 0
+#define CYTHON_FUTURE_DIVISION 1
 #include <stddef.h>
 #ifndef offsetof
   #define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
@@ -918,7 +918,7 @@ struct __pyx_obj_4ssh2_9publickey_PublicKeyAttribute;
 struct __pyx_obj_4ssh2_9publickey_PublicKeySystem;
 
 /* "session.pxd":21
- *     cimport utils
+ *     from . cimport utils
  * 
  * cdef class Session:             # <<<<<<<<<<<<<<
  *     cdef c_ssh2.LIBSSH2_SESSION *_session
@@ -932,8 +932,11 @@ struct __pyx_obj_4ssh2_7session_Session {
   PyObject *sock;
   PyObject *_callbacks;
   int c_poll_enabled;
+  PyObject *_default_waitsockets;
+  PyObject *_waitsockets;
+  int c_poll_use;
   PyObject *_block_lock;
-  struct pollfd _waitsockets[1];
+  struct pollfd _c_waitsockets[1];
 };
 
 
@@ -980,7 +983,7 @@ struct __pyx_obj_4ssh2_9publickey_PublicKeySystem {
 
 
 /* "session.pxd":21
- *     cimport utils
+ *     from . cimport utils
  * 
  * cdef class Session:             # <<<<<<<<<<<<<<
  *     cdef c_ssh2.LIBSSH2_SESSION *_session
@@ -988,7 +991,7 @@ struct __pyx_obj_4ssh2_9publickey_PublicKeySystem {
  */
 
 struct __pyx_vtabstruct_4ssh2_7session_Session {
-  void (*_build_waitsocket_data)(struct __pyx_obj_4ssh2_7session_Session *);
+  void (*_build_c_waitsocket_data)(struct __pyx_obj_4ssh2_7session_Session *);
   int (*poll_socket)(struct __pyx_obj_4ssh2_7session_Session *, int, int);
 };
 static struct __pyx_vtabstruct_4ssh2_7session_Session *__pyx_vtabptr_4ssh2_7session_Session;
@@ -1339,6 +1342,8 @@ static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
+
+/* Module declarations from 'ssh2' */
 
 /* Module declarations from 'libc.stddef' */
 
@@ -3999,7 +4004,7 @@ static PyObject *__pyx_pf_4ssh2_9publickey_15PublicKeySystem_8list_fetch(struct 
   libssh2_publickey_list **__pyx_v_pkey_list;
   int __pyx_v_rc;
   PyObject *__pyx_v_keys = 0;
-  unsigned long __pyx_v_i;
+  unsigned long __pyx_7genexpr__pyx_v_i;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -4150,17 +4155,19 @@ static PyObject *__pyx_pf_4ssh2_9publickey_15PublicKeySystem_8list_fetch(struct 
  *         return keys
  * 
  */
-  __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 180, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __pyx_v_num_keys;
-  __pyx_t_5 = __pyx_t_4;
-  for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
-    __pyx_v_i = __pyx_t_6;
-    __pyx_t_7 = __pyx_f_4ssh2_9publickey_PyPublicKeyList((__pyx_v_pkey_list[__pyx_v_i])); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 180, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_7))) __PYX_ERR(1, 180, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  }
+  { /* enter inner scope */
+    __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 180, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __pyx_v_num_keys;
+    __pyx_t_5 = __pyx_t_4;
+    for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+      __pyx_7genexpr__pyx_v_i = __pyx_t_6;
+      __pyx_t_7 = __pyx_f_4ssh2_9publickey_PyPublicKeyList((__pyx_v_pkey_list[__pyx_7genexpr__pyx_v_i])); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 180, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_7))) __PYX_ERR(1, 180, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    }
+  } /* exit inner scope */
   __pyx_v_keys = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 

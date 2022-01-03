@@ -11,7 +11,7 @@
 #else
 #define CYTHON_ABI "0_29_26"
 #define CYTHON_HEX_VERSION 0x001D1AF0
-#define CYTHON_FUTURE_DIVISION 0
+#define CYTHON_FUTURE_DIVISION 1
 #include <stddef.h>
 #ifndef offsetof
   #define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
@@ -915,7 +915,7 @@ struct __pyx_obj_4ssh2_7channel_Channel;
 struct __pyx_obj_4ssh2_8listener_Listener;
 
 /* "session.pxd":21
- *     cimport utils
+ *     from . cimport utils
  * 
  * cdef class Session:             # <<<<<<<<<<<<<<
  *     cdef c_ssh2.LIBSSH2_SESSION *_session
@@ -929,8 +929,11 @@ struct __pyx_obj_4ssh2_7session_Session {
   PyObject *sock;
   PyObject *_callbacks;
   int c_poll_enabled;
+  PyObject *_default_waitsockets;
+  PyObject *_waitsockets;
+  int c_poll_use;
   PyObject *_block_lock;
-  struct pollfd _waitsockets[1];
+  struct pollfd _c_waitsockets[1];
 };
 
 
@@ -964,7 +967,7 @@ struct __pyx_obj_4ssh2_8listener_Listener {
 
 
 /* "session.pxd":21
- *     cimport utils
+ *     from . cimport utils
  * 
  * cdef class Session:             # <<<<<<<<<<<<<<
  *     cdef c_ssh2.LIBSSH2_SESSION *_session
@@ -972,7 +975,7 @@ struct __pyx_obj_4ssh2_8listener_Listener {
  */
 
 struct __pyx_vtabstruct_4ssh2_7session_Session {
-  void (*_build_waitsocket_data)(struct __pyx_obj_4ssh2_7session_Session *);
+  void (*_build_c_waitsocket_data)(struct __pyx_obj_4ssh2_7session_Session *);
   int (*poll_socket)(struct __pyx_obj_4ssh2_7session_Session *, int, int);
 };
 static struct __pyx_vtabstruct_4ssh2_7session_Session *__pyx_vtabptr_4ssh2_7session_Session;
@@ -1248,6 +1251,8 @@ static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
+
+/* Module declarations from 'ssh2' */
 
 /* Module declarations from 'libc.stddef' */
 
@@ -1550,8 +1555,8 @@ static PyObject *__pyx_pf_4ssh2_8listener_8Listener_2forward_accept(struct __pyx
  *     def forward_accept(self):
  *         cdef c_ssh2.LIBSSH2_CHANNEL *channel
  *         with nogil:             # <<<<<<<<<<<<<<
- *             channel = c_ssh2.libssh2_channel_forward_accept(
- *                 self._listener)
+ *             channel = c_ssh2.libssh2_channel_forward_accept(self._listener)
+ *         if channel is NULL:
  */
   {
       #ifdef WITH_THREAD
@@ -1564,9 +1569,9 @@ static PyObject *__pyx_pf_4ssh2_8listener_8Listener_2forward_accept(struct __pyx
         /* "ssh2/listener.pyx":39
  *         cdef c_ssh2.LIBSSH2_CHANNEL *channel
  *         with nogil:
- *             channel = c_ssh2.libssh2_channel_forward_accept(             # <<<<<<<<<<<<<<
- *                 self._listener)
+ *             channel = c_ssh2.libssh2_channel_forward_accept(self._listener)             # <<<<<<<<<<<<<<
  *         if channel is NULL:
+ *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(self._session._session))
  */
         __pyx_v_channel = libssh2_channel_forward_accept(__pyx_v_self->_listener);
       }
@@ -1575,8 +1580,8 @@ static PyObject *__pyx_pf_4ssh2_8listener_8Listener_2forward_accept(struct __pyx
  *     def forward_accept(self):
  *         cdef c_ssh2.LIBSSH2_CHANNEL *channel
  *         with nogil:             # <<<<<<<<<<<<<<
- *             channel = c_ssh2.libssh2_channel_forward_accept(
- *                 self._listener)
+ *             channel = c_ssh2.libssh2_channel_forward_accept(self._listener)
+ *         if channel is NULL:
  */
       /*finally:*/ {
         /*normal exit:*/{
@@ -1590,59 +1595,43 @@ static PyObject *__pyx_pf_4ssh2_8listener_8Listener_2forward_accept(struct __pyx
       }
   }
 
-  /* "ssh2/listener.pyx":41
- *             channel = c_ssh2.libssh2_channel_forward_accept(
- *                 self._listener)
+  /* "ssh2/listener.pyx":40
+ *         with nogil:
+ *             channel = c_ssh2.libssh2_channel_forward_accept(self._listener)
  *         if channel is NULL:             # <<<<<<<<<<<<<<
- *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(
- *                 self._session._session))
+ *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(self._session._session))
+ *         return PyChannel(channel, self._session)
  */
   __pyx_t_1 = ((__pyx_v_channel == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "ssh2/listener.pyx":42
- *                 self._listener)
+    /* "ssh2/listener.pyx":41
+ *             channel = c_ssh2.libssh2_channel_forward_accept(self._listener)
  *         if channel is NULL:
- *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(             # <<<<<<<<<<<<<<
- *                 self._session._session))
- *         return PyChannel(channel, self._session)
- */
-    __Pyx_XDECREF(__pyx_r);
-
-    /* "ssh2/listener.pyx":43
- *         if channel is NULL:
- *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(
- *                 self._session._session))             # <<<<<<<<<<<<<<
+ *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(self._session._session))             # <<<<<<<<<<<<<<
  *         return PyChannel(channel, self._session)
  * 
  */
-    __pyx_t_2 = __pyx_f_4ssh2_5utils_handle_error_codes(libssh2_session_last_errno(__pyx_v_self->_session->_session), 0); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(1, 42, __pyx_L1_error)
-
-    /* "ssh2/listener.pyx":42
- *                 self._listener)
- *         if channel is NULL:
- *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(             # <<<<<<<<<<<<<<
- *                 self._session._session))
- *         return PyChannel(channel, self._session)
- */
-    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 42, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_2 = __pyx_f_4ssh2_5utils_handle_error_codes(libssh2_session_last_errno(__pyx_v_self->_session->_session), 0); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(1, 41, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 41, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "ssh2/listener.pyx":41
- *             channel = c_ssh2.libssh2_channel_forward_accept(
- *                 self._listener)
+    /* "ssh2/listener.pyx":40
+ *         with nogil:
+ *             channel = c_ssh2.libssh2_channel_forward_accept(self._listener)
  *         if channel is NULL:             # <<<<<<<<<<<<<<
- *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(
- *                 self._session._session))
+ *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(self._session._session))
+ *         return PyChannel(channel, self._session)
  */
   }
 
-  /* "ssh2/listener.pyx":44
- *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(
- *                 self._session._session))
+  /* "ssh2/listener.pyx":42
+ *         if channel is NULL:
+ *             return handle_error_codes(c_ssh2.libssh2_session_last_errno(self._session._session))
  *         return PyChannel(channel, self._session)             # <<<<<<<<<<<<<<
  * 
  *     def forward_cancel(self):
@@ -1650,7 +1639,7 @@ static PyObject *__pyx_pf_4ssh2_8listener_8Listener_2forward_accept(struct __pyx
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_3 = ((PyObject *)__pyx_v_self->_session);
   __Pyx_INCREF(__pyx_t_3);
-  __pyx_t_4 = __pyx_f_4ssh2_7channel_PyChannel(__pyx_v_channel, ((struct __pyx_obj_4ssh2_7session_Session *)__pyx_t_3)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 44, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_4ssh2_7channel_PyChannel(__pyx_v_channel, ((struct __pyx_obj_4ssh2_7session_Session *)__pyx_t_3)); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_r = __pyx_t_4;
@@ -1677,7 +1666,7 @@ static PyObject *__pyx_pf_4ssh2_8listener_8Listener_2forward_accept(struct __pyx
   return __pyx_r;
 }
 
-/* "ssh2/listener.pyx":46
+/* "ssh2/listener.pyx":44
  *         return PyChannel(channel, self._session)
  * 
  *     def forward_cancel(self):             # <<<<<<<<<<<<<<
@@ -1710,12 +1699,12 @@ static PyObject *__pyx_pf_4ssh2_8listener_8Listener_4forward_cancel(struct __pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("forward_cancel", 0);
 
-  /* "ssh2/listener.pyx":48
+  /* "ssh2/listener.pyx":46
  *     def forward_cancel(self):
  *         cdef int rc
  *         with nogil:             # <<<<<<<<<<<<<<
- *             rc = c_ssh2.libssh2_channel_forward_cancel(
- *                 self._listener)
+ *             rc = c_ssh2.libssh2_channel_forward_cancel(self._listener)
+ *         return handle_error_codes(rc)
  */
   {
       #ifdef WITH_THREAD
@@ -1725,22 +1714,21 @@ static PyObject *__pyx_pf_4ssh2_8listener_8Listener_4forward_cancel(struct __pyx
       #endif
       /*try:*/ {
 
-        /* "ssh2/listener.pyx":49
+        /* "ssh2/listener.pyx":47
  *         cdef int rc
  *         with nogil:
- *             rc = c_ssh2.libssh2_channel_forward_cancel(             # <<<<<<<<<<<<<<
- *                 self._listener)
+ *             rc = c_ssh2.libssh2_channel_forward_cancel(self._listener)             # <<<<<<<<<<<<<<
  *         return handle_error_codes(rc)
  */
         __pyx_v_rc = libssh2_channel_forward_cancel(__pyx_v_self->_listener);
       }
 
-      /* "ssh2/listener.pyx":48
+      /* "ssh2/listener.pyx":46
  *     def forward_cancel(self):
  *         cdef int rc
  *         with nogil:             # <<<<<<<<<<<<<<
- *             rc = c_ssh2.libssh2_channel_forward_cancel(
- *                 self._listener)
+ *             rc = c_ssh2.libssh2_channel_forward_cancel(self._listener)
+ *         return handle_error_codes(rc)
  */
       /*finally:*/ {
         /*normal exit:*/{
@@ -1754,20 +1742,20 @@ static PyObject *__pyx_pf_4ssh2_8listener_8Listener_4forward_cancel(struct __pyx
       }
   }
 
-  /* "ssh2/listener.pyx":51
- *             rc = c_ssh2.libssh2_channel_forward_cancel(
- *                 self._listener)
+  /* "ssh2/listener.pyx":48
+ *         with nogil:
+ *             rc = c_ssh2.libssh2_channel_forward_cancel(self._listener)
  *         return handle_error_codes(rc)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_4ssh2_5utils_handle_error_codes(__pyx_v_rc, 0); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(1, 51, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 51, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_4ssh2_5utils_handle_error_codes(__pyx_v_rc, 0); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(1, 48, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "ssh2/listener.pyx":46
+  /* "ssh2/listener.pyx":44
  *         return PyChannel(channel, self._session)
  * 
  *     def forward_cancel(self):             # <<<<<<<<<<<<<<

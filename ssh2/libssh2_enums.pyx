@@ -16,9 +16,9 @@
 
 import enum
 
-cimport error_codes
-cimport c_ssh2
-cimport c_sftp
+from . cimport error_codes
+from . cimport c_ssh2
+from . cimport c_sftp
 
 
 class Session(enum.Enum):
@@ -192,12 +192,12 @@ class ErrorCodes(enum.Enum):
     KNOWN_HOSTS = error_codes._LIBSSH2_ERROR_KNOWN_HOSTS
 
 class Trace(enum.Enum):
-        TRANS = c_ssh2.LIBSSH2_TRACE_TRANS
-        KEX = c_ssh2.LIBSSH2_TRACE_KEX
-        AUTH = c_ssh2.LIBSSH2_TRACE_AUTH
-        CONN = c_ssh2.LIBSSH2_TRACE_CONN
-        SCP = c_ssh2.LIBSSH2_TRACE_SCP
-        SFTP = c_ssh2.LIBSSH2_TRACE_SFTP
-        ERROR = c_ssh2.LIBSSH2_TRACE_ERROR
-        PUBLICKEY = c_ssh2.LIBSSH2_TRACE_PUBLICKEY
-        SOCKET = c_ssh2.LIBSSH2_TRACE_SOCKET
+    TRANS = c_ssh2.LIBSSH2_TRACE_TRANS
+    KEX = c_ssh2.LIBSSH2_TRACE_KEX
+    AUTH = c_ssh2.LIBSSH2_TRACE_AUTH
+    CONN = c_ssh2.LIBSSH2_TRACE_CONN
+    SCP = c_ssh2.LIBSSH2_TRACE_SCP
+    SFTP = c_ssh2.LIBSSH2_TRACE_SFTP
+    ERROR = c_ssh2.LIBSSH2_TRACE_ERROR
+    PUBLICKEY = c_ssh2.LIBSSH2_TRACE_PUBLICKEY
+    SOCKET = c_ssh2.LIBSSH2_TRACE_SOCKET

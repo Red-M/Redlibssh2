@@ -17,7 +17,7 @@
 import time
 import threading
 import select as pyselect
-import error_codes
+from . import error_codes
 from cpython cimport PyObject_AsFileDescriptor
 from libc.stdlib cimport malloc, free
 from libc.time cimport time_t
@@ -25,23 +25,22 @@ from cython.operator cimport dereference as c_dereference
 from libc.string cimport strlen, strdup
 
 
-from agent cimport PyAgent, agent_auth, agent_init, init_connect_agent
-from channel cimport PyChannel
-from exceptions import SessionHostKeyError, KnownHostError, \
-    PublicKeyInitError, ChannelError
-from listener cimport PyListener
-from sftp cimport PySFTP
-from publickey cimport PyPublicKeySystem
-from utils cimport to_bytes, to_str, handle_error_codes
-from statinfo cimport StatInfo
-from knownhost cimport PyKnownHost
-from fileinfo cimport FileInfo
+from .agent cimport PyAgent, agent_auth, agent_init, init_connect_agent
+from .channel cimport PyChannel
+from .exceptions import SessionHostKeyError, KnownHostError, PublicKeyInitError, ChannelError
+from .listener cimport PyListener
+from .sftp cimport PySFTP
+from .publickey cimport PyPublicKeySystem
+from .utils cimport to_bytes, to_str, handle_error_codes
+from .statinfo cimport StatInfo
+from .knownhost cimport PyKnownHost
+from .fileinfo cimport FileInfo
 
 
-cimport c_ssh2
-cimport c_sftp
-cimport c_pkey
-cimport utils
+from . cimport c_ssh2
+from . cimport c_sftp
+from . cimport c_pkey
+from . cimport utils
 
 
 LIBSSH2_SESSION_BLOCK_INBOUND = c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND
@@ -78,14 +77,16 @@ cdef void kbd_callback(const char *name, int name_len,
                        c_ssh2.LIBSSH2_USERAUTH_KBDINT_RESPONSE *responses,
                        void **abstract) except *:
     py_sess = (<Session>c_dereference(abstract))
-    callback = py_sess._callbacks.get('kbd',None)
+    callback = py_sess.get_callback('kbd')
     if callback is None:
         return
+    py_sess._block_lock.acquire()
     cdef bytes b_password = to_bytes(callback())
     cdef char *_password = b_password
     if num_prompts==1:
         responses[0].text = strdup(_password)
         responses[0].length = strlen(_password)
+    py_sess._block_lock.release()
 
 cdef class Session:
 
@@ -108,33 +109,42 @@ cdef class Session:
             self.c_poll_enabled = True
         ELSE:
             self.c_poll_enabled = False
+        self.c_poll_use = True
+        self._default_waitsockets = []
+        self._waitsockets = []
 
     def __dealloc__(self):
         if self._session is not NULL:
             c_ssh2.libssh2_session_free(self._session)
         self._session = NULL
 
-    IF HAVE_POLL==1:
-        cdef void _build_waitsocket_data(Session self) nogil:
-            self._waitsockets[0].fd = self._sock
-            self._waitsockets[0].events = 0
-            self._waitsockets[0].revents = 0
+    def callback(self,key):
+        return(self._callbacks.get(key,None))
 
+    cdef void _build_c_waitsocket_data(Session self) nogil:
+        self._c_waitsockets[0].fd = self._sock
+        self._c_waitsockets[0].events = 0
+        self._c_waitsockets[0].revents = 0
+
+    def _build_waitsocket_data(self):
+        self._waitsockets = [self.sock]
+
+    IF HAVE_POLL==1:
         cdef int poll_socket(Session self,int block_dir,int timeout) nogil:
             cdef int rc
 
             with nogil:
                 if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND):
-                    self._waitsockets[0].events |= utils.POLLIN
+                    self._c_waitsockets[0].events |= utils.POLLIN
 
                 if(block_dir & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND):
-                    self._waitsockets[0].events |= utils.POLLOUT
+                    self._c_waitsockets[0].events |= utils.POLLOUT
 
-                rc = utils.poll(self._waitsockets, 1, timeout)
-                self._waitsockets[0].events = 0
+                rc = utils.poll(self._c_waitsockets, 1, timeout)
+                self._c_waitsockets[0].events = 0
             return rc
 
-    def _block_call(self,_select_timeout=None,use_c=True):
+    def _block_call(self,_select_timeout=None):
         if _select_timeout==None:
             _select_timeout = 0.005
         with self._block_lock:
@@ -144,18 +154,19 @@ cdef class Session:
             time.sleep(0.1)
             return(None)
 
-        if self.c_poll_enabled==True and use_c==True:
-            self.poll_socket(block_direction,_select_timeout*1000)
+        if self.c_poll_enabled==True and self.c_poll_use==True:
+            with self._block_lock:
+                return(self.poll_socket(block_direction,_select_timeout*1000))
         else:
-            rfds = []
-            wfds = []
+            rfds = self._default_waitsockets
+            wfds = self._default_waitsockets
             if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND:
-                rfds = [self.sock]
+                rfds = self._waitsockets
 
             if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND:
-                wfds = [self.sock]
+                wfds = self._waitsockets
 
-            pyselect.select(rfds,wfds,[],_select_timeout)
+            return(pyselect.select(rfds,wfds,self._default_waitsockets,_select_timeout))
 
     def trace(self, int bitmask):
         """Enable trace logging for this session.
@@ -424,8 +435,10 @@ cdef class Session:
             rc = c_ssh2.libssh2_session_handshake(self._session, _sock)
             self._sock = _sock
             if self.c_poll_enabled==True:
-                self._build_waitsocket_data()
+                self._build_c_waitsocket_data()
         self.sock = sock
+        if self.c_poll_enabled==False or self.c_poll_use==False:
+            self._build_waitsocket_data()
         return handle_error_codes(rc)
 
     def set_blocking(self, bint blocking):

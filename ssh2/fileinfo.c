@@ -11,7 +11,7 @@
 #else
 #define CYTHON_ABI "0_29_26"
 #define CYTHON_HEX_VERSION 0x001D1AF0
-#define CYTHON_FUTURE_DIVISION 0
+#define CYTHON_FUTURE_DIVISION 1
 #include <stddef.h>
 #ifndef offsetof
   #define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
@@ -911,8 +911,8 @@ static const char *__pyx_f[] = {
 /*--- Type declarations ---*/
 struct __pyx_obj_4ssh2_8fileinfo_FileInfo;
 
-/* "ssh2/fileinfo.pxd":3
- * cimport c_ssh2
+/* "ssh2/fileinfo.pxd":4
+ * from . cimport c_ssh2
  * 
  * cdef class FileInfo:             # <<<<<<<<<<<<<<
  *     """Representation of stat structure"""
@@ -1194,6 +1194,8 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
+
+/* Module declarations from 'ssh2' */
 
 /* Module declarations from 'libc.stddef' */
 

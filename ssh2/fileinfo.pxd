@@ -1,4 +1,5 @@
-cimport c_ssh2
+
+from . cimport c_ssh2
 
 cdef class FileInfo:
     """Representation of stat structure"""

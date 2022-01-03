@@ -16,16 +16,16 @@
 
 from base64 import b64decode
 from libc.stdlib cimport malloc, free
-from session cimport Session
-from utils cimport to_bytes
+from .session cimport Session
+from .utils cimport to_bytes
 from .exceptions import KnownHostAddError, KnownHostCheckMisMatchError, \
     KnownHostCheckFailure, KnownHostCheckNotFoundError, KnownHostError, \
     KnownHostDeleteError, KnownHostReadLineError, KnownHostReadFileError, \
     KnownHostWriteLineError, KnownHostWriteFileError, KnownHostGetError, \
     KnownHostCheckError
-from error_codes cimport _LIBSSH2_ERROR_BUFFER_TOO_SMALL
+from .error_codes cimport _LIBSSH2_ERROR_BUFFER_TOO_SMALL
 
-cimport c_ssh2
+from . cimport c_ssh2
 
 
 # Host format type masks
@@ -100,8 +100,7 @@ cdef class KnownHostEntry:
     @property
     def name(self):
         """Name of host."""
-        return self._store.name if self._store.name is not NULL \
-            else None
+        return self._store.name if self._store.name is not NULL else None
 
     @property
     def key(self):
@@ -134,10 +133,6 @@ cdef class KnownHost:
         if self._session is not None and self._session._session is not NULL and self._ptr is not NULL:
             c_ssh2.libssh2_knownhost_free(self._ptr)
         self._ptr = NULL
-
-    def add(self, bytes host, bytes salt, bytes key, int typemask):
-        """Deprecated - use ``self.addc``"""
-        raise NotImplementedError
 
     def addc(self, bytes host not None, bytes key not None,
              int typemask, bytes salt=None, bytes comment=None):
@@ -186,18 +181,10 @@ cdef class KnownHost:
         cdef KnownHostEntry entry = PyNewKnownHostEntry()
         comment_len = len(comment) if comment is not None else 0
         with nogil:
-            rc = c_ssh2.libssh2_knownhost_addc(
-                self._ptr, _host, _salt, _key, keylen, _comment, comment_len,
-                typemask, &entry._store)
+            rc = c_ssh2.libssh2_knownhost_addc(self._ptr, _host, _salt, _key, keylen, _comment, comment_len, typemask, &entry._store)
         if rc != 0:
-            raise KnownHostAddError(
-                "Error adding known host entry for host %s - error code %s",
-                host, rc)
+            raise KnownHostAddError("Error adding known host entry for host %s - error code %s", host, rc)
         return entry
-
-    def check(self, bytes host, bytes key, int typemask):
-        """Deprecated - use ``self.checkp``"""
-        raise NotImplementedError
 
     def checkp(self, bytes host not None, int port, bytes key not None,
                int typemask):
@@ -241,22 +228,15 @@ cdef class KnownHost:
         cdef KnownHostEntry entry = PyNewKnownHostEntry()
         cdef int rc
         with nogil:
-            rc = c_ssh2.libssh2_knownhost_checkp(
-                self._ptr, _host, port, _key, keylen, typemask, &entry._store)
+            rc = c_ssh2.libssh2_knownhost_checkp(self._ptr, _host, port, _key, keylen, typemask, &entry._store)
         if rc != c_ssh2.LIBSSH2_KNOWNHOST_CHECK_MATCH:
             if rc == c_ssh2.LIBSSH2_KNOWNHOST_CHECK_FAILURE:
-                raise KnownHostCheckFailure(
-                    "Could not check known host entry for host %s "
-                    "- error code %s", host, rc)
+                raise KnownHostCheckFailure("Could not check known host entry for host %s - error code %s", host, rc)
             elif rc == c_ssh2.LIBSSH2_KNOWNHOST_CHECK_NOTFOUND:
-                raise KnownHostCheckNotFoundError(
-                    "Host %s not found in known hosts collection", host)
+                raise KnownHostCheckNotFoundError("Host %s not found in known hosts collection", host)
             elif rc == c_ssh2.LIBSSH2_KNOWNHOST_CHECK_MISMATCH:
-                raise KnownHostCheckMisMatchError(
-                    "Known host key for host %s does not match provided key - "
-                    "error code %s", host, rc)
-            raise KnownHostCheckError(
-                "Unknown error occurred checking known host %s", host)
+                raise KnownHostCheckMisMatchError("Known host key for host %s does not match provided key - error code %s", host, rc)
+            raise KnownHostCheckError("Unknown error occurred checking known host %s", host)
         return entry
 
     def delete(self, KnownHostEntry entry not None):
@@ -271,11 +251,9 @@ cdef class KnownHost:
         with nogil:
             rc = c_ssh2.libssh2_knownhost_del(self._ptr, entry._store)
         if rc != 0:
-            raise KnownHostDeleteError(
-                "Error deleting known host entry - error code %s", rc)
+            raise KnownHostDeleteError("Error deleting known host entry - error code %s", rc)
 
-    def readline(self, bytes line not None,
-                 int f_type=c_ssh2.LIBSSH2_KNOWNHOST_FILE_OPENSSH):
+    def readline(self, bytes line not None, int f_type=c_ssh2.LIBSSH2_KNOWNHOST_FILE_OPENSSH):
         """Read line from known hosts file and add to known hosts
         collection. Only OpenSSH known hosts file format is currently supported.
 
@@ -292,14 +270,11 @@ cdef class KnownHost:
         cdef char *_line = line
         cdef size_t line_len = len(line)
         with nogil:
-            rc = c_ssh2.libssh2_knownhost_readline(
-                self._ptr, _line, line_len, f_type)
+            rc = c_ssh2.libssh2_knownhost_readline(self._ptr, _line, line_len, f_type)
         if rc != 0:
-            raise KnownHostReadLineError(
-                "Error deleting line from known hosts - error code %s", rc)
+            raise KnownHostReadLineError("Error deleting line from known hosts - error code %s", rc)
 
-    def readfile(self, filename not None,
-                 int f_type=c_ssh2.LIBSSH2_KNOWNHOST_FILE_OPENSSH):
+    def readfile(self, filename not None, int f_type=c_ssh2.LIBSSH2_KNOWNHOST_FILE_OPENSSH):
         """Read known hosts file and add hosts to known hosts collection.
         Only OpenSSH known hosts file format is currently supported.
 
@@ -316,17 +291,12 @@ cdef class KnownHost:
         cdef char *_filename = b_filename
         cdef int rc
         with nogil:
-            rc = c_ssh2.libssh2_knownhost_readfile(
-                self._ptr, _filename, f_type)
+            rc = c_ssh2.libssh2_knownhost_readfile(self._ptr, _filename, f_type)
         if rc < 0:
-            raise KnownHostReadFileError(
-                "Error reading known hosts file %s - error code %s",
-                filename, rc)
+            raise KnownHostReadFileError("Error reading known hosts file %s - error code %s", filename, rc)
         return rc
 
-    def writeline(self, KnownHostEntry entry,
-                  int f_type=c_ssh2.LIBSSH2_KNOWNHOST_FILE_OPENSSH,
-                  size_t buf_len=1024):
+    def writeline(self, KnownHostEntry entry, int f_type=c_ssh2.LIBSSH2_KNOWNHOST_FILE_OPENSSH, size_t buf_len=1024):
         """Convert a single known host entry to a single line of output
         for writing. Only OpenSSH known hosts file format is currently
         supported.
@@ -347,23 +317,19 @@ cdef class KnownHost:
             if buf is NULL:
                 with gil:
                     raise MemoryError
-            rc = c_ssh2.libssh2_knownhost_writeline(
-                self._ptr, entry._store, buf, buf_len, &outlen, f_type)
+            rc = c_ssh2.libssh2_knownhost_writeline(self._ptr, entry._store, buf, buf_len, &outlen, f_type)
         try:
             if rc == _LIBSSH2_ERROR_BUFFER_TOO_SMALL:
                 return self.writeline(entry, buf_len=buf_len*2)
             elif rc != 0:
-                raise KnownHostWriteLineError(
-                    "Error writing line for known host entry - error code %s",
-                    rc)
+                raise KnownHostWriteLineError("Error writing line for known host entry - error code %s", rc)
             if outlen > 0:
                 output = buf[:outlen]
         finally:
             free(buf)
         return output
 
-    def writefile(self, filename not None,
-                  int f_type=c_ssh2.LIBSSH2_KNOWNHOST_FILE_OPENSSH):
+    def writefile(self, filename not None, int f_type=c_ssh2.LIBSSH2_KNOWNHOST_FILE_OPENSSH):
         """Write all known host entries to file. Only OpenSSH known hosts file
         format is currently supported.
 
@@ -376,11 +342,9 @@ cdef class KnownHost:
         cdef char *_filename = b_filename
         cdef int rc
         with nogil:
-            rc = c_ssh2.libssh2_knownhost_writefile(
-                self._ptr, _filename, f_type)
+            rc = c_ssh2.libssh2_knownhost_writefile(self._ptr, _filename, f_type)
         if rc != 0:
-            raise KnownHostWriteFileError(
-                "Error writing known hosts to file %s", filename)
+            raise KnownHostWriteFileError("Error writing known hosts to file %s", filename)
 
     def get(self, KnownHostEntry prev=None):
         """Retrieve all host entries in known hosts collection.
@@ -400,15 +364,12 @@ cdef class KnownHost:
         if prev is not None:
             _prev = prev._store
         with nogil:
-            rc = c_ssh2.libssh2_knownhost_get(
-                self._ptr, &_store, _prev)
+            rc = c_ssh2.libssh2_knownhost_get(self._ptr, &_store, _prev)
         while rc == 0:
             entries.append(PyKnownHostEntry(_store))
             _prev = _store
             with nogil:
-                rc = c_ssh2.libssh2_knownhost_get(
-                    self._ptr, &_store, _prev)
+                rc = c_ssh2.libssh2_knownhost_get(self._ptr, &_store, _prev)
         if rc < 0:
-            raise KnownHostGetError(
-                "Error retrieving known hosts - error code %s", rc)
+            raise KnownHostGetError("Error retrieving known hosts - error code %s", rc)
         return entries

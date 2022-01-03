@@ -14,11 +14,11 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-from session cimport Session
-from channel cimport PyChannel
-from utils cimport handle_error_codes
+from .session cimport Session
+from .channel cimport PyChannel
+from .utils cimport handle_error_codes
 
-cimport c_ssh2
+from . cimport c_ssh2
 
 
 cdef object PyListener(c_ssh2.LIBSSH2_LISTENER *listener, Session session):
@@ -36,16 +36,13 @@ cdef class Listener:
     def forward_accept(self):
         cdef c_ssh2.LIBSSH2_CHANNEL *channel
         with nogil:
-            channel = c_ssh2.libssh2_channel_forward_accept(
-                self._listener)
+            channel = c_ssh2.libssh2_channel_forward_accept(self._listener)
         if channel is NULL:
-            return handle_error_codes(c_ssh2.libssh2_session_last_errno(
-                self._session._session))
+            return handle_error_codes(c_ssh2.libssh2_session_last_errno(self._session._session))
         return PyChannel(channel, self._session)
 
     def forward_cancel(self):
         cdef int rc
         with nogil:
-            rc = c_ssh2.libssh2_channel_forward_cancel(
-                self._listener)
+            rc = c_ssh2.libssh2_channel_forward_cancel(self._listener)
         return handle_error_codes(rc)

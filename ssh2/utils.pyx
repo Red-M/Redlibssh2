@@ -18,10 +18,10 @@ from select import select
 
 from cpython.version cimport PY_MAJOR_VERSION
 
-from session cimport Session
-import exceptions
-cimport c_ssh2
-cimport error_codes
+from .session cimport Session
+from . import exceptions
+from . cimport c_ssh2
+from . cimport error_codes
 
 
 ENCODING='utf-8'
@@ -79,10 +79,8 @@ def wait_socket(_socket not None, Session session, timeout=1):
     cdef int directions = session.block_directions()
     if directions == 0:
         return 0
-    readfds = [_socket] \
-        if (directions & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND) else ()
-    writefds = [_socket] \
-        if (directions & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND) else ()
+    readfds = [_socket] if (directions & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND) else ()
+    writefds = [_socket] if (directions & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND) else ()
     return select(readfds, writefds, (), timeout)
 
 

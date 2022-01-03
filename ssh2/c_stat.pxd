@@ -15,8 +15,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 from libc.time cimport time_t
-from posix.types cimport blkcnt_t, blksize_t, dev_t, gid_t, ino_t, \
-    nlink_t, off_t, time_t, uid_t, mode_t
+from posix.types cimport blkcnt_t, blksize_t, dev_t, gid_t, ino_t, nlink_t, off_t, time_t, uid_t, mode_t
 
 
 cdef extern from "<sys/stat.h>" nogil:

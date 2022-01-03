@@ -24,7 +24,7 @@ else:
 
 ON_RTD = os.environ.get('READTHEDOCS') == 'True'
 
-REDLIBSSH2_BUILD_TRACING = bool(os.environ.get('REDLIBSSH2_BUILD_TRACING', False))
+REDLIBSSH2_BUILD_TRACING = bool(os.environ.get('REDLIBSSH2_BUILD_TRACING', 0))
 SYSTEM_BUILD_MINGW = bool(os.environ.get('SYSTEM_BUILD_MINGW', 0))
 SYSTEM_LIBSSH2 = bool(os.environ.get('SYSTEM_LIBSSH2', 0)) or ON_RTD
 
@@ -55,7 +55,7 @@ _comp_args = ["-O3"] if not ON_WINDOWS else None
 _have_agent_fwd = bool(int(os.environ.get('HAVE_AGENT_FWD', _fwd_default)))
 
 cython_directives = {
-    'language_level': '2',
+    'language_level': '3',
     'embedsignature': True,
     'boundscheck': False,
     'optimize.use_switch': True,
@@ -105,8 +105,6 @@ if USING_CYTHON:
     cmdclass['build_ext'] = build_ext
 
 install_requires = []
-if sys.version_info==(2,7):
-    install_requires.append('enum')
 
 test_deps = [
     'coveralls',

@@ -14,5 +14,6 @@ from . import publickey
 from . import sftp_handle
 from . import fileinfo
 from . import statinfo
+from . import tunnel
 from . import utils
 from . import libssh2_enums as enums

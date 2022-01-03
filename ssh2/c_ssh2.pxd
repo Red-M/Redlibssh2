@@ -15,10 +15,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 from libc.time cimport time_t
-from posix.types cimport blkcnt_t, blksize_t, dev_t, gid_t, ino_t, \
-    nlink_t, time_t, uid_t
+from posix.types cimport blkcnt_t, blksize_t, dev_t, gid_t, ino_t, nlink_t, time_t, uid_t
 
-from c_stat cimport struct_stat
+from .c_stat cimport struct_stat
 
 cdef extern from "libssh2.h" nogil:
     ctypedef long long libssh2_int64_t
@@ -337,17 +336,14 @@ cdef extern from "libssh2.h" nogil:
                                         size_t buflen)
     int libssh2_poll_channel_read(LIBSSH2_CHANNEL *channel,
                                   int extended)
-    unsigned long \
-        libssh2_channel_window_read_ex(LIBSSH2_CHANNEL *channel,
+    unsigned long libssh2_channel_window_read_ex(LIBSSH2_CHANNEL *channel,
                                        unsigned long *read_avail,
                                        unsigned long *window_size_initial)
     unsigned long libssh2_channel_window_read(LIBSSH2_CHANNEL *channel)
-    unsigned long \
-        libssh2_channel_receive_window_adjust(LIBSSH2_CHANNEL *channel,
+    unsigned long libssh2_channel_receive_window_adjust(LIBSSH2_CHANNEL *channel,
                                               unsigned long adjustment,
                                               unsigned char force)
-    int \
-        libssh2_channel_receive_window_adjust2(LIBSSH2_CHANNEL *channel,
+    int libssh2_channel_receive_window_adjust2(LIBSSH2_CHANNEL *channel,
                                                unsigned long adjustment,
                                                unsigned char force,
                                                unsigned int *storewindow)
@@ -358,8 +354,7 @@ cdef extern from "libssh2.h" nogil:
                                   char *buf, size_t buflen)
     ssize_t libssh2_channel_write_stderr(LIBSSH2_CHANNEL *channel,
                                          char *buf, size_t buflen)
-    unsigned long \
-        libssh2_channel_window_write_ex(LIBSSH2_CHANNEL *channel,
+    unsigned long libssh2_channel_window_write_ex(LIBSSH2_CHANNEL *channel,
                                         unsigned long *window_size_initial)
     unsigned long libssh2_channel_window_write(LIBSSH2_CHANNEL *channel)
     void libssh2_session_set_blocking(LIBSSH2_SESSION* session,
@@ -455,16 +450,9 @@ cdef extern from "libssh2.h" nogil:
                                    const char *line, size_t len, int type)
     int libssh2_knownhost_readfile(LIBSSH2_KNOWNHOSTS *hosts,
                                    const char *filename, int type)
-    int libssh2_knownhost_writeline(LIBSSH2_KNOWNHOSTS *hosts,
-                                    libssh2_knownhost *known,
-                                    char *buffer, size_t buflen,
-                                    size_t *outlen,
-                                    int type)
-    int libssh2_knownhost_writefile(LIBSSH2_KNOWNHOSTS *hosts,
-                                    const char *filename, int type)
-    int libssh2_knownhost_get(LIBSSH2_KNOWNHOSTS *hosts,
-                              libssh2_knownhost **store,
-                              libssh2_knownhost *prev)
+    int libssh2_knownhost_writeline(LIBSSH2_KNOWNHOSTS *hosts,libssh2_knownhost *known,char *buffer, size_t buflen,size_t *outlen,int type)
+    int libssh2_knownhost_writefile(LIBSSH2_KNOWNHOSTS *hosts,const char *filename, int type)
+    int libssh2_knownhost_get(LIBSSH2_KNOWNHOSTS *hosts,libssh2_knownhost **store,libssh2_knownhost *prev)
 
     # Public Key API
     struct libssh2_agent_publickey:
@@ -476,30 +464,17 @@ cdef extern from "libssh2.h" nogil:
     LIBSSH2_AGENT *libssh2_agent_init(LIBSSH2_SESSION *session)
     int libssh2_agent_connect(LIBSSH2_AGENT *agent)
     int libssh2_agent_list_identities(LIBSSH2_AGENT *agent)
-    int libssh2_agent_get_identity(LIBSSH2_AGENT *agent,
-                                   libssh2_agent_publickey **store,
-                                   libssh2_agent_publickey *prev)
-    int libssh2_agent_userauth(LIBSSH2_AGENT *agent,
-                               const char *username,
-                               libssh2_agent_publickey *identity)
+    int libssh2_agent_get_identity(LIBSSH2_AGENT *agent,libssh2_agent_publickey **store,libssh2_agent_publickey *prev)
+    int libssh2_agent_userauth(LIBSSH2_AGENT *agent,const char *username,libssh2_agent_publickey *identity)
     int libssh2_agent_disconnect(LIBSSH2_AGENT *agent)
     void libssh2_agent_free(LIBSSH2_AGENT *agent)
-    void libssh2_keepalive_config(LIBSSH2_SESSION *session,
-                                  int want_reply,
-                                  unsigned interval)
-    int libssh2_keepalive_send(LIBSSH2_SESSION *session,
-                               int *seconds_to_next)
+    void libssh2_keepalive_config(LIBSSH2_SESSION *session,int want_reply,unsigned interval)
+    int libssh2_keepalive_send(LIBSSH2_SESSION *session,int *seconds_to_next)
     int libssh2_trace(LIBSSH2_SESSION *session, int bitmask)
-    ctypedef void(*libssh2_trace_handler_func)(LIBSSH2_SESSION*,
-                                               void*,
-                                               const char *,
-                                               size_t)
-    int libssh2_trace_sethandler(LIBSSH2_SESSION *session,
-                                 void* context,
-                                 libssh2_trace_handler_func callback)
+    ctypedef void(*libssh2_trace_handler_func)(LIBSSH2_SESSION*,void*,const char *,size_t)
+    int libssh2_trace_sethandler(LIBSSH2_SESSION *session,void* context,libssh2_trace_handler_func callback)
     const char *libssh2_agent_get_identity_path(LIBSSH2_AGENT *agent)
-    void libssh2_agent_set_identity_path(LIBSSH2_AGENT *agent,
-                                         const char *path)
+    void libssh2_agent_set_identity_path(LIBSSH2_AGENT *agent,const char *path)
     void libssh2_free(LIBSSH2_SESSION *session, void *ptr)
     IF HAVE_AGENT_FWD:
         int libssh2_channel_request_auth_agent(LIBSSH2_CHANNEL *channel)
