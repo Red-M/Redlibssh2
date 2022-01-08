@@ -58,7 +58,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'redlibssh2'
-copyright = u'2017, P Kittenis. 2020-2021 Red_M'
+copyright = u'2017, P Kittenis. 2020-2022 Red_M'
 author = u'P Kittenis, Red_M'
 
 # The version info for the project you're documenting, acts as replacement for

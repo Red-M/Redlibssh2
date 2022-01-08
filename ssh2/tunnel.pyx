@@ -1,5 +1,6 @@
-# This file is part of ssh2-python.
+# This file is part of RedLibSSH2.
 # Copyright (C) 2017 Panos Kittenis
+# Copyright (C) 2022 Red-M
 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -24,23 +25,7 @@ from libc.time cimport time_t
 from cython.operator cimport dereference as c_dereference
 from libc.string cimport strlen, strdup
 
-
-from .agent cimport PyAgent, agent_auth, agent_init, init_connect_agent
-from .channel cimport PyChannel
-from .exceptions import SessionHostKeyError, KnownHostError, PublicKeyInitError, ChannelError
-from .listener cimport PyListener
-from .sftp cimport PySFTP
-from .publickey cimport PyPublicKeySystem
-from .utils cimport to_bytes, to_str, handle_error_codes
-from .statinfo cimport StatInfo
-from .knownhost cimport PyKnownHost
-from .fileinfo cimport FileInfo
-
-
 from . cimport c_ssh2
-from . cimport c_sftp
-from . cimport c_pkey
-from . cimport session
 from . cimport utils
 
 cdef class Tunnel:
@@ -55,7 +40,7 @@ cdef class Tunnel:
         self._default_waitsockets = []
         self._waitsockets = []
         self._build_waitsocket_data()
-        if self._session.c_poll_enabled==True:
+        if self._session.check_c_poll_enabled()==True:
             self._build_c_waitsocket_data()
 
     def __dealloc__(self):
@@ -97,18 +82,18 @@ cdef class Tunnel:
             block_direction = self._session.block_directions()
         if block_direction==0:
             time.sleep(0.1)
-            return([[],[],[]])
+            return([[0,0],[],[]])
 
-        # if self._session.c_poll_enabled==True and self._session.c_poll_use==True:
-            # self.poll_sockets(block_direction,_select_timeout*1000)
-            # return([[self._c_waitsockets[0].revents,self._c_waitsockets[1].revents],[],[]])
-        # else:
-        rfds = self._default_waitsockets
-        wfds = self._default_waitsockets
-        if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND:
-            rfds = self._waitsockets
+        if self._session.check_c_poll_enabled()==True:
+            self.poll_sockets(block_direction,_select_timeout*1000)
+            return([[self._c_waitsockets[0].revents,self._c_waitsockets[1].revents],[],[]])
+        else:
+            rfds = self._default_waitsockets
+            wfds = self._default_waitsockets
+            if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND:
+                rfds = self._waitsockets
 
-        if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND:
-            wfds = self._waitsockets
+            if block_direction & c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND:
+                wfds = self._waitsockets
 
-        return(pyselect.select(rfds,wfds,self._default_waitsockets,_select_timeout))
+            return(pyselect.select(rfds,wfds,self._default_waitsockets,_select_timeout))

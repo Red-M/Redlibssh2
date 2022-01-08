@@ -1,5 +1,6 @@
-# This file is part of ssh2-python.
+# This file is part of RedLibSSH2.
 # Copyright (C) 2017-2018 Panos Kittenis
+# Copyright (C) 2022 Red-M
 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public

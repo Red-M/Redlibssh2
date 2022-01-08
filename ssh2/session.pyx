@@ -1,5 +1,6 @@
-# This file is part of ssh2-python.
+# This file is part of RedLibSSH2.
 # Copyright (C) 2017 Panos Kittenis
+# Copyright (C) 2022 Red-M
 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -144,6 +145,10 @@ cdef class Session:
                 self._c_waitsockets[0].events = 0
             return rc
 
+    def check_c_poll_enabled(self):
+        with self._block_lock:
+            return(self.c_poll_enabled==True and self.c_poll_use==True)
+
     def _block_call(self,_select_timeout=None):
         if _select_timeout==None:
             _select_timeout = 0.005
@@ -154,7 +159,7 @@ cdef class Session:
             time.sleep(0.1)
             return(None)
 
-        if self.c_poll_enabled==True and self.c_poll_use==True:
+        if self.check_c_poll_enabled()==True:
             with self._block_lock:
                 return(self.poll_socket(block_direction,_select_timeout*1000))
         else:
@@ -437,7 +442,7 @@ cdef class Session:
             if self.c_poll_enabled==True:
                 self._build_c_waitsocket_data()
         self.sock = sock
-        if self.c_poll_enabled==False or self.c_poll_use==False:
+        if self.check_c_poll_enabled()==False:
             self._build_waitsocket_data()
         return handle_error_codes(rc)
 
