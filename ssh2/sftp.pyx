@@ -171,29 +171,20 @@ cdef class SFTP:
         with nogil:
             _channel = c_sftp.libssh2_sftp_get_channel(self._sftp)
         if _channel is NULL:
-            return handle_error_codes(c_ssh2.libssh2_session_last_errno(
-                self._session._session))
+            return handle_error_codes(c_ssh2.libssh2_session_last_errno(self._session._session))
         return PyChannel(_channel, self._session)
 
-    def open_ex(self, const char *filename,
-                unsigned int filename_len,
-                unsigned long flags,
-                long mode, int open_type):
+    def open_ex(self, const char *filename,unsigned int filename_len, unsigned long flags, long mode, int open_type):
         cdef c_sftp.LIBSSH2_SFTP_HANDLE *_handle
         cdef SFTPHandle handle
         with nogil:
-            _handle = c_sftp.libssh2_sftp_open_ex(
-                self._sftp, filename, filename_len, flags,
-                mode, open_type)
+            _handle = c_sftp.libssh2_sftp_open_ex(self._sftp, filename, filename_len, flags, mode, open_type)
         if _handle is NULL:
-            return handle_error_codes(c_ssh2.libssh2_session_last_errno(
-                self._session._session))
+            return handle_error_codes(c_ssh2.libssh2_session_last_errno(self._session._session))
         handle = PySFTPHandle(_handle, self)
         return handle
 
-    def open(self, filename not None,
-             unsigned long flags,
-             long mode):
+    def open(self, filename not None, unsigned long flags, long mode):
         """Open file handle for file name.
 
         :param filename: Name of file to open.
@@ -227,11 +218,9 @@ cdef class SFTP:
         cdef bytes b_filename = to_bytes(filename)
         cdef char *_filename = b_filename
         with nogil:
-            _handle = c_sftp.libssh2_sftp_open(
-                self._sftp, _filename, flags, mode)
+            _handle = c_sftp.libssh2_sftp_open(self._sftp, _filename, flags, mode)
         if _handle is NULL:
-            return handle_error_codes(c_ssh2.libssh2_session_last_errno(
-                self._session._session))
+            return handle_error_codes(c_ssh2.libssh2_session_last_errno(self._session._session))
         return PySFTPHandle(_handle, self)
 
     def opendir(self, path not None):
@@ -251,20 +240,14 @@ cdef class SFTP:
         with nogil:
             _handle = c_sftp.libssh2_sftp_opendir(self._sftp, _path)
         if _handle is NULL:
-            return handle_error_codes(c_ssh2.libssh2_session_last_errno(
-                self._session._session))
+            return handle_error_codes(c_ssh2.libssh2_session_last_errno(self._session._session))
         return PySFTPHandle(_handle, self)
 
-    def rename_ex(self, const char *source_filename,
-                  unsigned int source_filename_len,
-                  const char *dest_filename,
-                  unsigned int dest_filename_len,
+    def rename_ex(self, const char *source_filename, unsigned int source_filename_len, const char *dest_filename, unsigned int dest_filename_len,
                   long flags):
         cdef int rc
         with nogil:
-            rc = c_sftp.libssh2_sftp_rename_ex(
-                self._sftp, source_filename, source_filename_len,
-                dest_filename, dest_filename_len, flags)
+            rc = c_sftp.libssh2_sftp_rename_ex(self._sftp, source_filename, source_filename_len, dest_filename, dest_filename_len, flags)
         return handle_error_codes(rc)
 
     def rename(self, source_filename not None, dest_filename not None):
@@ -280,8 +263,7 @@ cdef class SFTP:
         cdef char *_source_filename = b_source_filename
         cdef char *_dest_filename = b_dest_filename
         with nogil:
-            rc = c_sftp.libssh2_sftp_rename(
-                self._sftp, _source_filename, _dest_filename)
+            rc = c_sftp.libssh2_sftp_rename(self._sftp, _source_filename, _dest_filename)
         return handle_error_codes(rc)
 
     def unlink(self, filename not None):
@@ -305,8 +287,7 @@ cdef class SFTP:
         cdef char *_path = b_path
         cdef size_t path_len = len(b_path)
         with nogil:
-            rc = c_sftp.libssh2_sftp_statvfs(
-                self._sftp, _path, path_len, vfs._ptr)
+            rc = c_sftp.libssh2_sftp_statvfs(self._sftp, _path, path_len, vfs._ptr)
         return handle_error_codes(rc) if rc != 0 else vfs
 
     def mkdir(self, path not None, long mode):
@@ -355,8 +336,7 @@ cdef class SFTP:
         cdef char *_path = b_path
         cdef SFTPAttributes attrs = SFTPAttributes()
         with nogil:
-            rc = c_sftp.libssh2_sftp_stat(
-                self._sftp, _path, attrs._attrs)
+            rc = c_sftp.libssh2_sftp_stat(self._sftp, _path, attrs._attrs)
         return handle_error_codes(rc) if rc != 0 else attrs
 
     def lstat(self, path not None):
@@ -366,8 +346,7 @@ cdef class SFTP:
         cdef char *_path = b_path
         cdef SFTPAttributes attrs = SFTPAttributes()
         with nogil:
-            rc = c_sftp.libssh2_sftp_lstat(
-                self._sftp, _path, attrs._attrs)
+            rc = c_sftp.libssh2_sftp_lstat(self._sftp, _path, attrs._attrs)
         return handle_error_codes(rc) if rc != 0 else attrs
 
     def setstat(self, path not None, SFTPAttributes attrs):
@@ -383,8 +362,7 @@ cdef class SFTP:
         cdef bytes b_path = to_bytes(path)
         cdef char *_path = b_path
         with nogil:
-            rc = c_sftp.libssh2_sftp_setstat(
-                self._sftp, _path, attrs._attrs)
+            rc = c_sftp.libssh2_sftp_setstat(self._sftp, _path, attrs._attrs)
         return handle_error_codes(rc)
 
     def symlink(self, path not None, target not None):
@@ -425,8 +403,7 @@ cdef class SFTP:
         cdef char *_path = b_path
         try:
             with nogil:
-                rc = c_sftp.libssh2_sftp_realpath(
-                    self._sftp, _path, _target, max_len)
+                rc = c_sftp.libssh2_sftp_realpath(self._sftp, _path, _target, max_len)
                 if rc < 0:
                     with gil:
                         return handle_error_codes(rc)

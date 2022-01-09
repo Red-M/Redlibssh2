@@ -19,11 +19,7 @@ from base64 import b64decode
 from libc.stdlib cimport malloc, free
 from .session cimport Session
 from .utils cimport to_bytes
-from .exceptions import KnownHostAddError, KnownHostCheckMisMatchError, \
-    KnownHostCheckFailure, KnownHostCheckNotFoundError, KnownHostError, \
-    KnownHostDeleteError, KnownHostReadLineError, KnownHostReadFileError, \
-    KnownHostWriteLineError, KnownHostWriteFileError, KnownHostGetError, \
-    KnownHostCheckError
+from .exceptions import KnownHostAddError, KnownHostCheckMisMatchError, KnownHostCheckFailure, KnownHostCheckNotFoundError, KnownHostError, KnownHostDeleteError, KnownHostReadLineError, KnownHostReadFileError, KnownHostWriteLineError, KnownHostWriteFileError, KnownHostGetError, KnownHostCheckError
 from .error_codes cimport _LIBSSH2_ERROR_BUFFER_TOO_SMALL
 
 from . cimport c_ssh2
@@ -65,8 +61,7 @@ cdef KnownHostEntry PyNewKnownHostEntry():
     cdef KnownHostEntry entry = KnownHostEntry.__new__(KnownHostEntry)
     cdef c_ssh2.libssh2_knownhost *_entry
     with nogil:
-        _entry = <c_ssh2.libssh2_knownhost *>malloc(
-            sizeof(c_ssh2.libssh2_knownhost))
+        _entry = <c_ssh2.libssh2_knownhost *>malloc(sizeof(c_ssh2.libssh2_knownhost))
         if _entry is NULL:
             with gil:
                 raise MemoryError
@@ -114,8 +109,7 @@ cdef class KnownHostEntry:
         :py:func:`ssh2.knownhost.KnownHost.readline`, the stored key is not
         base64 encoded, contrary to documentation, and ``KnownHostEntry.key``
         will need to be re-encoded as base64 to get actual key."""
-        return b64decode(self._store.key) \
-            if self._store.key is not NULL else None
+        return b64decode(self._store.key) if self._store.key is not NULL else None
 
     @property
     def typemask(self):

@@ -27,8 +27,7 @@ cdef class FileInfo:
 
     def __cinit__(self):
         with nogil:
-            self._stat = <c_ssh2.libssh2_struct_stat *>malloc(
-                sizeof(c_ssh2.libssh2_struct_stat))
+            self._stat = <c_ssh2.libssh2_struct_stat *>malloc(sizeof(c_ssh2.libssh2_struct_stat))
             if self._stat is NULL:
                 with gil:
                     raise MemoryError

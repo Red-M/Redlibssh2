@@ -35,8 +35,7 @@ cdef class SFTPAttributes:
 
     def __cinit__(self):
         with nogil:
-            self._attrs = <c_sftp.LIBSSH2_SFTP_ATTRIBUTES *>malloc(
-                sizeof(c_sftp.LIBSSH2_SFTP_ATTRIBUTES))
+            self._attrs = <c_sftp.LIBSSH2_SFTP_ATTRIBUTES *>malloc(sizeof(c_sftp.LIBSSH2_SFTP_ATTRIBUTES))
             if self._attrs is NULL:
                 with gil:
                     raise MemoryError
@@ -168,8 +167,7 @@ cdef class SFTPHandle:
             if cbuf is NULL:
                 with gil:
                     raise MemoryError
-            rc = c_sftp.libssh2_sftp_read(
-                self._handle, cbuf, buffer_maxlen)
+            rc = c_sftp.libssh2_sftp_read(self._handle, cbuf, buffer_maxlen)
         try:
             if rc > 0:
                 buf = cbuf[:rc]
@@ -177,9 +175,7 @@ cdef class SFTPHandle:
             free(cbuf)
         return rc, buf
 
-    def readdir_ex(self,
-                   size_t longentry_maxlen=1024,
-                   size_t buffer_maxlen=1024):
+    def readdir_ex(self, size_t longentry_maxlen=1024, size_t buffer_maxlen=1024):
         """Get directory listing from file handle, if any.
 
         File handle *must* be opened with :py:func:`ssh2.sftp.SFTP.readdir()`
@@ -191,19 +187,13 @@ cdef class SFTPHandle:
 
         :rtype: bytes
         """
-        rc, buf, entry, attrs = self._readdir_ex(
-            longentry_maxlen=longentry_maxlen,
-            buffer_maxlen=buffer_maxlen)
+        rc, buf, entry, attrs = self._readdir_ex(longentry_maxlen=longentry_maxlen,buffer_maxlen=buffer_maxlen)
         while rc == c_ssh2.LIBSSH2_ERROR_EAGAIN or rc > 0:
             if not rc==c_ssh2.LIBSSH2_ERROR_EAGAIN:
                 yield rc, buf, entry, attrs
-            rc, buf, entryb, attrs = self._readdir_ex(
-                longentry_maxlen=longentry_maxlen,
-                buffer_maxlen=buffer_maxlen)
+            rc, buf, entryb, attrs = self._readdir_ex(longentry_maxlen=longentry_maxlen, buffer_maxlen=buffer_maxlen)
 
-    def _readdir_ex(self,
-                    size_t longentry_maxlen=1024,
-                    size_t buffer_maxlen=1024):
+    def _readdir_ex(self, size_t longentry_maxlen=1024, size_t buffer_maxlen=1024):
         cdef bytes buf = b''
         cdef bytes b_longentry = b''
         cdef char *cbuf
@@ -215,9 +205,7 @@ cdef class SFTPHandle:
             if cbuf is NULL or longentry is NULL:
                 with gil:
                     raise MemoryError
-            rc = c_sftp.libssh2_sftp_readdir_ex(
-                self._handle, cbuf, buffer_maxlen, longentry,
-                longentry_maxlen, attrs._attrs)
+            rc = c_sftp.libssh2_sftp_readdir_ex(self._handle, cbuf, buffer_maxlen, longentry, longentry_maxlen, attrs._attrs)
         try:
             if rc > 0:
                 buf = cbuf[:rc]
@@ -253,8 +241,7 @@ cdef class SFTPHandle:
             if cbuf is NULL:
                 with gil:
                     raise MemoryError
-            rc = c_sftp.libssh2_sftp_readdir(
-                self._handle, cbuf, buffer_maxlen, attrs._attrs)
+            rc = c_sftp.libssh2_sftp_readdir(self._handle, cbuf, buffer_maxlen, attrs._attrs)
         try:
             if rc > 0:
                 buf = cbuf[:rc]
@@ -409,8 +396,7 @@ cdef class SFTPStatVFS:
     def __cinit__(self, _sftp_ref):
         self._sftp_ref = _sftp_ref
         with nogil:
-            self._ptr = <c_sftp.LIBSSH2_SFTP_STATVFS *>malloc(
-                sizeof(c_sftp.LIBSSH2_SFTP_STATVFS))
+            self._ptr = <c_sftp.LIBSSH2_SFTP_STATVFS *>malloc(sizeof(c_sftp.LIBSSH2_SFTP_STATVFS))
             if self._ptr is NULL:
                 with gil:
                     raise MemoryError

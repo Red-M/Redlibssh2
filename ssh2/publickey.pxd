@@ -20,5 +20,4 @@ from . cimport c_pkey
 
 
 cdef object PyPublicKeyList(c_pkey.libssh2_publickey_list *_list)
-cdef object PyPublicKeySystem(c_pkey.LIBSSH2_PUBLICKEY *_pkey_s,
-                              Session session)
+cdef object PyPublicKeySystem(c_pkey.LIBSSH2_PUBLICKEY *_pkey_s, Session session)

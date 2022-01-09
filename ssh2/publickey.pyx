@@ -38,8 +38,7 @@ cdef class PublicKeyList:
 
     def __dealloc__(self):
         with nogil:
-            c_pkey.libssh2_publickey_list_free(
-                self.pkey_s.pkey_s, self.key_list)
+            c_pkey.libssh2_publickey_list_free(self.pkey_s.pkey_s, self.key_list)
 
     @property
     def name(self):
@@ -71,8 +70,7 @@ cdef class PublicKeyAttribute:
         cdef char *_value = value
         cdef unsigned long name_len = len(name)
         cdef unsigned long value_len = len(value)
-        self.attr = c_pkey.libssh2_publickey_attribute(
-            _name, name_len, _value, value_len, mandatory)
+        self.attr = c_pkey.libssh2_publickey_attribute(_name, name_len, _value, value_len, mandatory)
 
     @property
     def name(self):
@@ -100,8 +98,7 @@ cdef c_pkey.libssh2_publickey_attribute * to_c_attr(list attrs):
     cdef size_t size = len(attrs)
     cdef c_pkey.libssh2_publickey_attribute attr
     with nogil:
-        _attrs = <c_pkey.libssh2_publickey_attribute *>malloc(
-            (size + 1) * sizeof(c_pkey.libssh2_publickey_attribute))
+        _attrs = <c_pkey.libssh2_publickey_attribute *>malloc((size + 1) * sizeof(c_pkey.libssh2_publickey_attribute))
         if _attrs is NULL:
             with gil:
                 raise MemoryError
@@ -112,10 +109,8 @@ cdef c_pkey.libssh2_publickey_attribute * to_c_attr(list attrs):
     return _attrs
 
 
-cdef object PyPublicKeySystem(c_pkey.LIBSSH2_PUBLICKEY *_pkey_s,
-                              Session session):
-    cdef PublicKeySystem pkey_s = PublicKeySystem.__new__(
-        PublicKeySystem, session)
+cdef object PyPublicKeySystem(c_pkey.LIBSSH2_PUBLICKEY *_pkey_s, Session session):
+    cdef PublicKeySystem pkey_s = PublicKeySystem.__new__(PublicKeySystem, session)
     pkey_s.pkey_s = _pkey_s
     return pkey_s
 
@@ -149,9 +144,7 @@ cdef class PublicKeySystem:
         cdef size_t blob_len = len(blob)
         cdef const unsigned char *_blob = blob
         with nogil:
-            rc = c_pkey.libssh2_publickey_add_ex(
-                self.pkey_s, _name, name_len, _blob,
-                blob_len, overwrite, num_attrs, _attrs)
+            rc = c_pkey.libssh2_publickey_add_ex(self.pkey_s, _name, name_len, _blob, blob_len, overwrite, num_attrs, _attrs)
             if _attrs is not NULL:
                 free(_attrs)
         return handle_error_codes(rc)
@@ -162,8 +155,7 @@ cdef class PublicKeySystem:
         cdef const unsigned char *_name = name
         cdef const unsigned char *_blob = blob
         with nogil:
-            rc = c_pkey.libssh2_publickey_remove_ex(
-                self.pkey_s, _name, name_len, _blob, blob_len)
+            rc = c_pkey.libssh2_publickey_remove_ex(self.pkey_s, _name, name_len, _blob, blob_len)
         return handle_error_codes(rc)
 
     def list_fetch(self):
@@ -172,8 +164,7 @@ cdef class PublicKeySystem:
         cdef int rc
         cdef list keys
         with nogil:
-            rc = c_pkey.libssh2_publickey_list_fetch(
-                self.pkey_s, &num_keys, pkey_list)
+            rc = c_pkey.libssh2_publickey_list_fetch(self.pkey_s, &num_keys, pkey_list)
         if rc != 0:
             return handle_error_codes(rc)
         if num_keys < 1:

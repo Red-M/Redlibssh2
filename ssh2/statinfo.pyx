@@ -24,8 +24,7 @@ cdef class StatInfo:
 
     def __cinit__(self):
         with nogil:
-            self._stat = <struct_stat *>malloc(
-                sizeof(struct_stat))
+            self._stat = <struct_stat *>malloc(sizeof(struct_stat))
             if self._stat is NULL:
                 with gil:
                     raise MemoryError
