@@ -28,17 +28,18 @@ REDLIBSSH2_BUILD_TRACING = bool(os.environ.get('REDLIBSSH2_BUILD_TRACING', 0))
 SYSTEM_BUILD_MINGW = bool(os.environ.get('SYSTEM_BUILD_MINGW', 0))
 SYSTEM_LIBSSH2 = bool(os.environ.get('SYSTEM_LIBSSH2', 0)) or ON_RTD
 
+ON_WINDOWS = platform.system() == 'Windows' or SYSTEM_BUILD_MINGW==True
+ON_LINUX = platform.system() == 'Linux'
+ON_OSX = platform.system() == 'Darwin'
+
 # Only build libssh if running a build
-if not SYSTEM_LIBSSH2 and (len(sys.argv) >= 2 and not (
+if not SYSTEM_LIBSSH2 and not ON_OSX and (len(sys.argv) >= 2 and not (
         '--help' in sys.argv[1:] or
         sys.argv[1] in (
             '--help-commands', 'egg_info', '--version', 'clean',
             'sdist', '--long-description')) and
         __name__ == '__main__'):
     build_ssh2()
-
-ON_WINDOWS = platform.system() == 'Windows' or SYSTEM_BUILD_MINGW==True
-HAVE_POLL = platform.system() == 'Linux'
 
 ext = 'pyx' if USING_CYTHON else 'c'
 sources = glob('ssh2/*.%s' % (ext,))
@@ -68,7 +69,7 @@ if USING_CYTHON:
         'cython_directives': cython_directives,
         'cython_compile_time_env': {
             'HAVE_AGENT_FWD': _have_agent_fwd,
-            'HAVE_POLL': HAVE_POLL,
+            'HAVE_POLL': ON_LINUX,
         }
     }
     if REDLIBSSH2_BUILD_TRACING==True:
@@ -77,16 +78,16 @@ if USING_CYTHON:
     sys.stdout.write("Cython arguments: %s%s" % (cython_args, os.linesep))
 
 
-runtime_library_dirs = ["$ORIGIN/."] if not SYSTEM_LIBSSH2 else None
-_lib_dir = os.path.abspath("./src/src") if not SYSTEM_LIBSSH2 else "/usr/local/lib"
-include_dirs = ["libssh2/include"] if ON_RTD or not SYSTEM_LIBSSH2 else ["/usr/local/include"]
+runtime_library_dirs = ["$ORIGIN/."] if not SYSTEM_LIBSSH2 or ON_OSX else None
+_lib_dir = os.path.abspath("./src/src") if not SYSTEM_LIBSSH2 or ON_OSX else "/usr/local/lib"
+include_dirs = ["libssh2/include"] if ON_RTD or not SYSTEM_LIBSSH2 or ON_OSX else ["/usr/local/include"]
 
 extensions = [
     Extension(sources[i].split('.')[0].replace(os.path.sep, '.'),
               sources=[sources[i]],
               include_dirs=include_dirs,
               libraries=_libs,
-              library_dirs=[_lib_dir],
+              library_dirs=[_lib_dir,os.path.abspath("./src/src")],
               runtime_library_dirs=runtime_library_dirs,
               extra_compile_args=_comp_args,
               **cython_args

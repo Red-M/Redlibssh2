@@ -46,7 +46,7 @@ for PYENV in ${BUILD_PYENV_VERSIONS[@]}; do
     pip wheel .
     # \cp /usr/local/lib/libssh2* .
     delocate-listdeps --all ./*.whl
-    delocate-wheel -v ./*.whl
+    delocate-wheel --require-archs ${MACOSX_REQUIRED_ARCHITECTURES} -v ./*.whl
     delocate-listdeps --all ./*.whl
 
     ls -l *.whl

@@ -21,7 +21,8 @@ stages:
 .osx_needs: &osx_needs
   needs:
     - tests_osx_current
-    - tests_osx_10_15
+    - tests_osx_11_3
+    - tests_osx_10_14
 
 .build_refs: &build_refs
   only:
@@ -58,6 +59,9 @@ stages:
   variables: &build_osx_release_variables
     SYSTEM_LIBSSH2: 1
     DYLD_FALLBACK_LIBRARY_PATH: "./lib"
+    ARCHFLAGS: "-arch x86_64"
+    MACOSX_ARCHITECTURES: "x86_64"
+    MACOSX_REQUIRED_ARCHITECTURES: "x86_64"
     #PYTHON_CONFIGURE_OPTS: "--enable-universalsdk=/ --with-universal-archs=intel"
   script: &build_osx_release_script
     - git submodule update --init --recursive
@@ -150,14 +154,30 @@ release_mlinux_2_24_aarch64_wheel:
 release_osx_current_wheel:
   <<: *build_refs
   <<: *build_osx_release_job
+  variables:
+    <<: *build_osx_release_variables
+    #~ ARCHFLAGS: "-arch x86_64 -arch arm64"
+    #~ MACOSX_ARCHITECTURES: "x86_64;arm64"
+    #~ MACOSX_REQUIRED_ARCHITECTURES: "x86_64,arm64"
   stage: build
 
-release_osx_10_15_wheel:
+release_osx_11_3_wheel:
   <<: *build_refs
   <<: *build_osx_release_job
   variables:
     <<: *build_osx_release_variables
-    MACOSX_DEPLOYMENT_TARGET: "10.15"
+    MACOSX_DEPLOYMENT_TARGET: "11.3"
+    #~ ARCHFLAGS: "-arch x86_64 -arch arm64"
+    #~ MACOSX_ARCHITECTURES: "x86_64;arm64"
+    #~ MACOSX_REQUIRED_ARCHITECTURES: "x86_64,arm64"
+  stage: build
+
+release_osx_10_14_wheel:
+  <<: *build_refs
+  <<: *build_osx_release_job
+  variables:
+    <<: *build_osx_release_variables
+    MACOSX_DEPLOYMENT_TARGET: "10.14"
   stage: build
 
 
@@ -252,10 +272,13 @@ tests_osx_current:
   variables:
     <<: *build_osx_release_variables
     PYENV: 3.7.12
+    #~ ARCHFLAGS: "-arch x86_64 -arch arm64"
+    #~ MACOSX_ARCHITECTURES: "x86_64;arm64"
+    #~ MACOSX_REQUIRED_ARCHITECTURES: "x86_64,arm64"
   script:
     - *build_osx_release_script
 
-tests_osx_10_15:
+tests_osx_11_3:
   stage: test
   tags:
     - osx
@@ -263,7 +286,22 @@ tests_osx_10_15:
   variables:
     <<: *build_osx_release_variables
     PYENV: 3.7.12
-    MACOSX_DEPLOYMENT_TARGET: "10.15"
+    MACOSX_DEPLOYMENT_TARGET: "11.3"
+    #~ ARCHFLAGS: "-arch x86_64 -arch arm64"
+    #~ MACOSX_ARCHITECTURES: "x86_64;arm64"
+    #~ MACOSX_REQUIRED_ARCHITECTURES: "x86_64,arm64"
+  script:
+    - *build_osx_release_script
+
+tests_osx_10_14:
+  stage: test
+  tags:
+    - osx
+    - x86_64
+  variables:
+    <<: *build_osx_release_variables
+    PYENV: 3.7.12
+    MACOSX_DEPLOYMENT_TARGET: "10.14"
   script:
     - *build_osx_release_script
 
