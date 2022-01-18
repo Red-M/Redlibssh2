@@ -21,12 +21,12 @@ from . cimport c_ssh2
 from . cimport c_sftp
 
 
-class Session(enum.Enum):
+class Session(enum.IntEnum):
     BLOCK_INBOUND = c_ssh2.LIBSSH2_SESSION_BLOCK_INBOUND
     BLOCK_OUTBOUND = c_ssh2.LIBSSH2_SESSION_BLOCK_OUTBOUND
 
 
-class Hostkey(enum.Enum):
+class Hostkey(enum.IntEnum):
     HASH_MD5 = c_ssh2.LIBSSH2_HOSTKEY_HASH_MD5
     HASH_SHA1 = c_ssh2.LIBSSH2_HOSTKEY_HASH_SHA1
     TYPE_UNKNOWN = c_ssh2.LIBSSH2_HOSTKEY_TYPE_UNKNOWN
@@ -38,13 +38,13 @@ class Hostkey(enum.Enum):
     TYPE_ED25519 = c_ssh2.LIBSSH2_HOSTKEY_TYPE_ED25519
 
 
-class Callback(enum.Enum):
+class Callback(enum.IntEnum):
     RECV = c_ssh2.LIBSSH2_CALLBACK_RECV
     SEND = c_ssh2.LIBSSH2_CALLBACK_SEND
     X11 = c_ssh2.LIBSSH2_CALLBACK_X11
 
 
-class Method(enum.Enum):
+class Method(enum.IntEnum):
     KEX = c_ssh2.LIBSSH2_METHOD_KEX
     HOSTKEY = c_ssh2.LIBSSH2_METHOD_HOSTKEY
     CRYPT_CS = c_ssh2.LIBSSH2_METHOD_CRYPT_CS
@@ -57,12 +57,12 @@ class Method(enum.Enum):
     LANG_SC = c_ssh2.LIBSSH2_METHOD_LANG_SC
 
 
-class Flag(enum.Enum):
+class Flag(enum.IntEnum):
     SIGPIPE = c_ssh2.LIBSSH2_FLAG_SIGPIPE
     COMPRESS = c_ssh2.LIBSSH2_FLAG_COMPRESS
 
 
-class SFTP(enum.Enum):
+class SFTP(enum.IntEnum):
     # Type of file mask
     S_IFMT = c_sftp.LIBSSH2_SFTP_S_IFMT
     # named pipe (fifo)
@@ -111,7 +111,7 @@ class SFTP(enum.Enum):
     ST_NOSUID = c_sftp.LIBSSH2_SFTP_ST_NOSUID
 
 
-class KnownHost(enum.Enum):
+class KnownHost(enum.IntEnum):
     # Host format type masks
     TYPE_MASK = c_ssh2.LIBSSH2_KNOWNHOST_TYPE_MASK
     TYPE_PLAIN = c_ssh2.LIBSSH2_KNOWNHOST_TYPE_PLAIN
@@ -132,7 +132,7 @@ class KnownHost(enum.Enum):
     KEY_UNKNOWN = c_ssh2.LIBSSH2_KNOWNHOST_KEY_UNKNOWN
 
 
-class ErrorCodes(enum.Enum):
+class ErrorCodes(enum.IntEnum):
     NONE = error_codes._LIBSSH2_ERROR_NONE
     SOCKET_NONE = error_codes._LIBSSH2_ERROR_SOCKET_NONE
     BANNER_RECV = error_codes._LIBSSH2_ERROR_BANNER_RECV
@@ -182,7 +182,7 @@ class ErrorCodes(enum.Enum):
     INVALID_MAC = error_codes._LIBSSH2_ERROR_INVALID_MAC
     KNOWN_HOSTS = error_codes._LIBSSH2_ERROR_KNOWN_HOSTS
 
-class Trace(enum.Enum):
+class Trace(enum.IntEnum):
     TRANS = c_ssh2.LIBSSH2_TRACE_TRANS
     KEX = c_ssh2.LIBSSH2_TRACE_KEX
     AUTH = c_ssh2.LIBSSH2_TRACE_AUTH
