@@ -10,14 +10,6 @@ stages:
     - tests_debtesting_x86_64
     - tests_latest_libssh2_x86_64
 
-.linux_aarch64_needs: &linux_aarch64_needs
-  timeout: 6h 30m
-  needs:
-    - tests_debstable_aarch64
-    - tests_deboldstable_aarch64
-    - tests_debtesting_aarch64
-    - tests_latest_libssh2_aarch64
-
 .osx_needs: &osx_needs
   needs:
     - tests_osx_current
@@ -109,7 +101,8 @@ release_mlinux_pypy_x86_64_wheel:
 release_mlinux_2014_aarch64_wheel:
   <<: *build_refs
   <<: *build_mlinux_defaults
-  <<: *linux_aarch64_needs
+  <<: *linux_x86_64_needs
+  timeout: 6h 30m
   tags:
     - linux
     - aarch64
@@ -121,7 +114,8 @@ release_mlinux_2014_aarch64_wheel:
 release_mlinux_2_24_aarch64_wheel:
   <<: *build_refs
   <<: *build_mlinux_defaults
-  <<: *linux_aarch64_needs
+  <<: *linux_x86_64_needs
+  timeout: 6h 30m
   tags:
     - linux
     - aarch64
@@ -207,48 +201,6 @@ tests_latest_libssh2_x86_64:
   tags:
     - linux
     - x86_64
-  image: debian:stable
-  stage: test
-  script:
-    - ./ci/gitlab/linux/install_deb_mirror.sh
-    - ./ci/gitlab/linux/test_latest_libssh2.sh GITLAB
-  artifacts:
-      paths:
-      - htmlcov
-
-tests_debstable_aarch64:
-  <<: *cicd_testing_defaults
-  <<: *linux_x86_64_needs
-  tags:
-    - linux
-    - aarch64
-  timeout: 6h 30m
-  image: debian:stable
-
-tests_deboldstable_aarch64:
-  <<: *cicd_testing_defaults
-  <<: *linux_x86_64_needs
-  tags:
-    - linux
-    - aarch64
-  timeout: 6h 30m
-  image: debian:oldstable
-
-tests_debtesting_aarch64:
-  <<: *cicd_testing_defaults
-  <<: *linux_x86_64_needs
-  tags:
-    - linux
-    - aarch64
-  timeout: 6h 30m
-  image: debian:testing
-
-tests_latest_libssh2_aarch64:
-  <<: *linux_x86_64_needs
-  tags:
-    - linux
-    - aarch64
-  timeout: 6h 30m
   image: debian:stable
   stage: test
   script:

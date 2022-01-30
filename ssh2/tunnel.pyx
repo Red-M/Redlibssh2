@@ -85,7 +85,8 @@ cdef class Tunnel:
             return([[0,0],[],[]])
 
         if self._session.check_c_poll_enabled()==True:
-            self.poll_sockets(block_direction,_select_timeout*1000)
+            with self._session._block_lock:
+                self.poll_sockets(block_direction,_select_timeout*1000)
             return([[self._c_waitsockets[0].revents,self._c_waitsockets[1].revents],[],[]])
         else:
             rfds = self._default_waitsockets
