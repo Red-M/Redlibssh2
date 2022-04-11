@@ -29,9 +29,8 @@ IF HAVE_POLL==1:
     pollin=POLLIN
     pollout=POLLOUT
 
-from .utils cimport OPENSSL_VERSION_TEXT,OpenSSL_version_num
+from .utils cimport OPENSSL_VERSION_TEXT
 openssl_version_text = OPENSSL_VERSION_TEXT
-openssl_version_num = OpenSSL_version_num()
 
 ENCODING='utf-8'
 

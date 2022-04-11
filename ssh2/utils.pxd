@@ -22,4 +22,3 @@ IF HAVE_POLL==1:
 
 cdef extern from "openssl/opensslv.h" nogil:
     char* OPENSSL_VERSION_TEXT
-    unsigned long OpenSSL_version_num()
