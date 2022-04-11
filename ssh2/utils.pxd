@@ -19,3 +19,7 @@ IF HAVE_POLL==1:
             short events
             short revents
         int poll(pollfd *fds, nfds_t nfds, int timeout)
+
+cdef extern from "openssl/opensslv.h" nogil:
+    char* OPENSSL_VERSION_TEXT
+    unsigned long OpenSSL_version_num()
