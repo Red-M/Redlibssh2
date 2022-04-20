@@ -88,7 +88,7 @@ extensions = [
               include_dirs=include_dirs,
               libraries=_libs,
               library_dirs=[_lib_dir,os.path.abspath("./src/src")],
-              runtime_library_dirs=runtime_library_dirs,
+              # runtime_library_dirs=runtime_library_dirs,
               extra_compile_args=_comp_args,
               **cython_args
     )
