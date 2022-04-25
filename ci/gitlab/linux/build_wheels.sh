@@ -15,13 +15,14 @@ done
 cd "${OLD_PWD}"
 
 # Bundle external shared libraries into the wheels
-for whl in /tmp/wheelhouse/*.whl; do
-    auditwheel repair "${whl}" -w /io/wheelhouse/
-    \rm "${whl}"
-done
+# for whl in /tmp/wheelhouse/*.whl; do
+    # auditwheel repair "${whl}" -w /io/wheelhouse/
+    # \rm "${whl}"
+# done
+cp /tmp/wheelhouse/*.whl /io/wheelhouse/
 
 # Install packages and test
 for PYBIN in `ls -1d /opt/${PYTHON_DIR}/*/bin | grep -v cpython`; do
     "${PYBIN}/pip" install redlibssh2 --no-index -f /io/wheelhouse
-    (cd "${HOME}"; "${PYBIN}/${PYTHON_BIN}" -c 'import ssh2; ssh2.session.Session(); print(ssh2.__version__); print(ssh.utils.openssl_version_text)')
+    (cd "${HOME}"; "${PYBIN}/${PYTHON_BIN}" -c 'import ssh2; ssh2.session.Session(); print(ssh2.__version__); print(ssh2.utils.openssl_version_text)')
 done
