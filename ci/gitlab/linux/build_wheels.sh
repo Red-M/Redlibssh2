@@ -15,7 +15,7 @@ for PYBIN in `ls -1d /opt/${PYTHON_DIR}/*/bin | grep -v cpython`; do
 done
 cd "${OLD_PWD}"
 
-"${LATEST_PY}" -m pip install auditwheel
+"${LATEST_PY}" -m pip install -U auditwheel
 
 # Bundle external shared libraries into the wheels
 for whl in /tmp/wheelhouse/*.whl; do
