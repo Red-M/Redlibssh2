@@ -11,5 +11,5 @@ rm -rf ./build ./dist ./ssh2/libssh2.* ./libssh2/.git
 sed -i 's#MANYLINUX_DOCKER_CONTAINER#'"${DOCKER_CONTAINER}"'#g' /tmp/Dockerfile
 
 docker build -t $DOCKER_TAG -f /tmp/Dockerfile .
-docker run --rm -v `pwd`:/io $DOCKER_TAG /io/ci/gitlab/linux/build_wheels.sh "${PYTHON_DIR}" "${PYTHON_BIN}"
+docker run --rm -v `pwd`:/io $DOCKER_TAG /io/ci/gitlab/linux/build_wheels.sh "${PYTHON_DIR}" "${PYTHON_BIN}" "/io/ci/auditwheel.py"
 ls wheelhouse/
