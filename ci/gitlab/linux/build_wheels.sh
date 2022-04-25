@@ -2,7 +2,7 @@
 
 PYTHON_DIR=${1:-python}
 PYTHON_BIN=${2:-python}
-AUDITWHEEL_BIN=${3:-auditwheel}
+AUDITWHEEL_BIN=${3:-$(which auditwheel)}
 
 OLD_PWD="$(pwd)"
 LATEST_PY="$(ls -1d /opt/${PYTHON_DIR}/*/bin | grep -v cpython | tail -n1)/${PYTHON_BIN}"
@@ -17,7 +17,7 @@ cd "${OLD_PWD}"
 
 # Bundle external shared libraries into the wheels
 for whl in /tmp/wheelhouse/*.whl; do
-    "${AUDITWHEEL_BIN}" repair "${whl}" -w /io/wheelhouse/
+    "${LATEST_PY}" "${AUDITWHEEL_BIN}" repair "${whl}" -w /io/wheelhouse/
     \rm "${whl}"
 done
 
