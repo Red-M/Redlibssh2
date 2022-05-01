@@ -182,7 +182,10 @@ release_osx_10_10_wheel:
     REDLIBSSH2_BUILD_TRACING: 1
   artifacts:
       paths:
-      - htmlcov
+        - htmlcov
+        - coverage.xml
+      reports:
+        junit: coverage.xml
 
 
 tests_debstable_x86_64:
@@ -208,7 +211,10 @@ tests_latest_libssh2_x86_64:
     - ./ci/gitlab/linux/test_latest_libssh2.sh GITLAB
   artifacts:
       paths:
-      - htmlcov
+        - htmlcov
+        - coverage.xml
+      reports:
+        junit: coverage.xml
 
 
 tests_osx_current:
