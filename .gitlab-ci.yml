@@ -102,10 +102,11 @@ release_mlinux_2014_aarch64_wheel:
   <<: *build_refs
   <<: *build_mlinux_defaults
   <<: *linux_x86_64_needs
+  image: arm64v8/docker:dind
   timeout: 6h 30m
   tags:
     - linux
-    - aarch64
+    - x86_64
   stage: build
   script:
     - *build_mlinux_defaults_script
@@ -115,10 +116,11 @@ release_mlinux_2_24_aarch64_wheel:
   <<: *build_refs
   <<: *build_mlinux_defaults
   <<: *linux_x86_64_needs
+  image: arm64v8/docker:dind
   timeout: 6h 30m
   tags:
     - linux
-    - aarch64
+    - x86_64
   stage: build
   script:
     - *build_mlinux_defaults_script
