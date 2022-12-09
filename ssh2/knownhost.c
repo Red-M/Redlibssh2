@@ -8481,6 +8481,11 @@ bad:
     #endif
     return NULL;
 }
+
+#if PY_VERSION_HEX >= 0x030b00a6
+  #include "internal/pycore_frame.h"
+#endif
+
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename) {
     PyCodeObject *py_code = 0;

@@ -11656,6 +11656,11 @@ bad:
     #endif
     return NULL;
 }
+
+#if PY_VERSION_HEX >= 0x030b00a6
+  #include "internal/pycore_frame.h"
+#endif
+
 static void __Pyx_AddTraceback(const char *funcname, int c_line,
                                int py_line, const char *filename) {
     PyCodeObject *py_code = 0;
@@ -13298,6 +13303,11 @@ PyObject *__Pyx_Coroutine_SendEx(__pyx_CoroutineObject *self, PyObject *value, i
 #endif
     return retval;
 }
+
+#if PY_VERSION_HEX >= 0x030b00a6
+    #include "internal/pycore_frame.h"
+#endif
+
 static CYTHON_INLINE void __Pyx_Coroutine_ResetFrameBackpointer(__Pyx_ExcInfoStruct *exc_state) {
     PyObject *exc_tb = exc_state->exc_traceback;
     if (likely(exc_tb)) {
