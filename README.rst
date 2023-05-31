@@ -26,7 +26,7 @@ Forked from ssh2-python.
 Installation
 ______________
 
-Binary wheel packages are provided for Linux, OSX and Windows, all Python versions. Wheel packages have **no dependencies**.
+Binary wheel packages are provided for Linux and OSX, all Python versions. Wheel packages have **no dependencies**.
 
 ``pip`` may need to be updated to be able to install binary wheel packages - ``pip install -U pip``.
 
