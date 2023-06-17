@@ -107,6 +107,13 @@ for PYENV in ${BUILD_PYENV_VERSIONS[@]}; do
         'https://github.com/macports/macports-ports/raw/master/lang/python310/files/patch-Lib-ctypes-macholib-dyld.py.diff'
         'https://github.com/macports/macports-ports/raw/master/lang/python310/files/patch-configure-xcode4bug.diff'
         'https://github.com/macports/macports-ports/raw/master/lang/python310/files/sysconfig.py.diff' )
+    elif [[ $PYENV == 3.11* ]]; then
+        PY_PATCH=( 'https://github.com/macports/macports-ports/raw/master/lang/python310/files/patch-setup.py.diff'
+        'https://github.com/macports/macports-ports/raw/master/lang/python310/files/patch-Lib-cgi.py.diff'
+        # 'https://github.com/macports/macports-ports/raw/master/lang/python310/files/patch-configure.diff'
+        'https://github.com/macports/macports-ports/raw/master/lang/python310/files/patch-Lib-ctypes-macholib-dyld.py.diff'
+        'https://github.com/macports/macports-ports/raw/master/lang/python310/files/patch-configure-xcode4bug.diff'
+        'https://github.com/macports/macports-ports/raw/master/lang/python310/files/sysconfig.py.diff' )
     fi
 
     if [[ ! -f "${PYENV_ROOT}/versions/$PYENV/bin/python3" ]]; then
@@ -144,7 +151,7 @@ for PYENV in ${BUILD_PYENV_VERSIONS[@]}; do
 
     ls -l *.whl
     rm -f *.dylib
-    python3 -m pip uninstall -y redlibssh2
+    python3 -m pip uninstall -y redlibssh2 || true
     python3 -m pip install -v ./*.whl
     mkdir -p temp; cd temp
     python3 -c "from ssh2.session import Session; Session()" && echo "Import successful"

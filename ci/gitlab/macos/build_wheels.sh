@@ -11,6 +11,7 @@ port install openssl11 +universal
 # port install python38
 port install python39 +universal
 # port install python310 +universal
+# port install python311 +universal
 which python3
 python3 -c "from __future__ import print_function; import ssl; from platform import python_version; print(ssl.OPENSSL_VERSION); print(python_version())"
 ./ci/install-ssh2.sh
