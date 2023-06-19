@@ -152,7 +152,7 @@ for PYENV in ${BUILD_PYENV_VERSIONS[@]}; do
     ls -l *.whl
     rm -f *.dylib
     python3 -m pip uninstall -y redlibssh2 || true
-    python3 -m pip install -v ./*.whl
+    python3 -m pip install --force-reinstall -v ./*.whl
     mkdir -p temp; cd temp
     python3 -c "from ssh2.session import Session; Session()" && echo "Import successful"
     cd ..
