@@ -28,7 +28,7 @@ def build_ssh2():
         check_call('cmake ../libssh2 -DBUILD_SHARED_LIBS=ON \
         -DENABLE_ZLIB_COMPRESSION=ON -DCRYPTO_BACKEND=OpenSSL \
         -DENABLE_DEBUG_LOGGING=ON',shell=True, env=os.environ)
-    check_call('cmake --build . --config Release', shell=True, env=os.environ)
+    check_call('cmake --build . --config Release --parallel 3', shell=True, env=os.environ)
     os.chdir('..')
 
     if SYSTEM_BUILD_MINGW==1:

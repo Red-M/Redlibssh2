@@ -1,30 +1,37 @@
 #!/bin/bash
+rel_path=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
 PATH=$PATH:~/.local/bin
 CI_SYSTEM=${1}
 PYTHON_VERSION=${2}
 
 apt update && apt install -y make curl wget openssh-client openssh-server git cmake libssl-dev zlib1g-dev build-essential
-apt install -y python3 python3-dev python3-distutils python3-setuptools cython3
-wget -O get-pip.py "https://bootstrap.pypa.io/get-pip.py"
-python3 ./get-pip.py
-pip3 install -U readme-renderer
+apt install -y python3 python3-dev python3-venv python3-pip python3-distutils python3-setuptools cython3
+"${rel_path}/make_venv.sh"
+if [ -f ~/.venvs/redlibssh2/bin/activate ]; then
+    source ~/.venvs/redlibssh2/bin/activate
+fi
+pip3 install -U readme-renderer cython
 python3 -m readme_renderer ./README.rst -o /tmp/README.html
 git submodule update --init --recursive
 cd ./libssh2
-git checkout master
+git fetch
 git pull origin master
 cd ../
 python3 setup.py build_ext --inplace
+pip install -e .[tests]
 pip install redssh[tests]
 git clone https://github.com/Red-M/RedSSH.git /tmp/redssh
 cp -r /tmp/redssh/tests ./tests
 \rm -rf /tmp/redssh
 
 
-if [ -n $CI_SYSTEM ] && [ ${CI_SYSTEM} == "GITLAB" ]; then
+if [ -n $CI_SYSTEM ] && [ "${CI_SYSTEM}" == "GITLAB" ]; then
     sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
     echo "export VISIBLE=now" >> /etc/profile
     source /etc/profile
+    if [ -f ~/.venvs/redlibssh2/bin/activate ]; then
+        source ~/.venvs/redlibssh2/bin/activate
+    fi
     mkdir /var/run/sshd || true
 fi
 
@@ -32,7 +39,7 @@ if [ -n $CI_SYSTEM ]; then
     mkdir /run/sshd || true
 fi
 
-if [ ! -z $CI_SYSTEM ] && [ ${CI_SYSTEM} != "LOCAL" ]; then
+if [ ! -z $CI_SYSTEM ] && [ "${CI_SYSTEM}" != "LOCAL" ]; then
     export GIT_BRANCH=${CI_COMMIT_BRANCH}
     eval "$(ssh-agent \-s)"
     chmod 600 ./tests/ssh_host_key
@@ -40,17 +47,17 @@ if [ ! -z $CI_SYSTEM ] && [ ${CI_SYSTEM} != "LOCAL" ]; then
 fi
 
 
-if [ -n $CI_SYSTEM ] && [ ${CI_SYSTEM} == "GITLAB" ]; then
+if [ -n $CI_SYSTEM ] && [ "${CI_SYSTEM}" == "GITLAB" ]; then
     chmod 700 /builds /builds/Red_M
     export LC_ALL=C.UTF-8
     export LANG=C.UTF-8
 fi
 
-if [ ! -z $CI_SYSTEM ] && [ ${CI_SYSTEM} == "TRAVIS" ]; then
+if [ ! -z $CI_SYSTEM ] && [ "${CI_SYSTEM}" != "LOCAL" ]; then
     pip${PYTHON_VERSION} install --upgrade pytest coveralls pytest-cov pytest-xdist paramiko > /dev/null
     py.test --cov redlibssh2
 else
-    pip${PYTHON_VERSION} install --upgrade --user pytest coveralls pytest-cov pytest-xdist paramiko > /dev/null
+    pip${PYTHON_VERSION} install --upgrade pytest coveralls pytest-cov pytest-xdist paramiko > /dev/null
     py.test --cov redlibssh2 --cov-config .coveragerc
 fi
 
