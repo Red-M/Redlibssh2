@@ -17,3 +17,6 @@ from . import statinfo
 from . import tunnel
 from . import utils
 from . import libssh2_enums as enums
+
+from . import _version
+__version__ = _version.get_versions()['version']
